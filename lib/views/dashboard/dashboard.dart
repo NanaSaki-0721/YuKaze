@@ -3,6 +3,7 @@ import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
+import 'package:fl_clash/views/proxies/common.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,15 +27,21 @@ class DashboardView extends ConsumerWidget {
         ),
         const SizedBox(width: 12),
       ],
-      body: const Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _CircularStartButton(),
-            SizedBox(height: 40),
-            _ModeControls(),
-          ],
-        ),
+      body: LayoutBuilder(
+        builder: (_, constraints) {
+          final controlWidth =
+              (constraints.maxWidth / 3).clamp(200.0, 280.0);
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const _CircularStartButton(),
+                const SizedBox(height: 40),
+                _ModeControls(width: controlWidth),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -95,13 +102,15 @@ class _CircularStartButton extends ConsumerWidget {
 }
 
 class _ModeControls extends ConsumerWidget {
-  const _ModeControls();
+  final double width;
+
+  const _ModeControls({required this.width});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const SizedBox(
-      width: 320,
-      child: Column(
+    return SizedBox(
+      width: width,
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _ModeSlider(),
@@ -174,12 +183,7 @@ class _NodeSelectButton extends ConsumerWidget {
         showSheet(
           context: context,
           props: const SheetProps(isScrollControlled: true),
-          builder: (_) {
-            return const AdaptiveSheetScaffold(
-              body: _NodeSelectorSheet(),
-              title: '',
-            );
-          },
+          builder: (_) => const _NodeSelectorSheet(),
         );
       },
       child: Text(appLocalizations.panelSelectNode),
@@ -204,27 +208,71 @@ class _NodeSelectorSheet extends ConsumerWidget {
     final selectedName = ref.watch(selectedProxyNameProvider(group.name));
     return AdaptiveSheetScaffold(
       title: group.name,
+      actions: [
+        IconButtonData(
+          icon: Icons.network_ping,
+          onPressed: () async {
+            await delayTest(group.all, group.testUrl);
+            ref.read(proxiesActionProvider.notifier).updateGroupsDebounce();
+          },
+        ),
+      ],
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: group.all.length,
         itemBuilder: (_, index) {
           final proxy = group.all[index];
           final selected = proxy.name == selectedName;
-          return ListTile(
-            dense: true,
-            title: Text(proxy.name, maxLines: 1, overflow: TextOverflow.ellipsis),
-            trailing: selected
-                ? const Icon(Icons.check, color: Color(SiteConfig.brandPrimaryColor))
-                : null,
-            onTap: () {
-              ref
-                  .read(profilesActionProvider.notifier)
-                  .updateCurrentSelectedMap(group.name, proxy.name);
-              ref
-                  .read(proxiesActionProvider.notifier)
-                  .changeProxyDebounce(group.name, proxy.name);
-              Navigator.of(context).pop();
-            },
+          final delay = ref.watch(
+            delayProvider(proxyName: proxy.name, testUrl: group.testUrl),
+          );
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(8),
+              onTap: () {
+                ref
+                    .read(profilesActionProvider.notifier)
+                    .updateCurrentSelectedMap(group.name, proxy.name);
+                ref
+                    .read(proxiesActionProvider.notifier)
+                    .changeProxyDebounce(group.name, proxy.name);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: selected
+                      ? brandPrimary.withValues(alpha: 0.08)
+                      : context.colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: selected ? brandPrimary : context.colorScheme.outline,
+                    width: selected ? 1.5 : 1,
+                  ),
+                ),
+                child: ListTile(
+                  dense: true,
+                  title: Text(
+                    proxy.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: Text(
+                    delay == null
+                        ? '-'
+                        : delay == 0
+                        ? '...'
+                        : delay > 0
+                        ? '$delay ms'
+                        : 'Timeout',
+                    style: context.textTheme.labelMedium?.copyWith(
+                      color: delay != null && delay > 0
+                          ? utils.getDelayColor(delay)
+                          : context.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           );
         },
       ),

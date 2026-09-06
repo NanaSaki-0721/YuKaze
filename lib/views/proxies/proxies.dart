@@ -35,16 +35,10 @@ class _ProxiesViewState extends ConsumerState<ProxiesView> {
     if (!_isTab) {
       return null;
     }
-    final isMobile = ref.read(isMobileViewProvider);
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: isMobile ? floatingDockBottomSpace : 0,
-      ),
-      child: DelayTestButton(
-        onClick: () async {
-          await _proxiesTabKey.currentState?.delayTestCurrentGroup();
-        },
-      ),
+    return DelayTestButton(
+      onClick: () async {
+        await _proxiesTabKey.currentState?.delayTestCurrentGroup();
+      },
     );
   }
 

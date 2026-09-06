@@ -66,14 +66,18 @@ class _DashboardViewState extends ConsumerState<DashboardView>
         ],
         body: LayoutBuilder(
           builder: (_, constraints) {
-            final controlWidth =
-                (constraints.maxWidth / 3).clamp(160.0, 240.0);
+            final controlWidth = isMobile
+                ? (constraints.maxWidth - 32) * 0.6
+                : (constraints.maxWidth / 3).clamp(240.0, 360.0);
             return Stack(
               children: [
-                const Center(
-                  child: _DashboardEntrance(
-                    duration: Duration(milliseconds: 420),
-                    child: _CircularStartButton(),
+                Center(
+                  child: Transform.translate(
+                    offset: Offset(0, isMobile ? -kToolbarHeight / 2 : 0),
+                    child: const _DashboardEntrance(
+                      duration: Duration(milliseconds: 420),
+                      child: _CircularStartButton(),
+                    ),
                   ),
                 ),
                 Positioned(

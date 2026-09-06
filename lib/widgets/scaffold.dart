@@ -314,6 +314,7 @@ class CommonScaffoldState extends State<CommonScaffold> {
     assert(widget.appBar != null || widget.title != null);
     final backActionProvider = CommonScaffoldBackActionProvider.of(context);
     final isTV = widget.isTV ?? system.isTV;
+    final isMobileView = MediaQuery.sizeOf(context).width <= maxMobileWidth;
     final body = SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -381,11 +382,16 @@ class CommonScaffoldState extends State<CommonScaffold> {
       floatingActionButton: !isTV && widget.floatingActionButton != null
           ? ValueListenableBuilder<bool>(
               valueListenable: _isFabExtendedNotifier,
-              builder: (_, isExtended, child) {
-                return CommonScaffoldFabExtendedProvider(
-                  isExtended: isExtended,
-                  child: child!,
-                );
+               builder: (_, isExtended, child) {
+                 return CommonScaffoldFabExtendedProvider(
+                   isExtended: isExtended,
+                   child: Padding(
+                     padding: EdgeInsets.only(
+                       bottom: isMobileView ? floatingDockBottomSpace : 0,
+                     ),
+                     child: child!,
+                   ),
+                 );
               },
               child: widget.floatingActionButton,
             )

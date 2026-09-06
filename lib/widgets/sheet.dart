@@ -24,7 +24,7 @@ class SheetProps {
     this.backgroundColor,
     this.useSafeArea = true,
     this.isScrollControlled = false,
-    this.blur = true,
+    this.blur = false,
   });
 }
 
@@ -38,7 +38,7 @@ class ExtendProps {
   const ExtendProps({
     this.maxWidth,
     this.useSafeArea = true,
-    this.blur = true,
+    this.blur = false,
     this.forceFull = false,
   });
 }
@@ -258,7 +258,7 @@ class _AdaptiveSheetScaffoldState extends State<AdaptiveSheetScaffold> {
         ],
       );
       return ClipRRect(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -288,7 +288,7 @@ class _AdaptiveSheetScaffoldState extends State<AdaptiveSheetScaffold> {
                         builder: (_, isScrolled, child) {
                           return ClipRRect(
                             borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(28),
+                              top: Radius.circular(8),
                             ),
                             child: BackdropFilter(
                               filter: commonFilter,

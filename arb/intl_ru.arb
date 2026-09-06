@@ -637,6 +637,9 @@
   "panelPlanDevices": "Устройства",
   "panelCoupon": "Купон (необязательно)",
   "panelSoldOut": "Распродано",
+  "panelTapStart": "Нажмите для запуска",
+  "panelTapStop": "Нажмите для остановки",
+  "panelSelectNode": "Выбрать узел",
   "panelCancelOrderConfirm": "Отменить этот заказ?",
   "panelCopyLink": "Скопировать ссылку"
 }

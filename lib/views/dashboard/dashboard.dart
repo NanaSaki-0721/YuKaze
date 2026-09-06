@@ -22,7 +22,7 @@ class DashboardView extends ConsumerWidget {
       actions: [
         Text(
           traffic.speedText,
-          style: context.textTheme.labelMedium?.toLight,
+          style: context.textTheme.titleMedium?.toSoftBold,
         ),
         const SizedBox(width: 12),
       ],
@@ -32,7 +32,7 @@ class DashboardView extends ConsumerWidget {
           children: [
             _CircularStartButton(),
             SizedBox(height: 40),
-            _ModeRow(),
+            _ModeControls(),
           ],
         ),
       ),
@@ -47,90 +47,187 @@ class _CircularStartButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isStart = ref.watch(isStartProvider);
     final appLocalizations = context.appLocalizations;
-    final foreground = isStart
-        ? Colors.white
-        : context.colorScheme.onSurface;
-    return InkWell(
-      customBorder: const CircleBorder(),
-      onTap: () {
-        ref.read(commonActionProvider.notifier).toggleRunning();
-      },
-      child: Container(
-        width: 168,
-        height: 168,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: isStart
-              ? brandPrimary
-              : context.colorScheme.surfaceContainer,
-          border: isStart ? null : Border.all(color: context.colorScheme.outline),
-          boxShadow: isStart
-              ? [
-                  BoxShadow(
-                    color: brandPrimary.withValues(alpha: 0.35),
-                    blurRadius: 24,
-                    offset: const Offset(0, 8),
-                  ),
-                ]
-              : null,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
+    final foreground = isStart ? Colors.white : context.colorScheme.onSurface;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        InkWell(
+          customBorder: const CircleBorder(),
+          onTap: () {
+            ref.read(commonActionProvider.notifier).toggleRunning();
+          },
+          child: Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: isStart
+                  ? brandPrimary
+                  : context.colorScheme.surfaceContainer,
+              border: isStart
+                  ? null
+                  : Border.all(color: context.colorScheme.outline),
+              boxShadow: isStart
+                  ? [
+                      BoxShadow(
+                        color: brandPrimary.withValues(alpha: 0.35),
+                        blurRadius: 32,
+                        offset: const Offset(0, 10),
+                      ),
+                    ]
+                  : null,
+            ),
+            child: Icon(
               isStart ? Icons.pause : Icons.power_settings_new,
-              size: 56,
+              size: 72,
               color: foreground,
             ),
-            const SizedBox(height: 12),
-            Text(
-              isStart ? appLocalizations.stopVpn : appLocalizations.startVpn,
-              style: context.textTheme.titleMedium?.copyWith(
-                color: foreground,
-              ),
-            ),
-          ],
+          ),
         ),
+        const SizedBox(height: 12),
+        Text(
+          isStart ? appLocalizations.panelTapStop : appLocalizations.panelTapStart,
+          style: context.textTheme.labelMedium?.toLight,
+        ),
+      ],
+    );
+  }
+}
+
+class _ModeControls extends ConsumerWidget {
+  const _ModeControls();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return const SizedBox(
+      width: 320,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _ModeSlider(),
+          SizedBox(height: 12),
+          _NodeSelectButton(),
+        ],
       ),
     );
   }
 }
 
-class _ModeRow extends ConsumerWidget {
-  const _ModeRow();
+class _ModeSlider extends ConsumerWidget {
+  const _ModeSlider();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mode = ref.watch(
       patchClashConfigProvider.select((state) => state.mode),
     );
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (final item in Mode.values)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: item == mode
-                ? ShadButton(
-                    backgroundColor: brandPrimary,
-                    foregroundColor: Colors.white,
-                    onPressed: () {
-                      globalState.container
-                          .read(setupActionProvider.notifier)
-                          .changeMode(item);
-                    },
-                    child: Text(Intl.message(item.name)),
-                  )
-                : ShadButton.outline(
-                    onPressed: () {
-                      globalState.container
-                          .read(setupActionProvider.notifier)
-                          .changeMode(item);
-                    },
-                    child: Text(Intl.message(item.name)),
+    return Container(
+      height: 40,
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: context.colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: context.colorScheme.outline),
+      ),
+      child: Row(
+        children: [
+          for (final item in Mode.values)
+            Expanded(
+              child: InkWell(
+                borderRadius: BorderRadius.circular(8),
+                onTap: () {
+                  globalState.container
+                      .read(setupActionProvider.notifier)
+                      .changeMode(item);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: item == mode ? brandPrimary : null,
+                    borderRadius: BorderRadius.circular(8),
                   ),
-          ),
-      ],
+                  child: Text(
+                    Intl.message(item.name),
+                    style: context.textTheme.labelMedium?.copyWith(
+                      color: item == mode
+                          ? Colors.white
+                          : context.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _NodeSelectButton extends ConsumerWidget {
+  const _NodeSelectButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appLocalizations = context.appLocalizations;
+    return ShadButton(
+      onPressed: () {
+        showSheet(
+          context: context,
+          props: const SheetProps(isScrollControlled: true),
+          builder: (_) {
+            return const AdaptiveSheetScaffold(
+              body: _NodeSelectorSheet(),
+              title: '',
+            );
+          },
+        );
+      },
+      child: Text(appLocalizations.panelSelectNode),
+    );
+  }
+}
+
+class _NodeSelectorSheet extends ConsumerWidget {
+  const _NodeSelectorSheet();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final groups = ref.watch(currentGroupsStateProvider).value;
+    final currentGroupName = ref.watch(
+      currentProfileProvider.select((state) => state?.currentGroupName),
+    );
+    final group = groups.getGroup(currentGroupName ?? '') ??
+        (groups.isEmpty ? null : groups.first);
+    if (group == null) {
+      return NullStatus(label: context.appLocalizations.noData);
+    }
+    final selectedName = ref.watch(selectedProxyNameProvider(group.name));
+    return AdaptiveSheetScaffold(
+      title: group.name,
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: group.all.length,
+        itemBuilder: (_, index) {
+          final proxy = group.all[index];
+          final selected = proxy.name == selectedName;
+          return ListTile(
+            dense: true,
+            title: Text(proxy.name, maxLines: 1, overflow: TextOverflow.ellipsis),
+            trailing: selected
+                ? const Icon(Icons.check, color: Color(SiteConfig.brandPrimaryColor))
+                : null,
+            onTap: () {
+              ref
+                  .read(profilesActionProvider.notifier)
+                  .updateCurrentSelectedMap(group.name, proxy.name);
+              ref
+                  .read(proxiesActionProvider.notifier)
+                  .changeProxyDebounce(group.name, proxy.name);
+              Navigator.of(context).pop();
+            },
+          );
+        },
+      ),
     );
   }
 }

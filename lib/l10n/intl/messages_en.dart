@@ -761,12 +761,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "panelPlanDevices": MessageLookupByLibrary.simpleMessage("Devices"),
     "panelPlanTraffic": MessageLookupByLibrary.simpleMessage("Traffic"),
     "panelRegister": MessageLookupByLibrary.simpleMessage("Register"),
+    "panelSelectNode": MessageLookupByLibrary.simpleMessage("Select node"),
     "panelSendCode": MessageLookupByLibrary.simpleMessage("Send code"),
     "panelShop": MessageLookupByLibrary.simpleMessage("Shop"),
     "panelSoldOut": MessageLookupByLibrary.simpleMessage("Sold out"),
     "panelSubscriptionDesc": MessageLookupByLibrary.simpleMessage(
       "The subscription is obtained automatically after login and refreshed afterwards",
     ),
+    "panelTapStart": MessageLookupByLibrary.simpleMessage("Tap to start"),
+    "panelTapStop": MessageLookupByLibrary.simpleMessage("Tap to stop"),
     "panelTermsOfService": MessageLookupByLibrary.simpleMessage(
       "Terms of Service",
     ),

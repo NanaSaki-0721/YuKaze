@@ -603,12 +603,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "panelPlanDevices": MessageLookupByLibrary.simpleMessage("デバイス"),
     "panelPlanTraffic": MessageLookupByLibrary.simpleMessage("通信量"),
     "panelRegister": MessageLookupByLibrary.simpleMessage("登録"),
+    "panelSelectNode": MessageLookupByLibrary.simpleMessage("ノードを選択"),
     "panelSendCode": MessageLookupByLibrary.simpleMessage("コードを送信"),
     "panelShop": MessageLookupByLibrary.simpleMessage("ショップ"),
     "panelSoldOut": MessageLookupByLibrary.simpleMessage("売り切れ"),
     "panelSubscriptionDesc": MessageLookupByLibrary.simpleMessage(
       "ログイン後にサブスクリプションを自動取得し、以降は更新のみ行います",
     ),
+    "panelTapStart": MessageLookupByLibrary.simpleMessage("タップで開始"),
+    "panelTapStop": MessageLookupByLibrary.simpleMessage("タップで停止"),
     "panelTermsOfService": MessageLookupByLibrary.simpleMessage("利用規約"),
     "panelTicketClosedHint": MessageLookupByLibrary.simpleMessage(
       "このチケットはクローズ済みのため返信できません",

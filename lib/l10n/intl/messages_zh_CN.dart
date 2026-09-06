@@ -525,12 +525,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "panelPlanDevices": MessageLookupByLibrary.simpleMessage("设备"),
     "panelPlanTraffic": MessageLookupByLibrary.simpleMessage("流量"),
     "panelRegister": MessageLookupByLibrary.simpleMessage("注册"),
+    "panelSelectNode": MessageLookupByLibrary.simpleMessage("选择节点"),
     "panelSendCode": MessageLookupByLibrary.simpleMessage("发送验证码"),
     "panelShop": MessageLookupByLibrary.simpleMessage("商店"),
     "panelSoldOut": MessageLookupByLibrary.simpleMessage("已售罄"),
     "panelSubscriptionDesc": MessageLookupByLibrary.simpleMessage(
       "订阅将在登录后自动获取，之后仅做刷新",
     ),
+    "panelTapStart": MessageLookupByLibrary.simpleMessage("点击打开"),
+    "panelTapStop": MessageLookupByLibrary.simpleMessage("点击关闭"),
     "panelTermsOfService": MessageLookupByLibrary.simpleMessage("服务条款"),
     "panelTicketClosedHint": MessageLookupByLibrary.simpleMessage(
       "该工单已关闭，无法继续回复",

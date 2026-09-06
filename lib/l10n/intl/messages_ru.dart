@@ -796,11 +796,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "panelPlanDevices": MessageLookupByLibrary.simpleMessage("Устройства"),
     "panelPlanTraffic": MessageLookupByLibrary.simpleMessage("Трафик"),
     "panelRegister": MessageLookupByLibrary.simpleMessage("Регистрация"),
+    "panelSelectNode": MessageLookupByLibrary.simpleMessage("Выбрать узел"),
     "panelSendCode": MessageLookupByLibrary.simpleMessage("Отправить код"),
     "panelShop": MessageLookupByLibrary.simpleMessage("Магазин"),
     "panelSoldOut": MessageLookupByLibrary.simpleMessage("Распродано"),
     "panelSubscriptionDesc": MessageLookupByLibrary.simpleMessage(
       "Подписка будет получена автоматически после входа, далее только обновление",
+    ),
+    "panelTapStart": MessageLookupByLibrary.simpleMessage(
+      "Нажмите для запуска",
+    ),
+    "panelTapStop": MessageLookupByLibrary.simpleMessage(
+      "Нажмите для остановки",
     ),
     "panelTermsOfService": MessageLookupByLibrary.simpleMessage(
       "Условия обслуживания",

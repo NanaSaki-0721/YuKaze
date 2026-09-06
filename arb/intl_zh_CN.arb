@@ -637,6 +637,9 @@
   "panelPlanDevices": "设备",
   "panelCoupon": "优惠券（可选）",
   "panelSoldOut": "已售罄",
+  "panelTapStart": "点击打开",
+  "panelTapStop": "点击关闭",
+  "panelSelectNode": "选择节点",
   "panelCancelOrderConfirm": "确定取消该订单吗？",
   "panelCopyLink": "复制链接"
 }

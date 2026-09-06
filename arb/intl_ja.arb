@@ -637,6 +637,9 @@
   "panelPlanDevices": "デバイス",
   "panelCoupon": "クーポン（任意）",
   "panelSoldOut": "売り切れ",
+  "panelTapStart": "タップで開始",
+  "panelTapStop": "タップで停止",
+  "panelSelectNode": "ノードを選択",
   "panelCancelOrderConfirm": "この注文をキャンセルしますか？",
   "panelCopyLink": "リンクをコピー"
 }

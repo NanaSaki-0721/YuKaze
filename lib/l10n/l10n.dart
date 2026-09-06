@@ -5244,6 +5244,36 @@ class AppLocalizations {
     return Intl.message('Sold out', name: 'panelSoldOut', desc: '', args: []);
   }
 
+  /// `Tap to start`
+  String get panelTapStart {
+    return Intl.message(
+      'Tap to start',
+      name: 'panelTapStart',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap to stop`
+  String get panelTapStop {
+    return Intl.message(
+      'Tap to stop',
+      name: 'panelTapStop',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select node`
+  String get panelSelectNode {
+    return Intl.message(
+      'Select node',
+      name: 'panelSelectNode',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Cancel this order?`
   String get panelCancelOrderConfirm {
     return Intl.message(

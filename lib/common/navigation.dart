@@ -19,13 +19,9 @@ class Navigation {
             const DashboardView(key: GlobalObjectKey(PageLabel.dashboard)),
       ),
       NavigationItem(
-        icon: const Icon(Icons.article),
-        label: PageLabel.proxies,
-        builder: (_) =>
-            const ProxiesView(key: GlobalObjectKey(PageLabel.proxies)),
-        modes: hasProxies
-            ? [NavigationItemMode.mobile, NavigationItemMode.desktop]
-            : [],
+        icon: const Icon(Icons.storefront),
+        label: PageLabel.shop,
+        builder: (_) => const ShopView(key: GlobalObjectKey(PageLabel.shop)),
       ),
       NavigationItem(
         icon: const Icon(Icons.person),

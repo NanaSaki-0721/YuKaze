@@ -637,6 +637,9 @@
   "panelPlanDevices": "Devices",
   "panelCoupon": "Coupon (optional)",
   "panelSoldOut": "Sold out",
+  "panelTapStart": "Tap to start",
+  "panelTapStop": "Tap to stop",
+  "panelSelectNode": "Select node",
   "panelCancelOrderConfirm": "Cancel this order?",
   "panelCopyLink": "Copy link"
 }

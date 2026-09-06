@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/models/models.dart';
@@ -10,6 +10,7 @@ import 'package:fl_clash/views/tools.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FadeSlideIn extends StatelessWidget {
@@ -442,20 +443,20 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
         const SizedBox(width: 8),
         Text('@', style: context.textTheme.titleMedium),
         const SizedBox(width: 8),
-        DropdownButton<String>(
-          value: suffix,
-          items: [
+        ShadSelect<String>(
+          initialValue: suffix,
+          enabled: !_submitting,
+          selectedOptionBuilder: (_, value) => Text(value),
+          options: [
             for (final item in suffixes)
-              DropdownMenuItem(value: item, child: Text(item)),
+              ShadOption(value: item, child: Text(item)),
           ],
-          onChanged: _submitting
-              ? null
-              : (value) {
-                  if (value == null) return;
-                  setState(() {
-                    _selectedSuffix = value;
-                  });
-                },
+          onChanged: (value) {
+            if (value == null) return;
+            setState(() {
+              _selectedSuffix = value;
+            });
+          },
         ),
       ],
     );
@@ -544,20 +545,18 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
           const SizedBox(height: 12),
           FadeSlideIn(
             index: 5,
-            child: CheckboxListTile(
-              contentPadding: EdgeInsets.zero,
-              controlAffinity: ListTileControlAffinity.leading,
-              title: Text(appLocalizations.panelAgreeTerms),
+            child: ShadCheckbox(
               value: _agreeTerms,
+              label: Text(appLocalizations.panelAgreeTerms),
               onChanged: (value) {
                 setState(() {
-                  _agreeTerms = value ?? false;
+                  _agreeTerms = value;
                 });
               },
             ),
           ),
           if (config?.tosUrl != null) ...[
-            TextButton(
+            ShadButton.ghost(
               onPressed: () {
                 launchUrl(Uri.parse(config!.tosUrl!));
               },

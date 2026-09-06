@@ -8,6 +8,7 @@ import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PanelPlanFeature {
@@ -612,23 +613,21 @@ class _PaymentViewState extends ConsumerState<PaymentView> {
             style: context.textTheme.labelMedium?.toLight,
           ),
           const SizedBox(height: 8),
-          RadioGroup<String>(
-            groupValue: selectedMethod,
+          ShadRadioGroup<String>(
+            key: ValueKey(selectedMethod),
+            initialValue: selectedMethod,
             onChanged: (value) {
               setState(() {
                 _selectedMethod = value;
               });
             },
-            child: Column(
-              children: [
-                for (final method in enabledMethods)
-                  RadioListTile<String>(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(method.name ?? ''),
-                    value: method.id ?? '',
-                  ),
-              ],
-            ),
+            items: [
+              for (final method in enabledMethods)
+                ShadRadio<String>(
+                  value: method.id ?? '',
+                  label: Text(method.name ?? ''),
+                ),
+            ],
           ),
           if (_error != null) ...[
             const SizedBox(height: 8),
@@ -640,10 +639,9 @@ class _PaymentViewState extends ConsumerState<PaymentView> {
             ),
           ],
           const SizedBox(height: 16),
-          FilledButton(
-            onPressed: _submitting || selectedMethod == null
-                ? null
-                : _handlePay,
+          ShadButton(
+            enabled: !_submitting && selectedMethod != null,
+            onPressed: _handlePay,
             child: Text(appLocalizations.panelGoPay),
           ),
         ],

@@ -8,6 +8,7 @@ import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 String _orderStatusText(int? status) {
   return switch (status) {
@@ -224,27 +225,28 @@ class TicketsView extends ConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SegmentedButton<int>(
-                  segments: [
-                    ButtonSegment(
+                ShadRadioGroup<int>(
+                  initialValue: level,
+                  axis: Axis.horizontal,
+                  onChanged: (value) {
+                    setState(() {
+                      level = value ?? 0;
+                    });
+                  },
+                  items: [
+                    ShadRadio<int>(
                       value: 0,
                       label: Text(appLocalizations.panelTicketLevelLow),
                     ),
-                    ButtonSegment(
+                    ShadRadio<int>(
                       value: 1,
                       label: Text(appLocalizations.panelTicketLevelMid),
                     ),
-                    ButtonSegment(
+                    ShadRadio<int>(
                       value: 2,
                       label: Text(appLocalizations.panelTicketLevelHigh),
                     ),
                   ],
-                  selected: {level},
-                  onSelectionChanged: (selection) {
-                    setState(() {
-                      level = selection.first;
-                    });
-                  },
                 ),
                 const SizedBox(height: 12),
                 TextField(

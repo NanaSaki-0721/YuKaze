@@ -1,4 +1,5 @@
 import 'package:fl_clash/common/common.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:fl_clash/common/theme.dart';
 import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/l10n/l10n.dart';
@@ -482,7 +483,10 @@ class _TestApp extends StatelessWidget {
       builder: (context, child) {
         globalState.measure = Measure.of(context, 1);
         globalState.theme = CommonTheme.of(context, 1);
-        return child!;
+        return ShadTheme(
+          data: shadThemeOfBrightness(Theme.of(context).brightness),
+          child: child!,
+        );
       },
       home: child,
     );

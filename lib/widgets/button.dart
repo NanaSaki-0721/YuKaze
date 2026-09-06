@@ -24,6 +24,12 @@ class CommonFloatingActionButton extends StatelessWidget {
             .copyWith(
               extendedIconLabelSpacing: 0,
               extendedPadding: const EdgeInsets.all(16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              backgroundColor: brandPrimary,
+              foregroundColor: Colors.white,
+              elevation: 0,
             ),
       ),
       child: FloatingActionButtonExtendedBuilder(
@@ -73,7 +79,6 @@ class MoreActionButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: CommonCard(
-        radius: 18,
         onPressed: onPressed,
         child: ListTile(
           minTileHeight: 0,

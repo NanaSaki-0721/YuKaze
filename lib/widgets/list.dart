@@ -581,7 +581,7 @@ Widget generateSectionV2({
       if (items.isNotEmpty && title != null)
         ListHeader(title: title, actions: actions),
       ClipRRect(
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(8),
         child: Column(children: [...genItems]),
       ),
     ],
@@ -656,7 +656,6 @@ class CommonSelectedListItem extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
         color: Colors.transparent,
         child: CommonCard(
-          radius: 18,
           type: CommonCardType.filled,
           isSelected: isSelected,
           onPressed: () {
@@ -729,13 +728,13 @@ class DecorationListItem extends StatelessWidget {
       ItemPosition.startAndEnd,
     ].contains(position);
     final borderRadius = BorderRadius.vertical(
-      top: isStart ? const Radius.circular(24) : Radius.zero,
-      bottom: isEnd ? const Radius.circular(24) : Radius.zero,
+      top: isStart ? const Radius.circular(8) : Radius.zero,
+      bottom: isEnd ? const Radius.circular(8) : Radius.zero,
     );
     return CommonCard(
       shape: proxyDecorator == true
           ? LinearBorder.none
-          : RoundedSuperellipseBorder(borderRadius: borderRadius),
+          : RoundedRectangleBorder(borderRadius: borderRadius),
       isError: invalid,
       isSelected: isSelected,
       padding: EdgeInsets.zero,

@@ -1,4 +1,4 @@
-import 'package:fl_clash/common/common.dart';
+﻿import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/state.dart';
 import 'package:flutter/material.dart';
@@ -146,9 +146,7 @@ class CommonCard extends StatelessWidget {
       return BorderSide(color: hoverColor);
     }
     return BorderSide(
-      color: isSelected
-          ? colorScheme.primary
-          : colorScheme.surfaceContainerHighest,
+      color: isSelected ? brandPrimary : colorScheme.outline,
     );
   }
 
@@ -156,12 +154,12 @@ class CommonCard extends StatelessWidget {
     final colorScheme = context.colorScheme;
     if (type == CommonCardType.filled) {
       if (isSelected) {
-        return colorScheme.secondaryContainer.opacity80;
+        return brandPrimary.withValues(alpha: 0.12);
       }
-      return colorScheme.surfaceContainerHigh;
+      return colorScheme.surfaceContainer;
     }
     if (isSelected) {
-      return colorScheme.secondaryContainer;
+      return brandPrimary.withValues(alpha: 0.12);
     }
     return colorScheme.surfaceContainerLow;
   }
@@ -171,14 +169,8 @@ class CommonCard extends StatelessWidget {
     if (isError) {
       return colorScheme.error;
     }
-    if (type == CommonCardType.filled) {
-      if (isSelected) {
-        return colorScheme.onSecondaryContainer;
-      }
-      return colorScheme.onSurfaceVariant;
-    }
     if (isSelected) {
-      return colorScheme.onSecondaryContainer;
+      return brandPrimary;
     }
     return colorScheme.onSurfaceVariant;
   }
@@ -224,9 +216,9 @@ class CommonCard extends StatelessWidget {
               padding: padding ?? EdgeInsets.zero,
               shape:
                   shape ??
-                  RoundedSuperellipseBorder(
-                    borderRadius: BorderRadius.circular(radius ?? 14),
-                  ),
+                  RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(radius ?? 8),
+                ),
               iconSize: 20,
               iconColor: _buildIconColor(context),
               foregroundColor: _buildForegroundColor(context),
@@ -251,9 +243,9 @@ class CommonCard extends StatelessWidget {
               padding: padding ?? EdgeInsets.zero,
               shape:
                   shape ??
-                  RoundedSuperellipseBorder(
-                    borderRadius: BorderRadius.circular(radius ?? 14),
-                  ),
+                  RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(radius ?? 8),
+                ),
               iconSize: 20,
               iconColor: _buildIconColor(context),
               backgroundColor: _buildBackgroundColor(context),

@@ -508,20 +508,26 @@ ColorScheme genColorScheme(
     ),
   );
   if (color == null && (ignoreConfig == true || vm2.a == null)) {
-    return ColorScheme.fromSeed(
-      seedColor:
-          globalState.corePalette
-              ?.toColorScheme(brightness: brightness)
-              .primary ??
-          globalState.accentColor,
-      brightness: brightness,
-      dynamicSchemeVariant: vm2.b,
+    return applyBrandSurfaces(
+      ColorScheme.fromSeed(
+        seedColor:
+            globalState.corePalette
+                ?.toColorScheme(brightness: brightness)
+                .primary ??
+            globalState.accentColor,
+        brightness: brightness,
+        dynamicSchemeVariant: vm2.b,
+      ),
+      brightness,
     );
   }
-  return ColorScheme.fromSeed(
-    seedColor: color ?? Color(vm2.a!),
-    brightness: brightness,
-    dynamicSchemeVariant: vm2.b,
+  return applyBrandSurfaces(
+    ColorScheme.fromSeed(
+      seedColor: color ?? Color(vm2.a!),
+      brightness: brightness,
+      dynamicSchemeVariant: vm2.b,
+    ),
+    brightness,
   );
 }
 

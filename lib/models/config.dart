@@ -206,7 +206,7 @@ abstract class TextScale with _$TextScale {
 @freezed
 abstract class ThemeProps with _$ThemeProps {
   const factory ThemeProps({
-    int? primaryColor,
+    @Default(0XFFE11D48) int? primaryColor,
     @Default(defaultPrimaryColors) List<int> primaryColors,
     @Default(ThemeMode.dark) ThemeMode themeMode,
     @Default(DynamicSchemeVariant.content) DynamicSchemeVariant schemeVariant,

@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'pages/pages.dart';
 
@@ -150,12 +151,22 @@ class ApplicationState extends ConsumerState<Application> {
             GlobalWidgetsLocalizations.delegate,
           ],
           builder: (_, child) {
-            return AppEnvManager(
-              child: _buildApp(
-                child: _buildPlatformState(
-                  child: _buildState(child: _buildPlatformApp(child: child!)),
-                ),
-              ),
+            return Builder(
+              builder: (context) {
+                final brightness = Theme.of(context).brightness;
+                return ShadTheme(
+                  data: shadThemeOfBrightness(brightness),
+                  child: AppEnvManager(
+                    child: _buildApp(
+                      child: _buildPlatformState(
+                        child: _buildState(
+                          child: _buildPlatformApp(child: child!),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             );
           },
           scrollBehavior: BaseScrollBehavior(),

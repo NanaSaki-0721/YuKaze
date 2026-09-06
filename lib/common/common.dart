@@ -40,6 +40,7 @@ export 'proxy.dart';
 export 'render.dart';
 export 'request.dart';
 export 'scroll.dart';
+export 'shad_theme.dart';
 export 'site_config.dart';
 export 'snowflake.dart';
 export 'string.dart';

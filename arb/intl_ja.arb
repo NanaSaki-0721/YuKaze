@@ -641,6 +641,10 @@
   "panelTapStart": "タップで開始",
   "panelTapStop": "タップで停止",
   "panelSelectNode": "ノードを選択",
+  "authSplitGreeting": "もっと落ち着いた接続体験",
+  "authSplitDescription": "安全なアクセス、明確な操作、集中できる体験。",
+  "authSplitLoginSubtitle": "ログインして接続ダッシュボードへ進みます。",
+  "authSplitRegisterSubtitle": "アカウントを作成してサブスクリプションを開始します。",
   "panelCancelOrderConfirm": "この注文をキャンセルしますか？",
   "panelCopyLink": "リンクをコピー"
 }

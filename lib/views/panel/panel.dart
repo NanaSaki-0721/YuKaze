@@ -42,6 +42,134 @@ class FadeSlideIn extends StatelessWidget {
   }
 }
 
+class _AuthSplitLayout extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final Widget child;
+  final VoidCallback? onBack;
+
+  const _AuthSplitLayout({
+    required this.title,
+    required this.subtitle,
+    required this.child,
+    this.onBack,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final appLocalizations = context.appLocalizations;
+    final siteName = SiteConfig.siteName.isEmpty ? appName : SiteConfig.siteName;
+    return Scaffold(
+      backgroundColor: context.colorScheme.surface,
+      body: LayoutBuilder(
+        builder: (_, constraints) {
+          final isSplit = constraints.maxWidth >= 900;
+          final formPane = SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(32),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 420),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (onBack != null)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: ShadButton.ghost(
+                            onPressed: onBack,
+                            child: const Icon(Icons.arrow_back),
+                          ),
+                        ),
+                      if (onBack != null) const SizedBox(height: 20),
+                      FadeSlideIn(
+                        index: 0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(title, style: context.textTheme.headlineMedium),
+                            const SizedBox(height: 8),
+                            Text(
+                              subtitle,
+                              style: context.textTheme.bodyMedium?.toLight,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 32),
+                      child,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+          if (!isSplit) {
+            return formPane;
+          }
+          return Row(
+            children: [
+              Expanded(
+                flex: 5,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        brandPrimary,
+                        brandPrimary.withValues(alpha: 0.68),
+                      ],
+                    ),
+                  ),
+                  child: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(40),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            siteName,
+                            style: context.textTheme.headlineSmall?.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                          const Spacer(),
+                          const Icon(
+                            Icons.shield_outlined,
+                            size: 72,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            appLocalizations.authSplitGreeting,
+                            style: context.textTheme.headlineMedium?.copyWith(
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            appLocalizations.authSplitDescription,
+                            style: context.textTheme.bodyLarge?.copyWith(
+                              color: Colors.white.opacity80,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(flex: 6, child: formPane),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
 class AuthView extends StatelessWidget {
   const AuthView({super.key});
 
@@ -150,52 +278,38 @@ class _LoginViewState extends ConsumerState<LoginView> {
   Widget build(BuildContext context) {
     final appLocalizations = context.appLocalizations;
     final challenge = _challenge;
-    return CommonScaffold(
+    return _AuthSplitLayout(
       title: appLocalizations.panelLogin,
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 480),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                FadeSlideIn(
-                  index: 0,
-                  child: TextField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      labelText: appLocalizations.panelEmail,
-                    ),
-                  ),
-                ),
-          const SizedBox(height: 12),
+      subtitle: appLocalizations.authSplitLoginSubtitle,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
           FadeSlideIn(
             index: 1,
-            child: TextField(
+            child: ShadInput(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              placeholder: Text(appLocalizations.panelEmail),
+            ),
+          ),
+          const SizedBox(height: 12),
+          FadeSlideIn(
+            index: 2,
+            child: ShadInput(
               controller: _passwordController,
               obscureText: true,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: appLocalizations.panelPassword,
-              ),
+              placeholder: Text(appLocalizations.panelPassword),
               onSubmitted: (_) => _handleSubmit(),
             ),
           ),
           if (challenge != null) ...[
             const SizedBox(height: 12),
             FadeSlideIn(
-              index: 2,
-              child: TextField(
+              index: 3,
+              child: ShadInput(
                 controller: _codeController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  labelText: appLocalizations.panelTwoFactorCode,
-                ),
+                placeholder: Text(appLocalizations.panelTwoFactorCode),
                 onSubmitted: (_) => _handleSubmit(),
               ),
             ),
@@ -209,11 +323,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
               ),
             ),
           ],
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           FadeSlideIn(
-            index: 3,
-            child: FilledButton(
-              onPressed: _submitting ? null : _handleSubmit,
+            index: 4,
+            child: ShadButton(
+              enabled: !_submitting,
+              onPressed: _handleSubmit,
               child: Text(
                 challenge == null
                     ? appLocalizations.panelLogin
@@ -221,25 +336,20 @@ class _LoginViewState extends ConsumerState<LoginView> {
               ),
             ),
           ),
+          const SizedBox(height: 8),
           FadeSlideIn(
-            index: 4,
-            child: TextButton(
-              onPressed: _submitting
-                  ? null
-                  : () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const RegisterView(),
-                        ),
-                      );
-                    },
+            index: 5,
+            child: ShadButton.outline(
+              enabled: !_submitting,
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const RegisterView()),
+                );
+              },
               child: Text(appLocalizations.panelRegister),
             ),
           ),
-              ],
-            ),
-          ),
-        ),
+        ],
       ),
     );
   }
@@ -417,26 +527,20 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
     final appLocalizations = context.appLocalizations;
     final suffixes = _whitelistSuffixes(config);
     if (suffixes.isEmpty) {
-      return TextField(
+      return ShadInput(
         controller: _emailController,
         keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(),
-          labelText: appLocalizations.panelEmail,
-        ),
+        placeholder: Text(appLocalizations.panelEmail),
       );
     }
     final suffix = _selectedSuffix ?? suffixes.first;
     return Row(
       children: [
         Expanded(
-          child: TextField(
+          child: ShadInput(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              labelText: appLocalizations.panelEmail,
-            ),
+            placeholder: Text(appLocalizations.panelEmail),
           ),
         ),
         const SizedBox(width: 8),
@@ -465,62 +569,50 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   Widget build(BuildContext context) {
     final appLocalizations = context.appLocalizations;
     final config = ref.watch(siteConfigInfoProvider).value;
-    return CommonScaffold(
+    return _AuthSplitLayout(
       title: appLocalizations.panelRegister,
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 480),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-          FadeSlideIn(index: 0, child: _buildEmailField(context, config)),
-          const SizedBox(height: 12),
-          FadeSlideIn(
-            index: 1,
-            child: TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: appLocalizations.panelPassword,
-              ),
-            ),
-          ),
+      subtitle: appLocalizations.authSplitRegisterSubtitle,
+      onBack: () {
+        Navigator.of(context).pop();
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          FadeSlideIn(index: 1, child: _buildEmailField(context, config)),
           const SizedBox(height: 12),
           FadeSlideIn(
             index: 2,
-            child: TextField(
-              controller: _confirmPasswordController,
+            child: ShadInput(
+              controller: _passwordController,
               obscureText: true,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: appLocalizations.panelConfirmPassword,
-              ),
+              placeholder: Text(appLocalizations.panelPassword),
             ),
           ),
           const SizedBox(height: 12),
           FadeSlideIn(
             index: 3,
+            child: ShadInput(
+              controller: _confirmPasswordController,
+              obscureText: true,
+              placeholder: Text(appLocalizations.panelConfirmPassword),
+            ),
+          ),
+          const SizedBox(height: 12),
+          FadeSlideIn(
+            index: 4,
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
+                  child: ShadInput(
                     controller: _emailCodeController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      labelText: appLocalizations.panelEmailCode,
-                    ),
+                    placeholder: Text(appLocalizations.panelEmailCode),
                   ),
                 ),
                 const SizedBox(width: 8),
-                FilledButton.tonal(
-                  onPressed: _submitting || _cooldown > 0
-                      ? null
-                      : _handleSendCode,
+                ShadButton.outline(
+                  enabled: !_submitting && _cooldown == 0,
+                  onPressed: _handleSendCode,
                   child: Text(
                     _cooldown > 0
                         ? appLocalizations.secondsCount(_cooldown)
@@ -532,18 +624,15 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
           ),
           const SizedBox(height: 12),
           FadeSlideIn(
-            index: 4,
-            child: TextField(
+            index: 5,
+            child: ShadInput(
               controller: _inviteCodeController,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                labelText: appLocalizations.panelInviteCode,
-              ),
+              placeholder: Text(appLocalizations.panelInviteCode),
             ),
           ),
           const SizedBox(height: 12),
           FadeSlideIn(
-            index: 5,
+            index: 6,
             child: ShadCheckbox(
               value: _agreeTerms,
               label: Text(appLocalizations.panelAgreeTerms),
@@ -576,18 +665,16 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               ),
             ),
           ],
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           FadeSlideIn(
-            index: 6,
-            child: FilledButton(
-              onPressed: _submitting ? null : _handleRegister,
+            index: 7,
+            child: ShadButton(
+              enabled: !_submitting,
+              onPressed: _handleRegister,
               child: Text(appLocalizations.panelRegister),
             ),
           ),
-              ],
-            ),
-          ),
-        ),
+        ],
       ),
     );
   }

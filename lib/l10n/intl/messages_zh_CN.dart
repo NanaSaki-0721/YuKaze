@@ -117,6 +117,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "appendSystemDnsTip": MessageLookupByLibrary.simpleMessage("强制为配置附加系统DNS"),
     "application": MessageLookupByLibrary.simpleMessage("应用程序"),
     "applicationDesc": MessageLookupByLibrary.simpleMessage("修改应用程序相关设置"),
+    "authSplitDescription": MessageLookupByLibrary.simpleMessage(
+      "安全访问、清晰控制、专注体验。",
+    ),
+    "authSplitGreeting": MessageLookupByLibrary.simpleMessage("以更从容的方式连接"),
+    "authSplitLoginSubtitle": MessageLookupByLibrary.simpleMessage(
+      "登录后继续进入连接仪表盘。",
+    ),
+    "authSplitRegisterSubtitle": MessageLookupByLibrary.simpleMessage(
+      "创建账户后即可开始使用订阅。",
+    ),
     "authorized": MessageLookupByLibrary.simpleMessage("已授权"),
     "auto": MessageLookupByLibrary.simpleMessage("自动"),
     "autoCheckUpdate": MessageLookupByLibrary.simpleMessage("自动检查更新"),

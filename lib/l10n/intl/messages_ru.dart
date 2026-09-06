@@ -154,6 +154,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "applicationDesc": MessageLookupByLibrary.simpleMessage(
       "Изменение настроек, связанных с приложением",
     ),
+    "authSplitDescription": MessageLookupByLibrary.simpleMessage(
+      "Безопасный доступ, понятное управление и сфокусированный опыт.",
+    ),
+    "authSplitGreeting": MessageLookupByLibrary.simpleMessage(
+      "Спокойный способ подключаться",
+    ),
+    "authSplitLoginSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Войдите, чтобы открыть панель подключения.",
+    ),
+    "authSplitRegisterSubtitle": MessageLookupByLibrary.simpleMessage(
+      "Создайте аккаунт, чтобы начать подписку.",
+    ),
     "authorized": MessageLookupByLibrary.simpleMessage("Разрешено"),
     "auto": MessageLookupByLibrary.simpleMessage("Авто"),
     "autoCheckUpdate": MessageLookupByLibrary.simpleMessage(

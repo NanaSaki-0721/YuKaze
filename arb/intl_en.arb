@@ -641,6 +641,10 @@
   "panelTapStart": "Tap to start",
   "panelTapStop": "Tap to stop",
   "panelSelectNode": "Select node",
+  "authSplitGreeting": "A calmer way to connect",
+  "authSplitDescription": "Secure access, clear controls, and a focused experience.",
+  "authSplitLoginSubtitle": "Sign in to continue to your connection dashboard.",
+  "authSplitRegisterSubtitle": "Create an account to start your subscription.",
   "panelCancelOrderConfirm": "Cancel this order?",
   "panelCopyLink": "Copy link"
 }

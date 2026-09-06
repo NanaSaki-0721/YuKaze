@@ -5279,6 +5279,46 @@ class AppLocalizations {
     );
   }
 
+  /// `A calmer way to connect`
+  String get authSplitGreeting {
+    return Intl.message(
+      'A calmer way to connect',
+      name: 'authSplitGreeting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Secure access, clear controls, and a focused experience.`
+  String get authSplitDescription {
+    return Intl.message(
+      'Secure access, clear controls, and a focused experience.',
+      name: 'authSplitDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign in to continue to your connection dashboard.`
+  String get authSplitLoginSubtitle {
+    return Intl.message(
+      'Sign in to continue to your connection dashboard.',
+      name: 'authSplitLoginSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create an account to start your subscription.`
+  String get authSplitRegisterSubtitle {
+    return Intl.message(
+      'Create an account to start your subscription.',
+      name: 'authSplitRegisterSubtitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Cancel this order?`
   String get panelCancelOrderConfirm {
     return Intl.message(

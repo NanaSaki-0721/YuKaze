@@ -641,6 +641,10 @@
   "panelTapStart": "Нажмите для запуска",
   "panelTapStop": "Нажмите для остановки",
   "panelSelectNode": "Выбрать узел",
+  "authSplitGreeting": "Спокойный способ подключаться",
+  "authSplitDescription": "Безопасный доступ, понятное управление и сфокусированный опыт.",
+  "authSplitLoginSubtitle": "Войдите, чтобы открыть панель подключения.",
+  "authSplitRegisterSubtitle": "Создайте аккаунт, чтобы начать подписку.",
   "panelCancelOrderConfirm": "Отменить этот заказ?",
   "panelCopyLink": "Скопировать ссылку"
 }

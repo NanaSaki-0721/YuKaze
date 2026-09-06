@@ -641,6 +641,10 @@
   "panelTapStart": "点击打开",
   "panelTapStop": "点击关闭",
   "panelSelectNode": "选择节点",
+  "authSplitGreeting": "以更从容的方式连接",
+  "authSplitDescription": "安全访问、清晰控制、专注体验。",
+  "authSplitLoginSubtitle": "登录后继续进入连接仪表盘。",
+  "authSplitRegisterSubtitle": "创建账户后即可开始使用订阅。",
   "panelCancelOrderConfirm": "确定取消该订单吗？",
   "panelCopyLink": "复制链接"
 }

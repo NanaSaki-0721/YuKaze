@@ -123,6 +123,16 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "application": MessageLookupByLibrary.simpleMessage("アプリケーション"),
     "applicationDesc": MessageLookupByLibrary.simpleMessage("アプリ関連設定を変更"),
+    "authSplitDescription": MessageLookupByLibrary.simpleMessage(
+      "安全なアクセス、明確な操作、集中できる体験。",
+    ),
+    "authSplitGreeting": MessageLookupByLibrary.simpleMessage("もっと落ち着いた接続体験"),
+    "authSplitLoginSubtitle": MessageLookupByLibrary.simpleMessage(
+      "ログインして接続ダッシュボードへ進みます。",
+    ),
+    "authSplitRegisterSubtitle": MessageLookupByLibrary.simpleMessage(
+      "アカウントを作成してサブスクリプションを開始します。",
+    ),
     "authorized": MessageLookupByLibrary.simpleMessage("許可済み"),
     "auto": MessageLookupByLibrary.simpleMessage("自動"),
     "autoCheckUpdate": MessageLookupByLibrary.simpleMessage("自動更新チェック"),

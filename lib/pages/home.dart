@@ -62,26 +62,12 @@ class HomePage extends ConsumerWidget {
                   ],
                 ),
                 clipBehavior: Clip.antiAlias,
-                child: NavigationBarTheme(
-                  data: _NavigationBarDefaultsM3(context).copyWith(
-                    height: 64,
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
-                  ),
-                  child: NavigationBar(
-                    destinations: navigationItems
-                        .map(
-                          (e) => NavigationDestination(
-                            icon: e.icon,
-                            label: Intl.message(e.label.name),
-                          ),
-                        )
-                        .toList(),
-                    onDestinationSelected: (index) {
-                      _handleToPage(navigationItems[index].label);
-                    },
-                    selectedIndex: currentIndex,
-                  ),
+                child: DockNav(
+                  navigationItems: navigationItems,
+                  currentIndex: currentIndex,
+                  onSelected: (index) {
+                    _handleToPage(navigationItems[index].label);
+                  },
                 ),
               );
               return Stack(
@@ -274,60 +260,81 @@ class _HomePageViewState extends ConsumerState<_HomePageView> {
   }
 }
 
-class _NavigationBarDefaultsM3 extends NavigationBarThemeData {
-  _NavigationBarDefaultsM3(this.context)
-    : super(
-        height: 80.0,
-        elevation: 3.0,
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-      );
+class DockNav extends StatelessWidget {
+  final List<NavigationItem> navigationItems;
+  final int currentIndex;
+  final ValueChanged<int> onSelected;
 
-  final BuildContext context;
-  late final ColorScheme _colors = Theme.of(context).colorScheme;
-  late final TextTheme _textTheme = Theme.of(context).textTheme;
-
-  @override
-  Color? get backgroundColor => _colors.surfaceContainer;
+  const DockNav({
+    super.key,
+    required this.navigationItems,
+    required this.currentIndex,
+    required this.onSelected,
+  });
 
   @override
-  Color? get shadowColor => Colors.transparent;
-
-  @override
-  Color? get surfaceTintColor => Colors.transparent;
-
-  @override
-  WidgetStateProperty<IconThemeData?>? get iconTheme {
-    return WidgetStateProperty.resolveWith((Set<WidgetState> states) {
-      return IconThemeData(
-        size: 24.0,
-        color: states.contains(WidgetState.disabled)
-            ? _colors.onSurfaceVariant.opacity38
-            : states.contains(WidgetState.selected)
-            ? _colors.onSecondaryContainer
-            : _colors.onSurfaceVariant,
-      );
-    });
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 64,
+      child: Row(
+        children: [
+          for (var i = 0; i < navigationItems.length; i++)
+            Expanded(
+              child: _DockNavItem(
+                item: navigationItems[i],
+                selected: i == currentIndex,
+                onTap: () {
+                  onSelected(i);
+                },
+              ),
+            ),
+        ],
+      ),
+    );
   }
+}
+
+class _DockNavItem extends StatelessWidget {
+  final NavigationItem item;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _DockNavItem({
+    required this.item,
+    required this.selected,
+    required this.onTap,
+  });
 
   @override
-  Color? get indicatorColor => _colors.secondaryContainer;
-
-  @override
-  ShapeBorder? get indicatorShape => const StadiumBorder();
-
-  @override
-  WidgetStateProperty<TextStyle?>? get labelTextStyle {
-    return WidgetStateProperty.resolveWith((Set<WidgetState> states) {
-      final TextStyle style = _textTheme.labelMedium!;
-      return style.apply(
-        overflow: TextOverflow.ellipsis,
-        color: states.contains(WidgetState.disabled)
-            ? _colors.onSurfaceVariant.opacity38
-            : states.contains(WidgetState.selected)
-            ? _colors.onSurface
-            : _colors.onSurfaceVariant,
-      );
-    });
+  Widget build(BuildContext context) {
+    final foreground = selected
+        ? brandPrimary
+        : context.colorScheme.onSurfaceVariant;
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+            decoration: BoxDecoration(
+              color: selected ? brandPrimary.withValues(alpha: 0.12) : null,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: IconTheme(
+              data: IconThemeData(color: foreground),
+              child: item.icon,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            Intl.message(item.label.name),
+            maxLines: 1,
+            style: context.textTheme.labelSmall?.copyWith(color: foreground),
+          ),
+        ],
+      ),
+    );
   }
 }
 

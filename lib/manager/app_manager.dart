@@ -4,6 +4,7 @@ import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/core/controller.dart';
 import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/manager/window_manager.dart';
+import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
 import 'package:fl_clash/widgets/animated_visibility.dart';
@@ -158,7 +159,7 @@ class AppSidebarContainer extends ConsumerWidget {
   void _handleToPage(PageLabel pageLabel) {
     final focusNode = FocusManager.instance.primaryFocus;
     final preserveNavigationFocus =
-        focusNode?.context?.findAncestorWidgetOfExactType<NavigationRail>() !=
+        focusNode?.context?.findAncestorWidgetOfExactType<SidebarNav>() !=
         null;
     globalState.container
         .read(currentPageLabelProvider.notifier)
@@ -201,45 +202,15 @@ class AppSidebarContainer extends ConsumerWidget {
                     Expanded(
                       child: ScrollConfiguration(
                         behavior: HiddenBarScrollBehavior(),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: NavigationRail(
-                                scrollable: true,
-                                minExtendedWidth: 200,
-                                backgroundColor: Colors.transparent,
-                                selectedLabelTextStyle: context
-                                    .textTheme
-                                    .labelLarge!
-                                    .copyWith(
-                                      color: context.colorScheme.onSurface,
-                                    ),
-                                unselectedLabelTextStyle: context
-                                    .textTheme
-                                    .labelLarge!
-                                    .copyWith(
-                                      color: context.colorScheme.onSurface,
-                                    ),
-                                destinations: navigationItems
-                                    .map(
-                                      (e) => NavigationRailDestination(
-                                        icon: e.icon,
-                                        label: Text(Intl.message(e.label.name)),
-                                      ),
-                                    )
-                                    .toList(),
-                                onDestinationSelected: (index) {
-                                  _handleToPage(navigationItems[index].label);
-                                },
-                                extended: false,
-                                selectedIndex: currentIndex,
-                                labelType: showLabel
-                                    ? NavigationRailLabelType.all
-                                    : NavigationRailLabelType.none,
-                              ),
-                            ),
-                          ],
+                        child: SingleChildScrollView(
+                          child: SidebarNav(
+                            navigationItems: navigationItems,
+                            currentIndex: currentIndex,
+                            showLabel: showLabel,
+                            onSelected: (pageLabel) {
+                              _handleToPage(pageLabel);
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -276,6 +247,101 @@ class AppSidebarContainer extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class SidebarNav extends StatelessWidget {
+  final List<NavigationItem> navigationItems;
+  final int currentIndex;
+  final bool showLabel;
+  final ValueChanged<PageLabel> onSelected;
+
+  const SidebarNav({
+    super.key,
+    required this.navigationItems,
+    required this.currentIndex,
+    required this.showLabel,
+    required this.onSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 200,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (var i = 0; i < navigationItems.length; i++)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              child: _SidebarNavItem(
+                item: navigationItems[i],
+                selected: i == currentIndex,
+                showLabel: showLabel,
+                onTap: () {
+                  onSelected(navigationItems[i].label);
+                },
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SidebarNavItem extends StatelessWidget {
+  final NavigationItem item;
+  final bool selected;
+  final bool showLabel;
+  final VoidCallback onTap;
+
+  const _SidebarNavItem({
+    required this.item,
+    required this.selected,
+    required this.showLabel,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final foreground = selected
+        ? brandPrimary
+        : context.colorScheme.onSurfaceVariant;
+    return InkWell(
+      borderRadius: BorderRadius.circular(8),
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: BoxDecoration(
+          color: selected ? brandPrimary.withValues(alpha: 0.12) : null,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          mainAxisAlignment: showLabel
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.center,
+          children: [
+            IconTheme(
+              data: IconThemeData(color: foreground, size: 20),
+              child: item.icon,
+            ),
+            if (showLabel) ...[
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  Intl.message(item.label.name),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.textTheme.labelLarge?.copyWith(
+                    color: foreground,
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

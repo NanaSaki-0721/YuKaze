@@ -119,6 +119,7 @@ class ProxyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final measure = globalState.measure;
+    final isMobile = globalState.container.read(isMobileViewProvider);
     final delayText = _buildDelayText();
     final proxyNameText = _buildProxyNameText(context);
     return Stack(
@@ -140,48 +141,67 @@ class ProxyCard extends StatelessWidget {
           child: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                proxyNameText,
-                const SizedBox(height: 8),
-                if (type == ProxyCardType.expand) ...[
-                  SizedBox(
-                    height: measure.bodySmallHeight,
-                    child: _ProxyDesc(proxy: proxy),
-                  ),
-                  const SizedBox(height: 6),
-                  delayText,
-                ] else
-                  SizedBox(
-                    height: measure.bodySmallHeight,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: TooltipText(
-                            text: Text(
-                              proxy.type,
-                              style: context.textTheme.bodySmall?.copyWith(
-                                overflow: TextOverflow.ellipsis,
-                                color: context
-                                    .textTheme
-                                    .bodySmall
-                                    ?.color
-                                    ?.opacity80,
-                              ),
-                            ),
+            child: isMobile
+                ? Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: measure.titleMediumHeight,
+                          child: EmojiText(
+                            proxy.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: context.textTheme.titleMedium,
                           ),
                         ),
+                      ),
+                      const SizedBox(width: 8),
+                      delayText,
+                    ],
+                  )
+                : Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      proxyNameText,
+                      const SizedBox(height: 8),
+                      if (type == ProxyCardType.expand) ...[
+                        SizedBox(
+                          height: measure.bodySmallHeight,
+                          child: _ProxyDesc(proxy: proxy),
+                        ),
+                        const SizedBox(height: 6),
                         delayText,
-                      ],
-                    ),
+                      ] else
+                        SizedBox(
+                          height: measure.bodySmallHeight,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                flex: 1,
+                                child: TooltipText(
+                                  text: Text(
+                                    proxy.type,
+                                    style: context.textTheme.bodySmall
+                                        ?.copyWith(
+                                          overflow: TextOverflow.ellipsis,
+                                          color: context
+                                              .textTheme
+                                              .bodySmall
+                                              ?.color
+                                              ?.opacity80,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                              delayText,
+                            ],
+                          ),
+                        ),
+                    ],
                   ),
-              ],
-            ),
           ),
         ),
         if (groupType.isComputedSelected)

@@ -180,9 +180,6 @@ class ProxiesTabViewState extends ConsumerState<ProxiesTabView>
     final appLocalizations = context.appLocalizations;
     ref.watch(themeSettingProvider.select((state) => state.textScale));
     final state = ref.watch(proxiesTabStateProvider.select((state) => state));
-    final proxiesLayout = ref.watch(
-      proxiesStyleSettingProvider.select((state) => state.layout),
-    );
     final groups = state.groups;
     if (groups.isEmpty || _tabController == null) {
       return NullStatus(
@@ -251,28 +248,20 @@ class ProxiesTabViewState extends ConsumerState<ProxiesTabView>
           ),
         ),
         Expanded(
-          child: LayoutBuilder(
-            builder: (_, constraints) {
-              final columns = utils.getProxiesColumns(
-                max(constraints.maxWidth - 32, 0),
-                proxiesLayout,
-              );
-              return TabBarView(
-                controller: _tabController,
-                children: [
-                  for (final group in groups)
-                    ProxyGroupView(
-                      key: _keyMap.updateCacheValue(
-                        group.name,
-                        () => GlobalObjectKey<_ProxyGroupViewState>(group.name),
-                      ),
-                      group: group,
-                      columns: columns,
-                      cardType: state.proxyCardType,
-                    ),
-                ],
-              );
-            },
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              for (final group in groups)
+                ProxyGroupView(
+                  key: _keyMap.updateCacheValue(
+                    group.name,
+                    () => GlobalObjectKey<_ProxyGroupViewState>(group.name),
+                  ),
+                  group: group,
+                  columns: 1,
+                  cardType: state.proxyCardType,
+                ),
+            ],
           ),
         ),
       ],

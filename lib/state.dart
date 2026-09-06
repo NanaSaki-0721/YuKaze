@@ -76,9 +76,10 @@ class GlobalState {
     }
   }
 
-  String get ua => container
-      .read(patchClashConfigProvider.select((state) => state.globalUa))
-      .takeFirstValid([packageInfo.ua]);
+  String get ua => SiteConfig.globalUa.takeFirstValid([
+    container.read(patchClashConfigProvider.select((state) => state.globalUa)),
+    packageInfo.ua,
+  ]);
 
   BuildContext get _context => navigatorKey.currentContext!;
 
@@ -314,6 +315,7 @@ class GlobalState {
     };
     container.read(systemActionProvider.notifier).updateTray();
     container.read(profilesActionProvider.notifier).autoUpdateProfiles();
+    container.read(panelActionProvider.notifier).ensureSubscription();
     container.read(commonActionProvider.notifier).autoCheckUpdate();
     autoLaunch?.updateStatus(container.read(appSettingProvider).autoLaunch);
     if (!container.read(appSettingProvider).silentLaunch) {

@@ -320,6 +320,7 @@ enum PageLabel {
   dashboard,
   proxies,
   profiles,
+  panel,
   tools,
   logs,
   requests,

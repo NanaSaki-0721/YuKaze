@@ -4,6 +4,7 @@ import 'package:fl_clash/manager/app_manager.dart';
 import 'package:fl_clash/models/common.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
+import 'package:fl_clash/views/views.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,6 +29,15 @@ class HomePage extends ConsumerWidget {
     if (!hasViewSize) {
       return const SizedBox.shrink();
     }
+    final authState = ref.watch(panelAuthStateProvider);
+    if (authState == PanelAuthState.loading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    if (authState == PanelAuthState.unauthenticated) {
+      return const AuthView();
+    }
     return HomeBackScopeContainer(
       child: AppSidebarContainer(
         child: Material(
@@ -38,27 +48,45 @@ class HomePage extends ConsumerWidget {
               final isMobile = state.viewMode == ViewMode.mobile;
               final navigationItems = state.navigationItems;
               final currentIndex = state.currentIndex;
-              final bottomNavigationBar = NavigationBarTheme(
-                data: _NavigationBarDefaultsM3(context),
-                child: NavigationBar(
-                  destinations: navigationItems
-                      .map(
-                        (e) => NavigationDestination(
-                          icon: e.icon,
-                          label: Intl.message(e.label.name),
-                        ),
-                      )
-                      .toList(),
-                  onDestinationSelected: (index) {
-                    _handleToPage(navigationItems[index].label);
-                  },
-                  selectedIndex: currentIndex,
+              final bottomNavigationBar = Container(
+                margin: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                decoration: BoxDecoration(
+                  color: context.colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(28),
+                  boxShadow: [
+                    BoxShadow(
+                      color: context.colorScheme.shadow.opacity15,
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: NavigationBarTheme(
+                  data: _NavigationBarDefaultsM3(context).copyWith(
+                    height: 64,
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                  ),
+                  child: NavigationBar(
+                    destinations: navigationItems
+                        .map(
+                          (e) => NavigationDestination(
+                            icon: e.icon,
+                            label: Intl.message(e.label.name),
+                          ),
+                        )
+                        .toList(),
+                    onDestinationSelected: (index) {
+                      _handleToPage(navigationItems[index].label);
+                    },
+                    selectedIndex: currentIndex,
+                  ),
                 ),
               );
-              return Column(
+              return Stack(
                 children: [
-                  Flexible(
-                    flex: 1,
+                  Positioned.fill(
                     child: FocusTraversalGroup(
                       policy: PageTraversalPolicy(),
                       child: MediaQuery.removePadding(
@@ -71,15 +99,20 @@ class HomePage extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  AnimatedVisibility.bottomNavigation(
-                    visible: isMobile,
-                    child: MediaQuery.removePadding(
-                      removeTop: true,
-                      removeBottom: false,
-                      removeLeft: true,
-                      removeRight: true,
-                      context: context,
-                      child: bottomNavigationBar,
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: AnimatedVisibility.bottomNavigation(
+                      visible: isMobile,
+                      child: MediaQuery.removePadding(
+                        removeTop: true,
+                        removeBottom: false,
+                        removeLeft: true,
+                        removeRight: true,
+                        context: context,
+                        child: bottomNavigationBar,
+                      ),
                     ),
                   ),
                 ],

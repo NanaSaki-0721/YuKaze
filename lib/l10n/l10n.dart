@@ -89,9 +89,9 @@ class AppLocalizations {
     return Intl.message('Profiles', name: 'profiles', desc: '', args: []);
   }
 
-  /// `Tools`
+  /// `App settings`
   String get tools {
-    return Intl.message('Tools', name: 'tools', desc: '', args: []);
+    return Intl.message('App settings', name: 'tools', desc: '', args: []);
   }
 
   /// `Logs`
@@ -4522,6 +4522,741 @@ class AppLocalizations {
       desc: '',
       args: [count],
     );
+  }
+
+  /// `My`
+  String get panel {
+    return Intl.message('My', name: 'panel', desc: '', args: []);
+  }
+
+  /// `Login`
+  String get panelLogin {
+    return Intl.message('Login', name: 'panelLogin', desc: '', args: []);
+  }
+
+  /// `Register`
+  String get panelRegister {
+    return Intl.message('Register', name: 'panelRegister', desc: '', args: []);
+  }
+
+  /// `Email`
+  String get panelEmail {
+    return Intl.message('Email', name: 'panelEmail', desc: '', args: []);
+  }
+
+  /// `Password`
+  String get panelPassword {
+    return Intl.message('Password', name: 'panelPassword', desc: '', args: []);
+  }
+
+  /// `Email code`
+  String get panelEmailCode {
+    return Intl.message(
+      'Email code',
+      name: 'panelEmailCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send code`
+  String get panelSendCode {
+    return Intl.message('Send code', name: 'panelSendCode', desc: '', args: []);
+  }
+
+  /// `Email code sent`
+  String get panelEmailCodeSent {
+    return Intl.message(
+      'Email code sent',
+      name: 'panelEmailCodeSent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invite code (optional)`
+  String get panelInviteCode {
+    return Intl.message(
+      'Invite code (optional)',
+      name: 'panelInviteCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Two-factor code`
+  String get panelTwoFactorCode {
+    return Intl.message(
+      'Two-factor code',
+      name: 'panelTwoFactorCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please fill in all required fields`
+  String get panelInputRequired {
+    return Intl.message(
+      'Please fill in all required fields',
+      name: 'panelInputRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Traffic`
+  String get panelTraffic {
+    return Intl.message('Traffic', name: 'panelTraffic', desc: '', args: []);
+  }
+
+  /// `Expiry`
+  String get panelExpiry {
+    return Intl.message('Expiry', name: 'panelExpiry', desc: '', args: []);
+  }
+
+  /// `No subscription`
+  String get panelNoSubscription {
+    return Intl.message(
+      'No subscription',
+      name: 'panelNoSubscription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The subscription is obtained automatically after login and refreshed afterwards`
+  String get panelSubscriptionDesc {
+    return Intl.message(
+      'The subscription is obtained automatically after login and refreshed afterwards',
+      name: 'panelSubscriptionDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get panelLogout {
+    return Intl.message('Logout', name: 'panelLogout', desc: '', args: []);
+  }
+
+  /// `Confirm password`
+  String get panelConfirmPassword {
+    return Intl.message(
+      'Confirm password',
+      name: 'panelConfirmPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password is required`
+  String get panelPasswordRequired {
+    return Intl.message(
+      'Password is required',
+      name: 'panelPasswordRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password must be at least 8 characters`
+  String get panelPasswordTooShort {
+    return Intl.message(
+      'Password must be at least 8 characters',
+      name: 'panelPasswordTooShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please confirm your password`
+  String get panelConfirmPasswordRequired {
+    return Intl.message(
+      'Please confirm your password',
+      name: 'panelConfirmPasswordRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords do not match`
+  String get panelPasswordsDoNotMatch {
+    return Intl.message(
+      'Passwords do not match',
+      name: 'panelPasswordsDoNotMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email is required`
+  String get panelEmailRequired {
+    return Intl.message(
+      'Email is required',
+      name: 'panelEmailRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid email address`
+  String get panelEmailInvalid {
+    return Intl.message(
+      'Invalid email address',
+      name: 'panelEmailInvalid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verification code is required`
+  String get panelCodeRequired {
+    return Intl.message(
+      'Verification code is required',
+      name: 'panelCodeRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invite code is required`
+  String get panelInviteCodeRequired {
+    return Intl.message(
+      'Invite code is required',
+      name: 'panelInviteCodeRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please agree to the terms first`
+  String get panelMustAgreeToTerms {
+    return Intl.message(
+      'Please agree to the terms first',
+      name: 'panelMustAgreeToTerms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `I have read and agree to the Terms of Service`
+  String get panelAgreeTerms {
+    return Intl.message(
+      'I have read and agree to the Terms of Service',
+      name: 'panelAgreeTerms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terms of Service`
+  String get panelTermsOfService {
+    return Intl.message(
+      'Terms of Service',
+      name: 'panelTermsOfService',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Orders`
+  String get panelOrders {
+    return Intl.message('Orders', name: 'panelOrders', desc: '', args: []);
+  }
+
+  /// `Tickets`
+  String get panelTickets {
+    return Intl.message('Tickets', name: 'panelTickets', desc: '', args: []);
+  }
+
+  /// `Invite`
+  String get panelInvite {
+    return Intl.message('Invite', name: 'panelInvite', desc: '', args: []);
+  }
+
+  /// `New ticket`
+  String get panelCreateTicket {
+    return Intl.message(
+      'New ticket',
+      name: 'panelCreateTicket',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Subject`
+  String get panelTicketSubject {
+    return Intl.message(
+      'Subject',
+      name: 'panelTicketSubject',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Message`
+  String get panelTicketMessage {
+    return Intl.message(
+      'Message',
+      name: 'panelTicketMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Low`
+  String get panelTicketLevelLow {
+    return Intl.message('Low', name: 'panelTicketLevelLow', desc: '', args: []);
+  }
+
+  /// `Medium`
+  String get panelTicketLevelMid {
+    return Intl.message(
+      'Medium',
+      name: 'panelTicketLevelMid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `High`
+  String get panelTicketLevelHigh {
+    return Intl.message(
+      'High',
+      name: 'panelTicketLevelHigh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pending payment`
+  String get panelOrderPending {
+    return Intl.message(
+      'Pending payment',
+      name: 'panelOrderPending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Paid`
+  String get panelOrderPaid {
+    return Intl.message('Paid', name: 'panelOrderPaid', desc: '', args: []);
+  }
+
+  /// `Cancelled`
+  String get panelOrderCancelled {
+    return Intl.message(
+      'Cancelled',
+      name: 'panelOrderCancelled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Completed`
+  String get panelOrderCompleted {
+    return Intl.message(
+      'Completed',
+      name: 'panelOrderCompleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deducted`
+  String get panelOrderDeducted {
+    return Intl.message(
+      'Deducted',
+      name: 'panelOrderDeducted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Registered users`
+  String get panelInviteRegistered {
+    return Intl.message(
+      'Registered users',
+      name: 'panelInviteRegistered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Available commission`
+  String get panelInviteAvailableCommission {
+    return Intl.message(
+      'Available commission',
+      name: 'panelInviteAvailableCommission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Generate invite code`
+  String get panelInviteGenerate {
+    return Intl.message(
+      'Generate invite code',
+      name: 'panelInviteGenerate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No invite code`
+  String get panelNoInviteCode {
+    return Intl.message(
+      'No invite code',
+      name: 'panelNoInviteCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copied`
+  String get panelCopied {
+    return Intl.message('Copied', name: 'panelCopied', desc: '', args: []);
+  }
+
+  /// `Are you sure you want to log out?`
+  String get panelLogoutConfirm {
+    return Intl.message(
+      'Are you sure you want to log out?',
+      name: 'panelLogoutConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ticket detail`
+  String get panelTicketDetail {
+    return Intl.message(
+      'Ticket detail',
+      name: 'panelTicketDetail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type your reply...`
+  String get panelTicketReplyHint {
+    return Intl.message(
+      'Type your reply...',
+      name: 'panelTicketReplyHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Traffic log`
+  String get panelTrafficLog {
+    return Intl.message(
+      'Traffic log',
+      name: 'panelTrafficLog',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rate`
+  String get panelTrafficLogRate {
+    return Intl.message(
+      'Rate',
+      name: 'panelTrafficLogRate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Daily traffic`
+  String get panelTrafficLogChart {
+    return Intl.message(
+      'Daily traffic',
+      name: 'panelTrafficLogChart',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total`
+  String get panelTrafficLogTotal {
+    return Intl.message(
+      'Total',
+      name: 'panelTrafficLogTotal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open`
+  String get panelTicketStatusOpen {
+    return Intl.message(
+      'Open',
+      name: 'panelTicketStatusOpen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Answered`
+  String get panelTicketStatusAnswered {
+    return Intl.message(
+      'Answered',
+      name: 'panelTicketStatusAnswered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Closed`
+  String get panelTicketStatusClosed {
+    return Intl.message(
+      'Closed',
+      name: 'panelTicketStatusClosed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This ticket is closed and can no longer be replied to`
+  String get panelTicketClosedHint {
+    return Intl.message(
+      'This ticket is closed and can no longer be replied to',
+      name: 'panelTicketClosedHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shop`
+  String get panelShop {
+    return Intl.message('Shop', name: 'panelShop', desc: '', args: []);
+  }
+
+  /// `Buy`
+  String get panelBuy {
+    return Intl.message('Buy', name: 'panelBuy', desc: '', args: []);
+  }
+
+  /// `Confirm order`
+  String get panelOrderConfirm {
+    return Intl.message(
+      'Confirm order',
+      name: 'panelOrderConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Place order`
+  String get panelOrderSubmit {
+    return Intl.message(
+      'Place order',
+      name: 'panelOrderSubmit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment`
+  String get panelPayment {
+    return Intl.message('Payment', name: 'panelPayment', desc: '', args: []);
+  }
+
+  /// `Payment method`
+  String get panelPaymentMethod {
+    return Intl.message(
+      'Payment method',
+      name: 'panelPaymentMethod',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pay`
+  String get panelGoPay {
+    return Intl.message('Pay', name: 'panelGoPay', desc: '', args: []);
+  }
+
+  /// `The browser has been opened for payment. Tap check when you have finished.`
+  String get panelPaymentOpened {
+    return Intl.message(
+      'The browser has been opened for payment. Tap check when you have finished.',
+      name: 'panelPaymentOpened',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check order status`
+  String get panelCheckOrder {
+    return Intl.message(
+      'Check order status',
+      name: 'panelCheckOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment successful`
+  String get panelPaymentSuccess {
+    return Intl.message(
+      'Payment successful',
+      name: 'panelPaymentSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment not completed yet`
+  String get panelPaymentPending {
+    return Intl.message(
+      'Payment not completed yet',
+      name: 'panelPaymentPending',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No plans available`
+  String get panelNoPlans {
+    return Intl.message(
+      'No plans available',
+      name: 'panelNoPlans',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Period`
+  String get panelPeriod {
+    return Intl.message('Period', name: 'panelPeriod', desc: '', args: []);
+  }
+
+  /// `3 years`
+  String get panelPeriodThreeYear {
+    return Intl.message(
+      '3 years',
+      name: 'panelPeriodThreeYear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `2 years`
+  String get panelPeriodTwoYear {
+    return Intl.message(
+      '2 years',
+      name: 'panelPeriodTwoYear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `1 year`
+  String get panelPeriodYear {
+    return Intl.message('1 year', name: 'panelPeriodYear', desc: '', args: []);
+  }
+
+  /// `6 months`
+  String get panelPeriodHalfYear {
+    return Intl.message(
+      '6 months',
+      name: 'panelPeriodHalfYear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Quarterly`
+  String get panelPeriodQuarter {
+    return Intl.message(
+      'Quarterly',
+      name: 'panelPeriodQuarter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Monthly`
+  String get panelPeriodMonth {
+    return Intl.message(
+      'Monthly',
+      name: 'panelPeriodMonth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `One-time`
+  String get panelPeriodOnetime {
+    return Intl.message(
+      'One-time',
+      name: 'panelPeriodOnetime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Traffic reset`
+  String get panelPeriodReset {
+    return Intl.message(
+      'Traffic reset',
+      name: 'panelPeriodReset',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Traffic`
+  String get panelPlanTraffic {
+    return Intl.message(
+      'Traffic',
+      name: 'panelPlanTraffic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Devices`
+  String get panelPlanDevices {
+    return Intl.message(
+      'Devices',
+      name: 'panelPlanDevices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coupon (optional)`
+  String get panelCoupon {
+    return Intl.message(
+      'Coupon (optional)',
+      name: 'panelCoupon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sold out`
+  String get panelSoldOut {
+    return Intl.message('Sold out', name: 'panelSoldOut', desc: '', args: []);
+  }
+
+  /// `Cancel this order?`
+  String get panelCancelOrderConfirm {
+    return Intl.message(
+      'Cancel this order?',
+      name: 'panelCancelOrderConfirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Copy link`
+  String get panelCopyLink {
+    return Intl.message('Copy link', name: 'panelCopyLink', desc: '', args: []);
   }
 }
 

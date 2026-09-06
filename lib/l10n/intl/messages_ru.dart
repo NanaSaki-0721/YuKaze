@@ -682,6 +682,157 @@ class MessageLookup extends MessageLookupByLibrary {
       "Пользовательский режим, полная настройка групп прокси и правил",
     ),
     "palette": MessageLookupByLibrary.simpleMessage("Палитра"),
+    "panel": MessageLookupByLibrary.simpleMessage("Мой"),
+    "panelAgreeTerms": MessageLookupByLibrary.simpleMessage(
+      "Я прочитал и согласен с условиями обслуживания",
+    ),
+    "panelBuy": MessageLookupByLibrary.simpleMessage("Купить"),
+    "panelCancelOrderConfirm": MessageLookupByLibrary.simpleMessage(
+      "Отменить этот заказ?",
+    ),
+    "panelCheckOrder": MessageLookupByLibrary.simpleMessage(
+      "Проверить статус заказа",
+    ),
+    "panelCodeRequired": MessageLookupByLibrary.simpleMessage(
+      "Введите код подтверждения",
+    ),
+    "panelConfirmPassword": MessageLookupByLibrary.simpleMessage(
+      "Подтвердите пароль",
+    ),
+    "panelConfirmPasswordRequired": MessageLookupByLibrary.simpleMessage(
+      "Введите пароль ещё раз",
+    ),
+    "panelCopied": MessageLookupByLibrary.simpleMessage("Скопировано"),
+    "panelCopyLink": MessageLookupByLibrary.simpleMessage("Скопировать ссылку"),
+    "panelCoupon": MessageLookupByLibrary.simpleMessage(
+      "Купон (необязательно)",
+    ),
+    "panelCreateTicket": MessageLookupByLibrary.simpleMessage("Новый тикет"),
+    "panelEmail": MessageLookupByLibrary.simpleMessage("Эл. почта"),
+    "panelEmailCode": MessageLookupByLibrary.simpleMessage("Код из письма"),
+    "panelEmailCodeSent": MessageLookupByLibrary.simpleMessage("Код отправлен"),
+    "panelEmailInvalid": MessageLookupByLibrary.simpleMessage(
+      "Неверный адрес эл. почты",
+    ),
+    "panelEmailRequired": MessageLookupByLibrary.simpleMessage(
+      "Введите эл. почту",
+    ),
+    "panelExpiry": MessageLookupByLibrary.simpleMessage("Срок действия"),
+    "panelGoPay": MessageLookupByLibrary.simpleMessage("Оплатить"),
+    "panelInputRequired": MessageLookupByLibrary.simpleMessage(
+      "Заполните все обязательные поля",
+    ),
+    "panelInvite": MessageLookupByLibrary.simpleMessage("Приглашения"),
+    "panelInviteAvailableCommission": MessageLookupByLibrary.simpleMessage(
+      "Доступная комиссия",
+    ),
+    "panelInviteCode": MessageLookupByLibrary.simpleMessage(
+      "Код приглашения (необязательно)",
+    ),
+    "panelInviteCodeRequired": MessageLookupByLibrary.simpleMessage(
+      "Введите код приглашения",
+    ),
+    "panelInviteGenerate": MessageLookupByLibrary.simpleMessage(
+      "Создать код приглашения",
+    ),
+    "panelInviteRegistered": MessageLookupByLibrary.simpleMessage(
+      "Зарегистрированные пользователи",
+    ),
+    "panelLogin": MessageLookupByLibrary.simpleMessage("Вход"),
+    "panelLogout": MessageLookupByLibrary.simpleMessage("Выйти"),
+    "panelLogoutConfirm": MessageLookupByLibrary.simpleMessage(
+      "Вы уверены, что хотите выйти?",
+    ),
+    "panelMustAgreeToTerms": MessageLookupByLibrary.simpleMessage(
+      "Сначала согласитесь с условиями",
+    ),
+    "panelNoInviteCode": MessageLookupByLibrary.simpleMessage(
+      "Нет кодов приглашения",
+    ),
+    "panelNoPlans": MessageLookupByLibrary.simpleMessage(
+      "Нет доступных тарифов",
+    ),
+    "panelNoSubscription": MessageLookupByLibrary.simpleMessage("Нет подписки"),
+    "panelOrderCancelled": MessageLookupByLibrary.simpleMessage("Отменён"),
+    "panelOrderCompleted": MessageLookupByLibrary.simpleMessage("Завершён"),
+    "panelOrderConfirm": MessageLookupByLibrary.simpleMessage(
+      "Подтверждение заказа",
+    ),
+    "panelOrderDeducted": MessageLookupByLibrary.simpleMessage("Зачтён"),
+    "panelOrderPaid": MessageLookupByLibrary.simpleMessage("Оплачен"),
+    "panelOrderPending": MessageLookupByLibrary.simpleMessage("Ожидает оплаты"),
+    "panelOrderSubmit": MessageLookupByLibrary.simpleMessage("Оформить заказ"),
+    "panelOrders": MessageLookupByLibrary.simpleMessage("Заказы"),
+    "panelPassword": MessageLookupByLibrary.simpleMessage("Пароль"),
+    "panelPasswordRequired": MessageLookupByLibrary.simpleMessage(
+      "Введите пароль",
+    ),
+    "panelPasswordTooShort": MessageLookupByLibrary.simpleMessage(
+      "Пароль должен содержать не менее 8 символов",
+    ),
+    "panelPasswordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
+      "Пароли не совпадают",
+    ),
+    "panelPayment": MessageLookupByLibrary.simpleMessage("Оплата"),
+    "panelPaymentMethod": MessageLookupByLibrary.simpleMessage("Способ оплаты"),
+    "panelPaymentOpened": MessageLookupByLibrary.simpleMessage(
+      "Браузер открыт для оплаты. После завершения проверьте статус заказа",
+    ),
+    "panelPaymentPending": MessageLookupByLibrary.simpleMessage(
+      "Оплата ещё не завершена",
+    ),
+    "panelPaymentSuccess": MessageLookupByLibrary.simpleMessage(
+      "Оплата прошла успешно",
+    ),
+    "panelPeriod": MessageLookupByLibrary.simpleMessage("Период"),
+    "panelPeriodHalfYear": MessageLookupByLibrary.simpleMessage("6 месяцев"),
+    "panelPeriodMonth": MessageLookupByLibrary.simpleMessage("Месяц"),
+    "panelPeriodOnetime": MessageLookupByLibrary.simpleMessage("Разовый"),
+    "panelPeriodQuarter": MessageLookupByLibrary.simpleMessage("Квартал"),
+    "panelPeriodReset": MessageLookupByLibrary.simpleMessage("Сброс трафика"),
+    "panelPeriodThreeYear": MessageLookupByLibrary.simpleMessage("3 года"),
+    "panelPeriodTwoYear": MessageLookupByLibrary.simpleMessage("2 года"),
+    "panelPeriodYear": MessageLookupByLibrary.simpleMessage("1 год"),
+    "panelPlanDevices": MessageLookupByLibrary.simpleMessage("Устройства"),
+    "panelPlanTraffic": MessageLookupByLibrary.simpleMessage("Трафик"),
+    "panelRegister": MessageLookupByLibrary.simpleMessage("Регистрация"),
+    "panelSendCode": MessageLookupByLibrary.simpleMessage("Отправить код"),
+    "panelShop": MessageLookupByLibrary.simpleMessage("Магазин"),
+    "panelSoldOut": MessageLookupByLibrary.simpleMessage("Распродано"),
+    "panelSubscriptionDesc": MessageLookupByLibrary.simpleMessage(
+      "Подписка будет получена автоматически после входа, далее только обновление",
+    ),
+    "panelTermsOfService": MessageLookupByLibrary.simpleMessage(
+      "Условия обслуживания",
+    ),
+    "panelTicketClosedHint": MessageLookupByLibrary.simpleMessage(
+      "Тикет закрыт, ответы больше недоступны",
+    ),
+    "panelTicketDetail": MessageLookupByLibrary.simpleMessage("Детали тикета"),
+    "panelTicketLevelHigh": MessageLookupByLibrary.simpleMessage("Высокий"),
+    "panelTicketLevelLow": MessageLookupByLibrary.simpleMessage("Низкий"),
+    "panelTicketLevelMid": MessageLookupByLibrary.simpleMessage("Средний"),
+    "panelTicketMessage": MessageLookupByLibrary.simpleMessage("Сообщение"),
+    "panelTicketReplyHint": MessageLookupByLibrary.simpleMessage(
+      "Введите ответ...",
+    ),
+    "panelTicketStatusAnswered": MessageLookupByLibrary.simpleMessage(
+      "Отвечен",
+    ),
+    "panelTicketStatusClosed": MessageLookupByLibrary.simpleMessage("Закрыт"),
+    "panelTicketStatusOpen": MessageLookupByLibrary.simpleMessage("Открыт"),
+    "panelTicketSubject": MessageLookupByLibrary.simpleMessage("Тема"),
+    "panelTickets": MessageLookupByLibrary.simpleMessage("Тикеты"),
+    "panelTraffic": MessageLookupByLibrary.simpleMessage("Трафик"),
+    "panelTrafficLog": MessageLookupByLibrary.simpleMessage("Журнал трафика"),
+    "panelTrafficLogChart": MessageLookupByLibrary.simpleMessage(
+      "Трафик по дням",
+    ),
+    "panelTrafficLogRate": MessageLookupByLibrary.simpleMessage("Множитель"),
+    "panelTrafficLogTotal": MessageLookupByLibrary.simpleMessage("Итого"),
+    "panelTwoFactorCode": MessageLookupByLibrary.simpleMessage(
+      "Код двухфакторной аутентификации",
+    ),
     "password": MessageLookupByLibrary.simpleMessage("Пароль"),
     "paste": MessageLookupByLibrary.simpleMessage("Вставить"),
     "pleaseBindWebDAV": MessageLookupByLibrary.simpleMessage(
@@ -1070,7 +1221,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tip": MessageLookupByLibrary.simpleMessage("подсказка"),
     "toggle": MessageLookupByLibrary.simpleMessage("Переключить"),
     "tonalSpotScheme": MessageLookupByLibrary.simpleMessage("Тональный акцент"),
-    "tools": MessageLookupByLibrary.simpleMessage("Инструменты"),
+    "tools": MessageLookupByLibrary.simpleMessage("Настройки приложения"),
     "tproxyPort": MessageLookupByLibrary.simpleMessage("Tproxy-порт"),
     "trafficUsage": MessageLookupByLibrary.simpleMessage(
       "Использование трафика",

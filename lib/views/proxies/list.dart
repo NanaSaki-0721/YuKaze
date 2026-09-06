@@ -247,9 +247,6 @@ class _ProxiesListViewState extends State<ProxiesListView> {
       builder: (_, ref, _) {
         final state = ref.watch(proxiesListStateProvider);
         ref.watch(themeSettingProvider.select((state) => state.textScale));
-        final proxiesLayout = ref.watch(
-          proxiesStyleSettingProvider.select((state) => state.layout),
-        );
         if (state.groups.isEmpty) {
           return NullStatus(
             illustration: const ProxyEmptyIllustration(),
@@ -258,10 +255,7 @@ class _ProxiesListViewState extends State<ProxiesListView> {
         }
         return LayoutBuilder(
           builder: (_, constraints) {
-            final columns = utils.getProxiesColumns(
-              max(constraints.maxWidth - 32, 0),
-              proxiesLayout,
-            );
+            const columns = 1;
             _groupOffsets = _getGroupOffsets(
               groups: state.groups,
               currentUnfoldSet: state.currentUnfoldSet,

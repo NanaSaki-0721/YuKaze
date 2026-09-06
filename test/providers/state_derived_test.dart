@@ -47,7 +47,10 @@ void main() {
     container
         .read(patchClashConfigProvider.notifier)
         .update((state) => state.copyWith(mode: Mode.global));
-    expect(container.read(currentGroupsStateProvider).value, hasLength(3));
+    expect(
+      container.read(currentGroupsStateProvider).value.map((g) => g.name),
+      ['Visible', 'Hidden'],
+    );
 
     container
         .read(patchClashConfigProvider.notifier)
@@ -62,7 +65,7 @@ void main() {
     final mobile = container.read(currentNavigationItemsStateProvider).value;
     expect(
       mobile.map((item) => item.label),
-      containsAll([PageLabel.dashboard, PageLabel.profiles, PageLabel.tools]),
+      containsAll([PageLabel.dashboard, PageLabel.panel]),
     );
     expect(
       mobile.map((item) => item.label),

@@ -204,13 +204,27 @@ void main() {
   testWidgets('revealed proxy stays below the pinned header', (tester) async {
     await pumpListLayout(tester, size: const Size(600, 400), proxyCount: 30);
 
+    final scrollableFinder = find
+        .descendant(
+          of: find.byType(ProxiesView),
+          matching: find.byType(Scrollable),
+        )
+        .first;
+    final scrollableState = tester.state<ScrollableState>(scrollableFinder);
+    for (var i = 0;
+        i < 20 &&
+            find.byKey(const ValueKey('Selector.Proxy 3')).evaluate().isEmpty;
+        i++) {
+      scrollableState.position.jumpTo(scrollableState.position.pixels + 200);
+      await tester.pump();
+    }
+
     final proxyFinder = find.byKey(const ValueKey('Selector.Proxy 3')).first;
     final targetContext = tester.element(proxyFinder);
-    final scrollable = Scrollable.of(targetContext);
-    final viewportTop = tester.getTopLeft(find.byWidget(scrollable.widget)).dy;
+    final viewportTop = tester.getTopLeft(scrollableFinder).dy;
     final targetTop = tester.getTopLeft(proxyFinder).dy;
-    scrollable.position.jumpTo(
-      scrollable.position.pixels + targetTop - viewportTop + 20,
+    scrollableState.position.jumpTo(
+      scrollableState.position.pixels + targetTop - viewportTop + 20,
     );
     await tester.pump();
     expect(tester.getTopLeft(proxyFinder).dy, lessThan(viewportTop));

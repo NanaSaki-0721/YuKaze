@@ -647,6 +647,157 @@ class MessageLookup extends MessageLookupByLibrary {
       "Custom mode, fully customize proxy groups and rules",
     ),
     "palette": MessageLookupByLibrary.simpleMessage("Palette"),
+    "panel": MessageLookupByLibrary.simpleMessage("My"),
+    "panelAgreeTerms": MessageLookupByLibrary.simpleMessage(
+      "I have read and agree to the Terms of Service",
+    ),
+    "panelBuy": MessageLookupByLibrary.simpleMessage("Buy"),
+    "panelCancelOrderConfirm": MessageLookupByLibrary.simpleMessage(
+      "Cancel this order?",
+    ),
+    "panelCheckOrder": MessageLookupByLibrary.simpleMessage(
+      "Check order status",
+    ),
+    "panelCodeRequired": MessageLookupByLibrary.simpleMessage(
+      "Verification code is required",
+    ),
+    "panelConfirmPassword": MessageLookupByLibrary.simpleMessage(
+      "Confirm password",
+    ),
+    "panelConfirmPasswordRequired": MessageLookupByLibrary.simpleMessage(
+      "Please confirm your password",
+    ),
+    "panelCopied": MessageLookupByLibrary.simpleMessage("Copied"),
+    "panelCopyLink": MessageLookupByLibrary.simpleMessage("Copy link"),
+    "panelCoupon": MessageLookupByLibrary.simpleMessage("Coupon (optional)"),
+    "panelCreateTicket": MessageLookupByLibrary.simpleMessage("New ticket"),
+    "panelEmail": MessageLookupByLibrary.simpleMessage("Email"),
+    "panelEmailCode": MessageLookupByLibrary.simpleMessage("Email code"),
+    "panelEmailCodeSent": MessageLookupByLibrary.simpleMessage(
+      "Email code sent",
+    ),
+    "panelEmailInvalid": MessageLookupByLibrary.simpleMessage(
+      "Invalid email address",
+    ),
+    "panelEmailRequired": MessageLookupByLibrary.simpleMessage(
+      "Email is required",
+    ),
+    "panelExpiry": MessageLookupByLibrary.simpleMessage("Expiry"),
+    "panelGoPay": MessageLookupByLibrary.simpleMessage("Pay"),
+    "panelInputRequired": MessageLookupByLibrary.simpleMessage(
+      "Please fill in all required fields",
+    ),
+    "panelInvite": MessageLookupByLibrary.simpleMessage("Invite"),
+    "panelInviteAvailableCommission": MessageLookupByLibrary.simpleMessage(
+      "Available commission",
+    ),
+    "panelInviteCode": MessageLookupByLibrary.simpleMessage(
+      "Invite code (optional)",
+    ),
+    "panelInviteCodeRequired": MessageLookupByLibrary.simpleMessage(
+      "Invite code is required",
+    ),
+    "panelInviteGenerate": MessageLookupByLibrary.simpleMessage(
+      "Generate invite code",
+    ),
+    "panelInviteRegistered": MessageLookupByLibrary.simpleMessage(
+      "Registered users",
+    ),
+    "panelLogin": MessageLookupByLibrary.simpleMessage("Login"),
+    "panelLogout": MessageLookupByLibrary.simpleMessage("Logout"),
+    "panelLogoutConfirm": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to log out?",
+    ),
+    "panelMustAgreeToTerms": MessageLookupByLibrary.simpleMessage(
+      "Please agree to the terms first",
+    ),
+    "panelNoInviteCode": MessageLookupByLibrary.simpleMessage("No invite code"),
+    "panelNoPlans": MessageLookupByLibrary.simpleMessage("No plans available"),
+    "panelNoSubscription": MessageLookupByLibrary.simpleMessage(
+      "No subscription",
+    ),
+    "panelOrderCancelled": MessageLookupByLibrary.simpleMessage("Cancelled"),
+    "panelOrderCompleted": MessageLookupByLibrary.simpleMessage("Completed"),
+    "panelOrderConfirm": MessageLookupByLibrary.simpleMessage("Confirm order"),
+    "panelOrderDeducted": MessageLookupByLibrary.simpleMessage("Deducted"),
+    "panelOrderPaid": MessageLookupByLibrary.simpleMessage("Paid"),
+    "panelOrderPending": MessageLookupByLibrary.simpleMessage(
+      "Pending payment",
+    ),
+    "panelOrderSubmit": MessageLookupByLibrary.simpleMessage("Place order"),
+    "panelOrders": MessageLookupByLibrary.simpleMessage("Orders"),
+    "panelPassword": MessageLookupByLibrary.simpleMessage("Password"),
+    "panelPasswordRequired": MessageLookupByLibrary.simpleMessage(
+      "Password is required",
+    ),
+    "panelPasswordTooShort": MessageLookupByLibrary.simpleMessage(
+      "Password must be at least 8 characters",
+    ),
+    "panelPasswordsDoNotMatch": MessageLookupByLibrary.simpleMessage(
+      "Passwords do not match",
+    ),
+    "panelPayment": MessageLookupByLibrary.simpleMessage("Payment"),
+    "panelPaymentMethod": MessageLookupByLibrary.simpleMessage(
+      "Payment method",
+    ),
+    "panelPaymentOpened": MessageLookupByLibrary.simpleMessage(
+      "The browser has been opened for payment. Tap check when you have finished.",
+    ),
+    "panelPaymentPending": MessageLookupByLibrary.simpleMessage(
+      "Payment not completed yet",
+    ),
+    "panelPaymentSuccess": MessageLookupByLibrary.simpleMessage(
+      "Payment successful",
+    ),
+    "panelPeriod": MessageLookupByLibrary.simpleMessage("Period"),
+    "panelPeriodHalfYear": MessageLookupByLibrary.simpleMessage("6 months"),
+    "panelPeriodMonth": MessageLookupByLibrary.simpleMessage("Monthly"),
+    "panelPeriodOnetime": MessageLookupByLibrary.simpleMessage("One-time"),
+    "panelPeriodQuarter": MessageLookupByLibrary.simpleMessage("Quarterly"),
+    "panelPeriodReset": MessageLookupByLibrary.simpleMessage("Traffic reset"),
+    "panelPeriodThreeYear": MessageLookupByLibrary.simpleMessage("3 years"),
+    "panelPeriodTwoYear": MessageLookupByLibrary.simpleMessage("2 years"),
+    "panelPeriodYear": MessageLookupByLibrary.simpleMessage("1 year"),
+    "panelPlanDevices": MessageLookupByLibrary.simpleMessage("Devices"),
+    "panelPlanTraffic": MessageLookupByLibrary.simpleMessage("Traffic"),
+    "panelRegister": MessageLookupByLibrary.simpleMessage("Register"),
+    "panelSendCode": MessageLookupByLibrary.simpleMessage("Send code"),
+    "panelShop": MessageLookupByLibrary.simpleMessage("Shop"),
+    "panelSoldOut": MessageLookupByLibrary.simpleMessage("Sold out"),
+    "panelSubscriptionDesc": MessageLookupByLibrary.simpleMessage(
+      "The subscription is obtained automatically after login and refreshed afterwards",
+    ),
+    "panelTermsOfService": MessageLookupByLibrary.simpleMessage(
+      "Terms of Service",
+    ),
+    "panelTicketClosedHint": MessageLookupByLibrary.simpleMessage(
+      "This ticket is closed and can no longer be replied to",
+    ),
+    "panelTicketDetail": MessageLookupByLibrary.simpleMessage("Ticket detail"),
+    "panelTicketLevelHigh": MessageLookupByLibrary.simpleMessage("High"),
+    "panelTicketLevelLow": MessageLookupByLibrary.simpleMessage("Low"),
+    "panelTicketLevelMid": MessageLookupByLibrary.simpleMessage("Medium"),
+    "panelTicketMessage": MessageLookupByLibrary.simpleMessage("Message"),
+    "panelTicketReplyHint": MessageLookupByLibrary.simpleMessage(
+      "Type your reply...",
+    ),
+    "panelTicketStatusAnswered": MessageLookupByLibrary.simpleMessage(
+      "Answered",
+    ),
+    "panelTicketStatusClosed": MessageLookupByLibrary.simpleMessage("Closed"),
+    "panelTicketStatusOpen": MessageLookupByLibrary.simpleMessage("Open"),
+    "panelTicketSubject": MessageLookupByLibrary.simpleMessage("Subject"),
+    "panelTickets": MessageLookupByLibrary.simpleMessage("Tickets"),
+    "panelTraffic": MessageLookupByLibrary.simpleMessage("Traffic"),
+    "panelTrafficLog": MessageLookupByLibrary.simpleMessage("Traffic log"),
+    "panelTrafficLogChart": MessageLookupByLibrary.simpleMessage(
+      "Daily traffic",
+    ),
+    "panelTrafficLogRate": MessageLookupByLibrary.simpleMessage("Rate"),
+    "panelTrafficLogTotal": MessageLookupByLibrary.simpleMessage("Total"),
+    "panelTwoFactorCode": MessageLookupByLibrary.simpleMessage(
+      "Two-factor code",
+    ),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
     "paste": MessageLookupByLibrary.simpleMessage("Paste"),
     "pleaseBindWebDAV": MessageLookupByLibrary.simpleMessage(
@@ -1013,7 +1164,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tip": MessageLookupByLibrary.simpleMessage("tip"),
     "toggle": MessageLookupByLibrary.simpleMessage("Toggle"),
     "tonalSpotScheme": MessageLookupByLibrary.simpleMessage("TonalSpot"),
-    "tools": MessageLookupByLibrary.simpleMessage("Tools"),
+    "tools": MessageLookupByLibrary.simpleMessage("App settings"),
     "tproxyPort": MessageLookupByLibrary.simpleMessage("Tproxy Port"),
     "trafficUsage": MessageLookupByLibrary.simpleMessage("Traffic usage"),
     "tun": MessageLookupByLibrary.simpleMessage("TUN"),

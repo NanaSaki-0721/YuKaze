@@ -40,7 +40,7 @@ final class CommonActionProvider extends $NotifierProvider<CommonAction, void> {
   }
 }
 
-String _$commonActionHash() => r'81d01cab066e94793cdaa4ff89806ebff6030f50';
+String _$commonActionHash() => r'4d0778583b3446dd35105e96a230afa9610bd0f0';
 
 abstract class _$CommonAction extends $Notifier<void> {
   void build();
@@ -91,60 +91,9 @@ final class SetupActionProvider extends $NotifierProvider<SetupAction, void> {
   }
 }
 
-String _$setupActionHash() => r'27018fa3a8606b501472f50aa4b46eeb0c964ff3';
+String _$setupActionHash() => r'3e4c4f2903835aa5e87810fed355741c66eb1624';
 
 abstract class _$SetupAction extends $Notifier<void> {
-  void build();
-  @$mustCallSuper
-  @override
-  WhenComplete runBuild() {
-    final ref = this.ref as $Ref<void, void>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<void, void>,
-              void,
-              Object?,
-              Object?
-            >;
-    return element.handleCreate(ref, build);
-  }
-}
-
-@ProviderFor(BackupAction)
-final backupActionProvider = BackupActionProvider._();
-
-final class BackupActionProvider extends $NotifierProvider<BackupAction, void> {
-  BackupActionProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'backupActionProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$backupActionHash();
-
-  @$internal
-  @override
-  BackupAction create() => BackupAction();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(void value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<void>(value),
-    );
-  }
-}
-
-String _$backupActionHash() => r'3c115d169b912577a3bd87796cefafce3695a019';
-
-abstract class _$BackupAction extends $Notifier<void> {
   void build();
   @$mustCallSuper
   @override
@@ -193,7 +142,7 @@ final class CoreActionProvider extends $NotifierProvider<CoreAction, void> {
   }
 }
 
-String _$coreActionHash() => r'f314ae5f40da30a71ece0b5f84cdd2e9d7335ee9';
+String _$coreActionHash() => r'972ad46fcf005c6c6e91f8f11965e142920941aa';
 
 abstract class _$CoreAction extends $Notifier<void> {
   void build();
@@ -398,7 +347,7 @@ final class ProxiesActionProvider
   }
 }
 
-String _$proxiesActionHash() => r'1a734ab542f5e3734f9887768567e1eb14e0decf';
+String _$proxiesActionHash() => r'ebabe09c78e00477e1d25d1178586b1d66f787c3';
 
 abstract class _$ProxiesAction extends $Notifier<void> {
   void build();

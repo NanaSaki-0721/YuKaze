@@ -194,7 +194,14 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
       (isEdit) => CommonScaffold(
         title: context.appLocalizations.dashboard,
         actions: _buildActions(isEdit),
-        floatingActionButton: const StartButton(),
+        floatingActionButton: Padding(
+          padding: EdgeInsets.only(
+            bottom: ref.read(isMobileViewProvider)
+                ? floatingDockBottomSpace
+                : 0,
+          ),
+          child: const StartButton(),
+        ),
         body: Align(
           alignment: Alignment.topCenter,
           child: SingleChildScrollView(

@@ -79,6 +79,18 @@ class ProxiesAction extends _$ProxiesAction {
     await coreController.changeProxy(
       ChangeProxyParams(groupName: groupName, proxyName: proxyName),
     );
+    final mode = ref.read(patchClashConfigProvider).mode;
+    if (mode == Mode.global && groupName != GroupName.GLOBAL.name) {
+      await coreController.changeProxy(
+        ChangeProxyParams(
+          groupName: GroupName.GLOBAL.name,
+          proxyName: proxyName,
+        ),
+      );
+      ref
+          .read(profilesActionProvider.notifier)
+          .updateCurrentSelectedMap(GroupName.GLOBAL.name, proxyName);
+    }
     if (ref.read(appSettingProvider).closeConnections) {
       await coreController.closeConnections();
     } else {

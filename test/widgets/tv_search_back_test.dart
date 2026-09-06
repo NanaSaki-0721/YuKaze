@@ -88,6 +88,7 @@ void main() {
     var closeCount = 0;
     final container = ProviderContainer(
       overrides: [
+        panelAuthStateProvider.overrideWithValue(PanelAuthState.authenticated),
         navigationItemsStateProvider.overrideWithValue(
           NavigationItemsState(
             value: [

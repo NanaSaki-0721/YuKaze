@@ -10,7 +10,6 @@ import 'package:fl_clash/providers/state.dart';
 import 'package:fl_clash/state.dart';
 import 'package:fl_clash/views/config/advanced.dart';
 import 'package:fl_clash/views/config/dns.dart';
-import 'package:fl_clash/views/config/general.dart';
 import 'package:fl_clash/views/config/network.dart';
 import 'package:fl_clash/views/config/on_demand.dart';
 import 'package:fl_clash/views/hotkey.dart';
@@ -46,7 +45,6 @@ void main() {
     'on demand config': const OnDemandView(),
     'theme': const ThemeView(),
     'application settings': const ApplicationSettingView(),
-    'backup and restore': const BackupAndRestore(),
     'hotkeys': const HotKeyView(),
     'access control': const AccessView(),
   };
@@ -91,7 +89,6 @@ void main() {
 
   final toolDestinations = <String, Type>{
     'Theme': ThemeView,
-    'Backup and Restore': BackupAndRestore,
     'Basic configuration': ConfigView,
     'Advanced configuration': AdvancedConfigView,
     'Application': ApplicationSettingView,
@@ -134,45 +131,6 @@ void main() {
       expect(tester.takeException(), null);
     });
   }
-
-  testWidgets('user agent dialog applies a preset', (tester) async {
-    tester.view.physicalSize = const Size(1000, 800);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
-
-    final container = ProviderContainer(
-      overrides: [profilesProvider.overrideWith(_TestProfiles.new)],
-    );
-    addTearDown(container.dispose);
-    globalState.container = container;
-    container
-        .read(viewSizeProvider.notifier)
-        .update((_) => const Size(1000, 800));
-
-    await tester.pumpWidget(
-      UncontrolledProviderScope(
-        container: container,
-        child: _TestApp(
-          child: Scaffold(body: ListView(children: const [UaItem()])),
-        ),
-      ),
-    );
-    await tester.pump();
-
-    await tester.tap(find.text('User-Agent'));
-    await tester.pumpAndSettle();
-    expect(find.text('clash-verge/v2.4.2'), findsOneWidget);
-
-    await tester.tap(find.text('clash-verge/v2.4.2'));
-    await tester.pumpAndSettle();
-
-    expect(
-      container.read(patchClashConfigProvider).globalUa,
-      'clash-verge/v2.4.2',
-    );
-    expect(tester.takeException(), null);
-  });
 
   testWidgets('DNS mode options update the patch configuration', (
     tester,

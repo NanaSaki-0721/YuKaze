@@ -13,6 +13,10 @@ double get listHeaderHeight {
 
 double getItemHeight(ProxyCardType proxyCardType) {
   final measure = globalState.measure;
+  final isMobile = globalState.container.read(isMobileViewProvider);
+  if (isMobile) {
+    return measure.titleMediumHeight + 28;
+  }
   final baseHeight =
       16 + measure.bodyMediumHeight * 2 + measure.bodySmallHeight + 8 + 4;
   return switch (proxyCardType) {

@@ -55,6 +55,7 @@ const httpTimeoutDuration = Duration(milliseconds: 5000);
 const maxConcurrentDelayTests = 50;
 const moreDuration = Duration(milliseconds: 100);
 const animateDuration = Duration(milliseconds: 100);
+const floatingDockBottomSpace = 84.0;
 const midDuration = Duration(milliseconds: 200);
 const commonDuration = Duration(milliseconds: 300);
 const defaultUpdateDuration = Duration(days: 1);

@@ -4,12 +4,10 @@ import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/l10n/l10n.dart';
 import 'package:fl_clash/manager/app_manager.dart';
 import 'package:fl_clash/manager/theme_manager.dart';
-import 'package:fl_clash/manager/window_manager.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/pages/home.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
-import 'package:fl_clash/views/application_setting.dart';
 import 'package:fl_clash/views/tools.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +27,7 @@ void main() {
 
     final container = ProviderContainer(
       overrides: [
+        panelAuthStateProvider.overrideWithValue(PanelAuthState.authenticated),
         navigationItemsStateProvider.overrideWithValue(
           NavigationItemsState(
             value: [
@@ -83,6 +82,7 @@ void main() {
 
       final container = ProviderContainer(
         overrides: [
+          panelAuthStateProvider.overrideWithValue(PanelAuthState.authenticated),
           navigationItemsStateProvider.overrideWithValue(
             NavigationItemsState(
               value: [
@@ -187,6 +187,7 @@ void main() {
 
       final container = ProviderContainer(
         overrides: [
+          panelAuthStateProvider.overrideWithValue(PanelAuthState.authenticated),
           navigationItemsStateProvider.overrideWithValue(
             NavigationItemsState(
               value: [
@@ -229,95 +230,6 @@ void main() {
   );
 
   testWidgets(
-    'profile trailing controls stay valid while a maximized window restores',
-    (tester) async {
-      tester.view.physicalSize = const Size(1440, 900);
-      tester.view.devicePixelRatio = 1;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
-
-      final profile = Profile.normal();
-      final container = ProviderContainer(
-        overrides: [
-          profilesProvider.overrideWith(() => _HomeTestProfiles([profile])),
-          currentProfileIdProvider.overrideWithBuild((_, _) => profile.id),
-          versionProvider.overrideWithBuild((_, _) => 15),
-        ],
-      );
-      addTearDown(container.dispose);
-      globalState.container = container;
-      container
-          .read(currentPageLabelProvider.notifier)
-          .toPage(PageLabel.profiles);
-
-      await tester.pumpWidget(
-        UncontrolledProviderScope(
-          container: container,
-          child: const _TestApp(
-            child: ThemeManager(
-              child: WindowHeaderContainer(child: HomePage()),
-            ),
-          ),
-        ),
-      );
-      await tester.pump();
-      await tester.pump();
-      expect(tester.takeException(), isNull);
-
-      tester.view.physicalSize = const Size(380, 900);
-      await tester.pump(const Duration(milliseconds: 16));
-      expect(tester.takeException(), isNull);
-    },
-  );
-
-  testWidgets(
-    'desktop navigation keeps the tools route when logs are enabled',
-    (tester) async {
-      tester.view.physicalSize = const Size(1400, 1000);
-      tester.view.devicePixelRatio = 1;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
-
-      final container = ProviderContainer();
-      addTearDown(container.dispose);
-      globalState.container = container;
-      container.read(viewSizeProvider.notifier).value = const Size(1400, 1000);
-      container.read(currentPageLabelProvider.notifier).toPage(PageLabel.tools);
-
-      await tester.pumpWidget(
-        UncontrolledProviderScope(
-          container: container,
-          child: const _TestApp(child: HomePage()),
-        ),
-      );
-      await tester.pump();
-
-      final applicationItem = find.text('Application');
-      await tester.scrollUntilVisible(
-        applicationItem,
-        500,
-        scrollable: find.byType(Scrollable).first,
-      );
-      await tester.tap(applicationItem);
-      await tester.pumpAndSettle();
-      expect(find.byType(ApplicationSettingView), findsOneWidget);
-
-      final logItem = find.text('Logcat');
-      await tester.scrollUntilVisible(
-        logItem,
-        500,
-        scrollable: find.byType(Scrollable).first,
-      );
-      await tester.tap(logItem);
-      await tester.pumpAndSettle();
-
-      expect(container.read(appSettingProvider).openLogs, isTrue);
-      expect(find.byType(ApplicationSettingView), findsOneWidget);
-      expect(tester.takeException(), isNull);
-    },
-  );
-
-  testWidgets(
     'desktop navigation keeps arrow traversal after keyboard page changes',
     (tester) async {
       tester.view.physicalSize = const Size(1200, 800);
@@ -327,6 +239,7 @@ void main() {
 
       final container = ProviderContainer(
         overrides: [
+          panelAuthStateProvider.overrideWithValue(PanelAuthState.authenticated),
           navigationItemsStateProvider.overrideWithValue(
             NavigationItemsState(
               value: [
@@ -456,6 +369,7 @@ void main() {
 
     final container = ProviderContainer(
       overrides: [
+        panelAuthStateProvider.overrideWithValue(PanelAuthState.authenticated),
         navigationItemsStateProvider.overrideWithValue(
           NavigationItemsState(
             value: [
@@ -559,6 +473,7 @@ void main() {
     var query = '';
     final container = ProviderContainer(
       overrides: [
+        panelAuthStateProvider.overrideWithValue(PanelAuthState.authenticated),
         navigationItemsStateProvider.overrideWithValue(
           NavigationItemsState(
             value: [
@@ -623,6 +538,7 @@ void main() {
     var query = '';
     final container = ProviderContainer(
       overrides: [
+        panelAuthStateProvider.overrideWithValue(PanelAuthState.authenticated),
         navigationItemsStateProvider.overrideWithValue(
           NavigationItemsState(
             value: [
@@ -709,6 +625,7 @@ void main() {
 
       final container = ProviderContainer(
         overrides: [
+          panelAuthStateProvider.overrideWithValue(PanelAuthState.authenticated),
           navigationItemsStateProvider.overrideWithValue(
             NavigationItemsState(
               value: [
@@ -874,13 +791,4 @@ class _NestedSearchLauncher extends StatelessWidget {
       ),
     );
   }
-}
-
-class _HomeTestProfiles extends Profiles {
-  final List<Profile> initial;
-
-  _HomeTestProfiles(this.initial);
-
-  @override
-  List<Profile> build() => initial;
 }

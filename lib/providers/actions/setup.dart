@@ -205,14 +205,11 @@ class SetupAction extends _$SetupAction {
   }
 
   void changeMode(Mode mode) {
+    final currentMode = ref.read(patchClashConfigProvider).mode;
+    _syncModeSelection(ref, currentMode, mode);
     ref
         .read(patchClashConfigProvider.notifier)
         .update((state) => state.copyWith(mode: mode));
-    if (mode == Mode.global) {
-      ref
-          .read(proxiesActionProvider.notifier)
-          .updateCurrentGroupName(GroupName.GLOBAL.name);
-    }
   }
 
   void autoApplyProfile() {

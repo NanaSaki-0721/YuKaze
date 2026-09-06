@@ -184,7 +184,10 @@ Future<VM2<String, String>> _makeRealProfileTask(
   }
   rawConfig['profile']['store-selected'] = false;
   rawConfig['geox-url'] = realPatchConfig.geoXUrl.raw;
-  rawConfig['global-ua'] = realPatchConfig.globalUa ?? defaultUA;
+  rawConfig['global-ua'] =
+      realPatchConfig.globalUa ?? SiteConfig.globalUa.takeFirstValid([
+        defaultUA,
+      ]);
   if (rawConfig['hosts'] == null) {
     rawConfig['hosts'] = {};
   }

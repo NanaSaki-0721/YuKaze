@@ -25,17 +25,25 @@ GroupsState currentGroupsState(Ref ref) {
       (state) => state.map((item) {
         return item.copyWith(
           now: '',
-          all: item.all.map((proxy) => proxy.copyWith(now: '')).toList(),
+          all: item.all
+              .where((proxy) => !shouldHideProxyName(proxy.name))
+              .map((proxy) => proxy.copyWith(now: ''))
+              .toList(),
         );
       }),
     ),
   );
+  final visibleGroups = groups.where(
+    (group) => !shouldHideProxyName(group.name),
+  );
   return GroupsState(
     value: switch (mode) {
       Mode.direct => [],
-      Mode.global => groups.toList(),
+      Mode.global => visibleGroups
+          .where((element) => element.name != GroupName.GLOBAL.name)
+          .toList(),
       Mode.rule =>
-        groups
+        visibleGroups
             .where((item) => item.hidden == false)
             .where((element) => element.name != GroupName.GLOBAL.name)
             .toList(),

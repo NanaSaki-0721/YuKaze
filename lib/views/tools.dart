@@ -4,11 +4,9 @@ import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/l10n/l10n.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/providers.dart';
-import 'package:fl_clash/state.dart';
 import 'package:fl_clash/views/about.dart';
 import 'package:fl_clash/views/access.dart';
 import 'package:fl_clash/views/application_setting.dart';
-import 'package:fl_clash/views/backup_and_restore.dart';
 import 'package:fl_clash/views/config/config.dart';
 import 'package:fl_clash/views/hotkey.dart';
 import 'package:fl_clash/widgets/widgets.dart';
@@ -21,15 +19,27 @@ import 'config/advanced.dart';
 import 'developer.dart';
 import 'theme.dart';
 
-class ToolsView extends ConsumerStatefulWidget {
+class ToolsView extends StatelessWidget {
   const ToolsView({super.key});
 
   @override
-  ConsumerState<ToolsView> createState() => _ToolViewState();
+  Widget build(BuildContext context) {
+    return CommonScaffold(
+      title: context.appLocalizations.tools,
+      body: const ToolsList(),
+    );
+  }
 }
 
-class _ToolViewState extends ConsumerState<ToolsView> {
-  Widget _buildNavigationMenuItem(NavigationItem navigationItem) {
+class ToolsList extends ConsumerWidget {
+  final bool shrinkWrap;
+
+  const ToolsList({super.key, this.shrinkWrap = false});
+
+  Widget _buildNavigationMenuItem(
+    BuildContext context,
+    NavigationItem navigationItem,
+  ) {
     return ListItem.open(
       leading: navigationItem.icon,
       title: Text(Intl.message(navigationItem.label.name)),
@@ -42,11 +52,14 @@ class _ToolViewState extends ConsumerState<ToolsView> {
     );
   }
 
-  Widget _buildNavigationMenu(List<NavigationItem> navigationItems) {
+  Widget _buildNavigationMenu(
+    BuildContext context,
+    List<NavigationItem> navigationItems,
+  ) {
     return Column(
       children: [
         for (final navigationItem in navigationItems) ...[
-          _buildNavigationMenuItem(navigationItem),
+          _buildNavigationMenuItem(context, navigationItem),
           navigationItems.last != navigationItem
               ? const Divider(height: 0)
               : Container(),
@@ -55,24 +68,25 @@ class _ToolViewState extends ConsumerState<ToolsView> {
     );
   }
 
-  List<Widget> _getOtherList(bool enableDeveloperMode) {
+  List<Widget> _getOtherList(
+    BuildContext context,
+    bool enableDeveloperMode,
+  ) {
     return generateSection(
       title: context.appLocalizations.other,
       items: [
-        const _DisclaimerItem(),
         if (enableDeveloperMode) const _DeveloperItem(),
         const _InfoItem(),
       ],
     );
   }
 
-  List<Widget> _getSettingList() {
+  List<Widget> _getSettingList(BuildContext context) {
     return generateSection(
       title: context.appLocalizations.settings,
       items: [
         const _LocaleItem(),
         const _ThemeItem(),
-        const _BackupItem(),
         if (system.isDesktop) const _HotkeyItem(),
         if (system.isWindows) const _LoopbackItem(),
         if (system.isAndroid) const _AccessItem(),
@@ -84,7 +98,7 @@ class _ToolViewState extends ConsumerState<ToolsView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final vm2 = ref.watch(
       appSettingProvider.select(
         (state) => VM2(state.locale, state.developerMode),
@@ -100,22 +114,21 @@ class _ToolViewState extends ConsumerState<ToolsView> {
           return Column(
             children: [
               ListHeader(title: context.appLocalizations.more),
-              _buildNavigationMenu(state.navigationItems),
+              _buildNavigationMenu(context, state.navigationItems),
             ],
           );
         },
       ),
-      ..._getSettingList(),
-      ..._getOtherList(vm2.b),
+      ..._getSettingList(context),
+      ..._getOtherList(context, vm2.b),
     ];
-    return CommonScaffold(
-      title: context.appLocalizations.tools,
-      body: ListView.builder(
-        key: toolsStoreKey,
-        itemCount: items.length,
-        itemBuilder: (_, index) => items[index],
-        padding: const EdgeInsets.only(bottom: 20),
-      ),
+    return ListView.builder(
+      key: toolsStoreKey,
+      itemCount: items.length,
+      itemBuilder: (_, index) => items[index],
+      padding: const EdgeInsets.only(bottom: 20),
+      shrinkWrap: shrinkWrap,
+      physics: shrinkWrap ? const NeverScrollableScrollPhysics() : null,
     );
   }
 }
@@ -162,20 +175,6 @@ class _ThemeItem extends StatelessWidget {
       title: Text(context.appLocalizations.theme),
       subtitle: Text(context.appLocalizations.themeDesc),
       widget: const ThemeView(),
-    );
-  }
-}
-
-class _BackupItem extends StatelessWidget {
-  const _BackupItem();
-
-  @override
-  Widget build(BuildContext context) {
-    return ListItem.open(
-      leading: const Icon(Icons.cloud_sync),
-      title: Text(context.appLocalizations.backupAndRestore),
-      subtitle: Text(context.appLocalizations.backupAndRestoreDesc),
-      widget: const BackupAndRestore(),
     );
   }
 }
@@ -265,24 +264,6 @@ class _SettingItem extends StatelessWidget {
       title: Text(context.appLocalizations.application),
       subtitle: Text(context.appLocalizations.applicationDesc),
       widget: const ApplicationSettingView(),
-    );
-  }
-}
-
-class _DisclaimerItem extends ConsumerWidget {
-  const _DisclaimerItem();
-
-  @override
-  Widget build(BuildContext context, ref) {
-    return ListItem(
-      leading: const Icon(Icons.gavel),
-      title: Text(context.appLocalizations.disclaimer),
-      onTap: () async {
-        final isDisclaimerAccepted = await globalState.showDisclaimer();
-        if (!isDisclaimerAccepted) {
-          await ref.read(systemActionProvider.notifier).handleExit();
-        }
-      },
     );
   }
 }

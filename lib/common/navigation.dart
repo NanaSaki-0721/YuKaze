@@ -28,10 +28,9 @@ class Navigation {
             : [],
       ),
       NavigationItem(
-        icon: const Icon(Icons.folder),
-        label: PageLabel.profiles,
-        builder: (_) =>
-            const ProfilesView(key: GlobalObjectKey(PageLabel.profiles)),
+        icon: const Icon(Icons.person),
+        label: PageLabel.panel,
+        builder: (_) => const PanelView(key: GlobalObjectKey(PageLabel.panel)),
       ),
       NavigationItem(
         icon: const Icon(Icons.view_timeline),
@@ -65,12 +64,6 @@ class Navigation {
         modes: openLogs
             ? [NavigationItemMode.desktop, NavigationItemMode.more]
             : [],
-      ),
-      NavigationItem(
-        icon: const Icon(Icons.construction),
-        label: PageLabel.tools,
-        builder: (_) => const ToolsView(key: GlobalObjectKey(PageLabel.tools)),
-        modes: [NavigationItemMode.desktop, NavigationItemMode.mobile],
       ),
     ];
   }

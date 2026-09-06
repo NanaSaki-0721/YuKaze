@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 void main() {
   late ProviderContainer container;
@@ -203,7 +204,10 @@ class _TestApp extends StatelessWidget {
       builder: (context, child) {
         globalState.measure = Measure.of(context, 1);
         globalState.theme = CommonTheme.of(context, 1);
-        return child!;
+        return ShadTheme(
+          data: shadThemeOfBrightness(Theme.of(context).brightness),
+          child: child!,
+        );
       },
       home: child,
     );

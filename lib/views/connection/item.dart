@@ -6,6 +6,7 @@ import 'package:fl_clash/state.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 class TrackerInfoItem extends ConsumerWidget {
   final TrackerInfo trackerInfo;
@@ -107,35 +108,44 @@ class TrackerInfoItem extends ConsumerWidget {
             ),
           )
         : null;
-    return ListItem(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      onTap: () {
-        showExtend(
-          context,
-          builder: (_) {
-            return AdaptiveSheetScaffold(
-              body: TrackerInfoDetailView(trackerInfo: trackerInfo),
-              title: detailTitle,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: ShadCard(
+        padding: EdgeInsets.zero,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(8),
+          onTap: () {
+            showExtend(
+              context,
+              builder: (_) {
+                return AdaptiveSheetScaffold(
+                  body: TrackerInfoDetailView(trackerInfo: trackerInfo),
+                  title: detailTitle,
+                );
+              },
             );
           },
-        );
-      },
-      title: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 12,
-            children: [
-              ?icon,
-              Flexible(child: title),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 12,
+                  children: [
+                    ?icon,
+                    Flexible(child: title),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                subTitle,
+              ],
+            ),
           ),
-          const SizedBox(height: 8),
-          subTitle,
-        ],
+        ),
       ),
     );
   }

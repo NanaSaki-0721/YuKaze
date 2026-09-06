@@ -6,6 +6,7 @@ import 'package:fl_clash/state.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
 class LogsView extends ConsumerStatefulWidget {
@@ -192,37 +193,40 @@ class LogItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListItem(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      onTap: () {},
-      title: SelectableText(
-        log.payload,
-        style: context.textTheme.bodyLarge?.copyWith(
-          color: log.logLevel.color(context),
-        ),
-      ),
-      subtitle: Column(
-        children: [
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CommonChip(
-                onPressed: () {
-                  if (onClick == null) return;
-                  onClick!(log.logLevel.name);
-                },
-                label: log.logLevel.name,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: ShadCard(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SelectableText(
+              log.payload,
+              style: context.textTheme.bodyLarge?.copyWith(
+                color: log.logLevel.color(context),
               ),
-              Text(
-                log.dateTime,
-                style: context.textTheme.bodySmall?.copyWith(
-                  color: context.colorScheme.onSurface.opacity80,
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CommonChip(
+                  onPressed: () {
+                    if (onClick == null) return;
+                    onClick!(log.logLevel.name);
+                  },
+                  label: log.logLevel.name,
                 ),
-              ),
-            ],
-          ),
-        ],
+                Text(
+                  log.dateTime,
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: context.colorScheme.onSurface.opacity80,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -221,6 +221,9 @@ class _AdaptiveSheetScaffoldState extends State<AdaptiveSheetScaffold> {
     final appBar = AppBar(
       backgroundColor: backgroundColor,
       forceMaterialTransparency: type == SheetType.bottomSheet ? true : false,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
       leading: suffixPop ? null : popButton,
       automaticallyImplyLeading: type == SheetType.page ? true : false,
       centerTitle: true,
@@ -244,8 +247,8 @@ class _AdaptiveSheetScaffoldState extends State<AdaptiveSheetScaffold> {
               width: handleSize.width,
               decoration: ShapeDecoration(
                 color: context.colorScheme.onSurfaceVariant,
-                shape: RoundedSuperellipseBorder(
-                  borderRadius: BorderRadius.circular(handleSize.height / 2),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
             ),

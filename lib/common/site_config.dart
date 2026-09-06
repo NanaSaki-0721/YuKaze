@@ -1,6 +1,8 @@
 class SiteConfig {
   static const String siteName = '';
 
+  static const int brandPrimaryColor = 0xFFDD4584;
+
   static const bool middlewareEnabled = true;
 
   static const String apiPrefix = '/api/v1';

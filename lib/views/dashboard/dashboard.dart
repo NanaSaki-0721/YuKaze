@@ -67,14 +67,20 @@ class _DashboardViewState extends ConsumerState<DashboardView>
         body: LayoutBuilder(
           builder: (_, constraints) {
             final controlWidth = isMobile
-                ? (constraints.maxWidth - 32) * 0.6
+                ? (constraints.maxWidth - 32) * 0.75
                 : (constraints.maxWidth / 3).clamp(240.0, 360.0);
+            final controlsBottom = isMobile
+                ? floatingDockBottomSpace + 8
+                : 32.0;
             return Stack(
               children: [
-                Center(
-                  child: Transform.translate(
-                    offset: Offset(0, isMobile ? -kToolbarHeight / 2 : 0),
-                    child: const _DashboardEntrance(
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: controlsBottom + 104,
+                  child: const Center(
+                    child: _DashboardEntrance(
                       duration: Duration(milliseconds: 420),
                       child: _CircularStartButton(),
                     ),
@@ -83,7 +89,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                 Positioned(
                   left: 0,
                   right: 0,
-                  bottom: isMobile ? floatingDockBottomSpace + 8 : 32,
+                  bottom: controlsBottom,
                   child: Center(
                     child: _DashboardEntrance(
                       duration: const Duration(milliseconds: 560),
@@ -106,6 +112,7 @@ class _CircularStartButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isStart = ref.watch(isStartProvider);
+    final runTime = ref.watch(runTimeProvider);
     final appLocalizations = context.appLocalizations;
     final foreground = isStart ? Colors.white : context.colorScheme.onSurface;
     return Column(
@@ -171,9 +178,41 @@ class _CircularStartButton extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 12),
-        Text(
-          isStart ? appLocalizations.panelTapStop : appLocalizations.panelTapStart,
-          style: context.textTheme.labelMedium?.toLight,
+        AnimatedSize(
+          duration: const Duration(milliseconds: 260),
+          curve: Curves.easeOutCubic,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 220),
+            switchInCurve: Curves.easeOutCubic,
+            switchOutCurve: Curves.easeInCubic,
+            transitionBuilder: (child, animation) {
+              return FadeTransition(
+                opacity: animation,
+                child: ScaleTransition(scale: animation, child: child),
+              );
+            },
+            child: isStart
+                ? Row(
+                    key: const ValueKey('running'),
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        appLocalizations.panelTapStop,
+                        style: context.textTheme.labelMedium?.toLight,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        utils.getTimeText(runTime),
+                        style: context.textTheme.labelMedium?.toLight,
+                      ),
+                    ],
+                  )
+                : Text(
+                    appLocalizations.panelTapStart,
+                    key: const ValueKey('stopped'),
+                    style: context.textTheme.labelMedium?.toLight,
+                  ),
+          ),
         ),
       ],
     );

@@ -882,6 +882,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "selected": MessageLookupByLibrary.simpleMessage("選択済み"),
     "selectedCountTitle": m23,
     "settings": MessageLookupByLibrary.simpleMessage("設定"),
+    "shop": MessageLookupByLibrary.simpleMessage("ショップ"),
     "show": MessageLookupByLibrary.simpleMessage("表示"),
     "shrink": MessageLookupByLibrary.simpleMessage("縮小"),
     "silentLaunch": MessageLookupByLibrary.simpleMessage("バックグラウンド起動"),

@@ -5,7 +5,6 @@ import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
 import 'package:fl_clash/views/panel/services.dart';
-import 'package:fl_clash/views/panel/shop.dart';
 import 'package:fl_clash/views/tools.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -689,13 +688,6 @@ class PanelHomeView extends ConsumerWidget {
             child: Card(
               child: Column(
                 children: [
-                  ListItem.open(
-                    leading: const Icon(Icons.storefront),
-                    title: Text(appLocalizations.panelShop),
-                    widget: const ShopView(),
-                    forceFull: false,
-                  ),
-                  const Divider(height: 0),
                   ListItem.open(
                     leading: const Icon(Icons.receipt_long),
                     title: Text(appLocalizations.panelOrders),

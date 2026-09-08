@@ -29,6 +29,32 @@ YuKaze 不提供代理节点或订阅服务。请仅在合法且获得授权的�
 
 不同版本和平台提供的文件不同，可能包括 Android APK、Windows 便携 ZIP 或安装包、macOS DMG 和 Linux 软件包。
 
+## 私有面板配置
+
+仓库不会提交面板地址、中间件 URL 或 AES 密钥。构建启用面板功能的发行版前，请在 `lib/common/site_config.dart` 中填入部署专用配置，并确保填入真实值的文件不会被提交到公开仓库。
+
+| 配置项 | 需要配置的场景 | 用途 |
+| --- | --- | --- |
+| `middlewareEnabled` | 始终 | 为 `true` 时经由中间件路由；为 `false` 时直接请求面板 API。 |
+| `middlewareHost` | `middlewareEnabled` 为 `true` | 私有中间件的 HTTPS 源站地址，不包含路由后缀。 |
+| `middlewarePath` | `middlewareEnabled` 为 `true` | 接收加密请求载荷的中间件路由前缀。 |
+| `aesKey` | `middlewareEnabled` 为 `true` | 客户端和中间件用于加密请求载荷的 AES 密钥。 |
+| `panelHost` | `middlewareEnabled` 为 `false` | 兼容面板 API 的 HTTPS 源站地址。 |
+| `apiPrefix` | `middlewareEnabled` 为 `false` | API 路径前缀，通常为 `/api/v1`。 |
+| `siteName` | 可选 | 面板界面显示的站点名称。 |
+| `globalUa` | 可选 | 订阅和面板请求使用的默认 User-Agent。 |
+
+本地请使用占位值，不要写入真实部署信息：
+
+```dart
+static const bool middlewareEnabled = true;
+static const String middlewareHost = 'https://middleware.example.com';
+static const String middlewarePath = '/private-route';
+static const String aesKey = '<private-aes-key>';
+```
+
+请勿在 issue、PR、发布说明、截图或提交中暴露真实中间件地址和 AES 密钥。公开构建可以保持这些字段为空，但必须在提供有效部署配置后才能使用面板请求。任何被编译进公开客户端的 AES 密钥都可以被提取，因此它只能用于请求载荷兼容或混淆，身份验证与授权必须由中间件执行。
+
 ## 从源码构建
 
 发布工作流使用 Flutter `3.44.4`。构建前请安装 Flutter、Go、Git 和对应平台依赖。

@@ -29,6 +29,32 @@ Download the latest release from [GitHub Releases](https://github.com/Hikazuki-N
 
 Release assets vary by tag and platform. They can include Android APKs, Windows portable ZIP or installer packages, macOS DMGs, and Linux packages.
 
+## Private Panel Configuration
+
+The repository intentionally contains no panel endpoint, middleware URL, or AES key. To build a panel-enabled distribution, configure `lib/common/site_config.dart` with deployment-specific values before building, and keep the configured file out of public commits.
+
+| Field | Required when | Purpose |
+| --- | --- | --- |
+| `middlewareEnabled` | Always | Selects middleware routing when `true`, or direct panel API routing when `false`. |
+| `middlewareHost` | `middlewareEnabled` is `true` | HTTPS origin of the private middleware, without the route suffix. |
+| `middlewarePath` | `middlewareEnabled` is `true` | Middleware route prefix that accepts the encrypted request payload. |
+| `aesKey` | `middlewareEnabled` is `true` | AES key used by the client and middleware to encrypt the request payload. |
+| `panelHost` | `middlewareEnabled` is `false` | HTTPS origin of the compatible panel API. |
+| `apiPrefix` | `middlewareEnabled` is `false` | API path prefix, normally `/api/v1`. |
+| `siteName` | Optional | Name displayed by the panel interface. |
+| `globalUa` | Optional | Default User-Agent for subscription and panel requests. |
+
+Use placeholders locally rather than publishing real deployment data:
+
+```dart
+static const bool middlewareEnabled = true;
+static const String middlewareHost = 'https://middleware.example.com';
+static const String middlewarePath = '/private-route';
+static const String aesKey = '<private-aes-key>';
+```
+
+Do not put real middleware endpoints or AES keys in issues, pull requests, release notes, screenshots, or commits. A public build can leave these fields empty, but panel requests will not work until valid deployment configuration is supplied. Any AES key compiled into a distributed client can be extracted, so use it only for request-payload compatibility or obfuscation; enforce authentication and authorization in the middleware.
+
 ## Build From Source
 
 The release workflow uses Flutter `3.44.4`. Install Flutter, Go, Git, and the platform prerequisites before building.

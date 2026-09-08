@@ -1,4 +1,4 @@
-package com.follow.clash.models
+package com.hikazuki.yukaze.models
 
 data class InstalledPackage(
     val packageName: String,

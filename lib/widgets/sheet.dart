@@ -72,6 +72,7 @@ Future<T?> showSheet<T>({
       backgroundColor: props.backgroundColor,
       constraints: BoxConstraints(maxWidth: props.maxWidth ?? 360),
       filter: props.blur ? commonFilter : null,
+      topInset: system.isDesktop && !system.isMacOS ? kToolbarHeight : 0,
       builder: (_) {
         return SheetProvider(
           type: SheetType.sideSheet,
@@ -98,6 +99,7 @@ Future<T?> showExtend<T>(
       context: context,
       constraints: BoxConstraints(maxWidth: props.maxWidth ?? 360),
       filter: props.blur ? commonFilter : null,
+      topInset: system.isDesktop && !system.isMacOS ? kToolbarHeight : 0,
       builder: (context) {
         return SheetProvider(
           type: SheetType.sideSheet,

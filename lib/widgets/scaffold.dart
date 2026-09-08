@@ -4,6 +4,7 @@ import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/widgets/pop_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'chip.dart';
 import 'inherited.dart';
@@ -215,7 +216,7 @@ class CommonScaffoldState extends State<CommonScaffold> {
 
   Widget _buildTitle(AppBarSearchState? startState) {
     final appLocalizations = context.appLocalizations;
-    return _isSearch
+    final title = _isSearch
         ? TextField(
             autofocus: true,
             controller: _textController,
@@ -235,23 +236,35 @@ class CommonScaffoldState extends State<CommonScaffold> {
                     '${_appBarState.value.editState?.editCount ?? 0}',
                   ),
           );
+    if (_isSearch || !system.isDesktop || system.isMacOS) {
+      return title;
+    }
+    return GestureDetector(
+      key: const Key('desktop-app-bar-drag-area'),
+      behavior: HitTestBehavior.translucent,
+      onPanStart: (_) {
+        windowManager.startDragging();
+      },
+      child: Align(alignment: Alignment.centerLeft, child: title),
+    );
   }
 
   List<Widget> _buildActions(bool hasSearch, List<Widget> actions) {
-    if (_isSearch) {
-      return genActions([
-        IconButton(onPressed: _handleClear, icon: const Icon(Icons.close)),
-      ]);
-    }
     return genActions([
-      if (hasSearch && widget.searchState?.autoAddSearch == true)
-        IconButton(
-          onPressed: () {
-            _updateSearchState((state) => state?.copyWith(query: ''));
-          },
-          icon: const Icon(Icons.search),
-        ),
-      ...actions,
+      if (_isSearch)
+        IconButton(onPressed: _handleClear, icon: const Icon(Icons.close))
+      else ...[
+        if (hasSearch && widget.searchState?.autoAddSearch == true)
+          IconButton(
+            onPressed: () {
+              _updateSearchState((state) => state?.copyWith(query: ''));
+            },
+            icon: const Icon(Icons.search),
+          ),
+        ...actions,
+      ],
+      if (system.isDesktop && !system.isMacOS)
+        const SizedBox(width: desktopWindowControlsWidth),
     ]);
   }
 
@@ -269,33 +282,39 @@ class CommonScaffoldState extends State<CommonScaffold> {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          widget.appBar ??
-              ValueListenableBuilder<AppBarState>(
-                valueListenable: _appBarState,
-                builder: (_, state, _) {
-                  return _buildAppBarWrap(
-                    AppBar(
-                      automaticallyImplyLeading: backAction != null
-                          ? false
-                          : true,
-                      animateColor: true,
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                      scrolledUnderElevation: 0,
-                      surfaceTintColor: Colors.transparent,
-                      centerTitle: widget.centerTitle ?? false,
-                      leading: _buildLeading(backAction),
-                      title: _buildTitle(state.searchState),
-                      actions: _buildActions(
-                        state.searchState != null,
-                        state.actions.isNotEmpty
-                            ? state.actions
-                            : widget.actions ?? [],
+          widget.appBar == null
+              ? ValueListenableBuilder<AppBarState>(
+                  valueListenable: _appBarState,
+                  builder: (_, state, _) {
+                    return _buildAppBarWrap(
+                      AppBar(
+                        automaticallyImplyLeading: backAction != null
+                            ? false
+                            : true,
+                        animateColor: true,
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                        scrolledUnderElevation: 0,
+                        surfaceTintColor: Colors.transparent,
+                        centerTitle: widget.centerTitle ?? false,
+                        leading: _buildLeading(backAction),
+                        title: _buildTitle(state.searchState),
+                        actions: _buildActions(
+                          state.searchState != null,
+                          state.actions.isNotEmpty
+                              ? state.actions
+                              : widget.actions ?? [],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                )
+              : Padding(
+                  padding: system.isDesktop && !system.isMacOS
+                      ? const EdgeInsets.only(right: desktopWindowControlsWidth)
+                      : EdgeInsets.zero,
+                  child: widget.appBar,
+                ),
           ValueListenableBuilder(
             valueListenable: _loadingNotifier,
             builder: (_, value, _) {
@@ -382,16 +401,16 @@ class CommonScaffoldState extends State<CommonScaffold> {
       floatingActionButton: !isTV && widget.floatingActionButton != null
           ? ValueListenableBuilder<bool>(
               valueListenable: _isFabExtendedNotifier,
-               builder: (_, isExtended, child) {
-                 return CommonScaffoldFabExtendedProvider(
-                   isExtended: isExtended,
-                   child: Padding(
-                     padding: EdgeInsets.only(
-                       bottom: isMobileView ? floatingDockBottomSpace : 0,
-                     ),
-                     child: child!,
-                   ),
-                 );
+              builder: (_, isExtended, child) {
+                return CommonScaffoldFabExtendedProvider(
+                  isExtended: isExtended,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: isMobileView ? floatingDockBottomSpace : 0,
+                    ),
+                    child: child!,
+                  ),
+                );
               },
               child: widget.floatingActionButton,
             )

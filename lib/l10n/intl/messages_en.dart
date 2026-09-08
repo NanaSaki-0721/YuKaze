@@ -452,7 +452,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Do you want to cache the changes?",
     ),
     "helperCorruptTip": MessageLookupByLibrary.simpleMessage(
-      "Helper service unavailable; TUN mode cannot be enabled. Reinstall FlClash to restore it.",
+      "Helper service unavailable; TUN mode cannot be enabled. Reinstall YuKaze to restore it.",
     ),
     "hideFromList": MessageLookupByLibrary.simpleMessage("Hide from list"),
     "host": MessageLookupByLibrary.simpleMessage("Host"),
@@ -663,6 +663,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "panelAgreeTerms": MessageLookupByLibrary.simpleMessage(
       "I have read and agree to the Terms of Service",
     ),
+    "panelAgreeTermsPrefix": MessageLookupByLibrary.simpleMessage(
+      "I have read and agree to the ",
+    ),
+    "panelAgreeTermsSuffix": MessageLookupByLibrary.simpleMessage("."),
     "panelBuy": MessageLookupByLibrary.simpleMessage("Buy"),
     "panelCancelOrderConfirm": MessageLookupByLibrary.simpleMessage(
       "Cancel this order?",
@@ -773,6 +777,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "panelPlanDevices": MessageLookupByLibrary.simpleMessage("Devices"),
     "panelPlanTraffic": MessageLookupByLibrary.simpleMessage("Traffic"),
     "panelRegister": MessageLookupByLibrary.simpleMessage("Register"),
+    "panelRenew": MessageLookupByLibrary.simpleMessage("Renew"),
     "panelSelectNode": MessageLookupByLibrary.simpleMessage("Select node"),
     "panelSendCode": MessageLookupByLibrary.simpleMessage("Send code"),
     "panelShop": MessageLookupByLibrary.simpleMessage("Shop"),

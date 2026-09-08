@@ -1,14 +1,14 @@
-display_name: FlClash
+display_name: YuKaze
 
 icon: ./assets/images/icon.png
 
 keywords:
-  - FlClash
+  - YuKaze
   - Clash
   - ClashMeta
   - Proxy
 
-generic_name: FlClash
+generic_name: YuKaze
 
 categories:
   - Network

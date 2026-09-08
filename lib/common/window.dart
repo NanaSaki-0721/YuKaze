@@ -1,10 +1,28 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/models/config.dart';
 import 'package:flutter/material.dart';
 import 'package:screen_retriever/screen_retriever.dart';
 import 'package:window_manager/window_manager.dart';
+
+const windowsWindowAspectRatio = 4 / 3;
+const preferredWindowsWindowSize = Size(960, 720);
+
+Size responsiveWindowsWindowSize(Size availableSize) {
+  if (availableSize.isEmpty) {
+    return preferredWindowsWindowSize;
+  }
+  final width = min(
+    preferredWindowsWindowSize.width,
+    min(
+      availableSize.width * 0.9,
+      availableSize.height * 0.82 * windowsWindowAspectRatio,
+    ),
+  );
+  return Size(width, width / windowsWindowAspectRatio);
+}
 
 class Window {
   static Window? _instance;
@@ -27,36 +45,55 @@ class Window {
       protocol.register('flclash');
     }
     await windowManager.ensureInitialized();
+    final isFixedWindowsWindow = system.isWindows;
+    final windowSize = isFixedWindowsWindow
+        ? await _getWindowsWindowSize()
+        : props.size;
     final WindowOptions windowOptions = WindowOptions(
-      size: props.size,
-      minimumSize: const Size(380, 400),
+      size: windowSize,
+      minimumSize: isFixedWindowsWindow ? windowSize : const Size(380, 400),
+      maximumSize: isFixedWindowsWindow ? windowSize : null,
+      title: appName,
     );
     if (!system.isMacOS || version > 10) {
       await windowManager.setTitleBarStyle(TitleBarStyle.hidden);
     }
-    await windowManager.setMaximizable(true);
-    await _windowPosition(props);
+    await windowManager.setMaximizable(!isFixedWindowsWindow);
+    if (isFixedWindowsWindow) {
+      await windowManager.setResizable(true);
+    }
+    await _windowPosition(props, windowSize);
     await windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.setPreventClose(true);
     });
   }
 
-  Future<void> _windowPosition(WindowProps props) async {
+  Future<Size> _getWindowsWindowSize() async {
+    try {
+      final display = await screenRetriever.getPrimaryDisplay();
+      return responsiveWindowsWindowSize(display.visibleSize ?? display.size);
+    } catch (_) {
+      return preferredWindowsWindowSize;
+    }
+  }
+
+  Future<void> _windowPosition(WindowProps props, Size windowSize) async {
     if (!system.isMacOS) {
       final left = props.left ?? 0;
       final top = props.top ?? 0;
-      final right = left + props.width;
-      final bottom = top + props.height;
+      final right = left + windowSize.width;
+      final bottom = top + windowSize.height;
       if (left == 0 && top == 0) {
         await windowManager.setAlignment(Alignment.center);
       } else {
         final displays = await screenRetriever.getAllDisplays();
         final isPositionValid = displays.any((display) {
+          final displayPosition = display.visiblePosition ?? Offset.zero;
           final displayBounds = Rect.fromLTWH(
-            display.visiblePosition!.dx,
-            display.visiblePosition!.dy,
-            display.size.width,
-            display.size.height,
+            displayPosition.dx,
+            displayPosition.dy,
+            (display.visibleSize ?? display.size).width,
+            (display.visibleSize ?? display.size).height,
           );
           return displayBounds.contains(Offset(left, top)) ||
               displayBounds.contains(Offset(right, bottom));

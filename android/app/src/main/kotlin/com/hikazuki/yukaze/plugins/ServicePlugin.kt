@@ -1,9 +1,10 @@
-package com.follow.clash.plugins
+package com.hikazuki.yukaze.plugins
 
-import com.follow.clash.ServiceController
-import com.follow.clash.ServiceState
+import com.hikazuki.yukaze.ServiceController
+import com.hikazuki.yukaze.ServiceState
 import com.follow.clash.common.Components
-import com.follow.clash.models.SharedState
+import com.follow.clash.common.GlobalState
+import com.hikazuki.yukaze.models.SharedState
 import com.google.gson.Gson
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -94,11 +95,13 @@ class ServicePlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
     }
 
     private fun start(result: MethodChannel.Result) {
+        GlobalState.log("Submitting background service start request")
         ServiceState.requestStart()
         result.success(true)
     }
 
     private fun stop(result: MethodChannel.Result) {
+        GlobalState.log("Submitting background service stop request")
         ServiceState.requestStop()
         result.success(true)
     }

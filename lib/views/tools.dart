@@ -17,7 +17,6 @@ import 'package:path/path.dart' show dirname, join;
 
 import 'config/advanced.dart';
 import 'developer.dart';
-import 'theme.dart';
 
 class ToolsView extends StatelessWidget {
   const ToolsView({super.key});
@@ -68,10 +67,7 @@ class ToolsList extends ConsumerWidget {
     );
   }
 
-  List<Widget> _getOtherList(
-    BuildContext context,
-    bool enableDeveloperMode,
-  ) {
+  List<Widget> _getOtherList(BuildContext context, bool enableDeveloperMode) {
     return generateSection(
       title: context.appLocalizations.other,
       items: [
@@ -86,7 +82,7 @@ class ToolsList extends ConsumerWidget {
       title: context.appLocalizations.settings,
       items: [
         const _LocaleItem(),
-        const _ThemeItem(),
+        const _ThemeModeItem(),
         if (system.isDesktop) const _HotkeyItem(),
         if (system.isWindows) const _LoopbackItem(),
         if (system.isAndroid) const _AccessItem(),
@@ -165,16 +161,38 @@ class _LocaleItem extends ConsumerWidget {
   }
 }
 
-class _ThemeItem extends StatelessWidget {
-  const _ThemeItem();
+class _ThemeModeItem extends ConsumerWidget {
+  const _ThemeModeItem();
 
   @override
-  Widget build(BuildContext context) {
-    return ListItem.open(
-      leading: const Icon(Icons.style),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(
+      themeSettingProvider.select((state) => state.themeMode),
+    );
+    final isLight = switch (themeMode) {
+      ThemeMode.light => true,
+      ThemeMode.dark => false,
+      ThemeMode.system =>
+        MediaQuery.platformBrightnessOf(context) == Brightness.light,
+    };
+    return ListItem.toggle(
+      leading: Icon(isLight ? Icons.light_mode : Icons.dark_mode),
       title: Text(context.appLocalizations.theme),
-      subtitle: Text(context.appLocalizations.themeDesc),
-      widget: const ThemeView(),
+      subtitle: Text(
+        isLight
+            ? context.appLocalizations.light
+            : context.appLocalizations.dark,
+      ),
+      value: isLight,
+      onChanged: (value) {
+        ref
+            .read(themeSettingProvider.notifier)
+            .update(
+              (state) => state.copyWith(
+                themeMode: value ? ThemeMode.light : ThemeMode.dark,
+              ),
+            );
+      },
     );
   }
 }

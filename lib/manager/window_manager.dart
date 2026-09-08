@@ -121,13 +121,8 @@ class WindowHeaderContainer extends StatelessWidget {
         }
         return Stack(
           children: [
-            Column(
-              children: [
-                SizedBox(height: kHeaderHeight),
-                Expanded(flex: 1, child: child!),
-              ],
-            ),
-            const WindowHeader(),
+            Positioned.fill(child: child!),
+            const Positioned.fill(child: WindowHeader()),
           ],
         );
       },
@@ -144,7 +139,6 @@ class WindowHeader extends StatefulWidget {
 }
 
 class _WindowHeaderState extends State<WindowHeader> {
-  final isMaximizedNotifier = ValueNotifier<bool>(false);
   final isPinNotifier = ValueNotifier<bool>(false);
 
   @override
@@ -154,34 +148,13 @@ class _WindowHeaderState extends State<WindowHeader> {
   }
 
   Future<void> _initNotifier() async {
-    isMaximizedNotifier.value = await windowManager.isMaximized();
     isPinNotifier.value = await windowManager.isAlwaysOnTop();
   }
 
   @override
   void dispose() {
-    isMaximizedNotifier.dispose();
     isPinNotifier.dispose();
     super.dispose();
-  }
-
-  Future<void> _updateMaximized() async {
-    final isMaximized = await windowManager.isMaximized();
-    if (isMaximized) {
-      await windowManager.unmaximize();
-      if (system.isWindows) {
-        windowExtManager.setWindowCornerPreference(round: true);
-      }
-    } else {
-      await windowManager.maximize();
-      if (system.isWindows) {
-        windowExtManager.setWindowCornerPreference(round: false);
-      }
-    }
-    final res = await windowManager.isMaximized();
-    if (mounted) {
-      isMaximizedNotifier.value = res;
-    }
   }
 
   Future<void> _updatePin() async {
@@ -192,10 +165,16 @@ class _WindowHeaderState extends State<WindowHeader> {
 
   Widget _buildActions() {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
+          constraints: const BoxConstraints.tightFor(
+            width: 40,
+            height: kToolbarHeight,
+          ),
+          padding: EdgeInsets.zero,
           onPressed: () async {
-            _updatePin();
+            await _updatePin();
           },
           icon: ValueListenableBuilder(
             valueListenable: isPinNotifier,
@@ -206,32 +185,29 @@ class _WindowHeaderState extends State<WindowHeader> {
             },
           ),
         ),
-        IconButton(
-          onPressed: () {
-            windowManager.minimize();
-          },
-          icon: const Icon(Icons.remove),
-        ),
-        IconButton(
-          onPressed: () async {
-            _updateMaximized();
-          },
-          icon: ValueListenableBuilder(
-            valueListenable: isMaximizedNotifier,
-            builder: (_, value, _) {
-              return value
-                  ? const Icon(Icons.filter_none, size: 20)
-                  : const Icon(Icons.crop_square);
+        SizedBox(
+          width: 46,
+          height: kToolbarHeight,
+          child: WindowCaptionButton.minimize(
+            key: const Key('window-minimize-button'),
+            brightness: Theme.of(context).brightness,
+            onPressed: () {
+              windowManager.minimize();
             },
           ),
         ),
-        IconButton(
-          onPressed: () {
-            globalState.container
-                .read(systemActionProvider.notifier)
-                .handleClose();
-          },
-          icon: const Icon(Icons.close),
+        SizedBox(
+          width: 46,
+          height: kToolbarHeight,
+          child: WindowCaptionButton.close(
+            key: const Key('window-close-button'),
+            brightness: Theme.of(context).brightness,
+            onPressed: () {
+              globalState.container
+                  .read(systemActionProvider.notifier)
+                  .handleClose();
+            },
+          ),
         ),
       ],
     );
@@ -240,28 +216,25 @@ class _WindowHeaderState extends State<WindowHeader> {
   @override
   Widget build(BuildContext context) {
     return Material(
+      type: MaterialType.transparency,
       child: Stack(
-        alignment: AlignmentDirectional.center,
         children: [
           Positioned(
+            top: 0,
+            left: 0,
+            width: 220,
             child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
               onPanStart: (_) {
                 windowManager.startDragging();
               },
-              onDoubleTap: () {
-                _updateMaximized();
-              },
-              child: Container(
-                color: context.colorScheme.secondary.opacity15,
-                alignment: Alignment.centerLeft,
-                height: kHeaderHeight,
-              ),
+              child: Container(height: kHeaderHeight),
             ),
           ),
           if (system.isMacOS)
             const Text(appName)
           else ...[
-            Positioned(right: 0, child: _buildActions()),
+            Positioned(top: 0, right: 0, child: _buildActions()),
           ],
         ],
       ),

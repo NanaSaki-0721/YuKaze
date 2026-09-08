@@ -146,6 +146,20 @@ void main() {
   });
 
   group('WindowProps JSON round-trip', () {
+    test('responsive Windows size preserves the desktop aspect ratio', () {
+      final size = responsiveWindowsWindowSize(const Size(1920, 1080));
+
+      expect(size, const Size(960, 720));
+      expect(size.aspectRatio, windowsWindowAspectRatio);
+    });
+
+    test('responsive Windows size fits a smaller display', () {
+      final size = responsiveWindowsWindowSize(const Size(1024, 768));
+
+      expect(size.width, closeTo(839.7, 0.1));
+      expect(size.height, closeTo(629.8, 0.1));
+    });
+
     test('default values', () {
       const props = WindowProps();
       expect(props.width, 0);

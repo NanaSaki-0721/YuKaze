@@ -1,139 +1,92 @@
-<div>
+# YuKaze
 
-[**简体中文**](README_zh_CN.md)
+[简体中文](README_zh_CN.md)
 
-</div>
+[![Release](https://img.shields.io/github/v/release/Hikazuki-Network/YuKaze?display_name=tag&sort=semver&style=flat-square)](https://github.com/Hikazuki-Network/YuKaze/releases)
+[![Downloads](https://img.shields.io/github/downloads/Hikazuki-Network/YuKaze/total?style=flat-square)](https://github.com/Hikazuki-Network/YuKaze/releases)
+[![License](https://img.shields.io/github/license/Hikazuki-Network/YuKaze?style=flat-square)](LICENSE)
 
-## FlClash
+YuKaze is an open-source, multi-platform proxy client powered by [Mihomo](https://github.com/MetaCubeX/mihomo). It provides a unified interface for managing proxy profiles, subscriptions, rules, and runtime status on Android, Windows, macOS, and Linux.
 
-[![Downloads](https://img.shields.io/github/downloads/chen08209/FlClash/total?style=flat-square&logo=github)](https://github.com/chen08209/FlClash/releases/)[![Last Version](https://img.shields.io/github/release/chen08209/FlClash/all.svg?style=flat-square)](https://github.com/chen08209/FlClash/releases/)[![License](https://img.shields.io/github/license/chen08209/FlClash?style=flat-square)](LICENSE)
+YuKaze does not provide proxy nodes or subscription services. Use profiles and subscriptions only where they are lawful and authorized.
 
-[![Channel](https://img.shields.io/badge/Telegram-Channel-blue?style=flat-square&logo=telegram)](https://t.me/FlClash)
+## Highlights
 
-A multi-platform proxy client based on ClashMeta, simple and easy to use, open-source and ad-free.
+- Cross-platform support for Android, Windows, macOS, and Linux.
+- Profile, subscription, proxy-group, and provider management.
+- Proxy delay testing, connection and traffic views, and runtime logs.
+- Rule, script, and override configuration tools.
+- Adaptive Material 3 interface with light and dark themes.
+- WebDAV backup and restore.
+- Desktop system-proxy, tray, and hotkey integration where supported.
+- Android VPN mode and Windows elevated-helper support for TUN workflows.
 
-on Desktop:
-<p style="text-align: center;">
-    <img alt="desktop" src="snapshots/desktop.gif">
-</p>
-
-on Mobile:
-<p style="text-align: center;">
-    <img alt="mobile" src="snapshots/mobile.gif">
-</p>
-
-## Features
-
-✈️ Multi-platform: Android, Windows, macOS and Linux
-
-💻 Adaptive multiple screen sizes, Multiple color themes available
-
-💡 Based on Material You Design, [Surfboard](https://github.com/getsurfboard/surfboard)-like UI
-
-☁️ Supports data sync via WebDAV
-
-✨ Support subscription link, Dark mode
-
-## Use
-
-### Linux
-
-⚠️ Make sure to install the following dependencies before using them
-
-   ```bash
-    sudo apt-get install libayatana-appindicator3-dev
-    sudo apt-get install libkeybinder-3.0-dev
-   ```
-
-### Android
-
-Support the following actions
-
-   ```bash
-    com.follow.clash.action.START
-    
-    com.follow.clash.action.STOP
-    
-    com.follow.clash.action.TOGGLE
-   ```
+Platform integrations and permission requirements vary by operating system.
 
 ## Download
 
-<a href="https://chen08209.github.io/FlClash-fdroid-repo/repo?fingerprint=789D6D32668712EF7672F9E58DEEB15FBD6DCEEC5AE7A4371EA72F2AAE8A12FD"><img alt="Get it on F-Droid" src="snapshots/get-it-on-fdroid.svg" width="200px"/></a> <a href="https://github.com/chen08209/FlClash/releases"><img alt="Get it on GitHub" src="snapshots/get-it-on-github.svg" width="200px"/></a>
+Download the latest release from [GitHub Releases](https://github.com/Hikazuki-Network/YuKaze/releases).
 
-### Homebrew
+Release assets vary by tag and platform. They can include Android APKs, Windows portable ZIP or installer packages, macOS DMGs, and Linux packages.
+
+## Build From Source
+
+The release workflow uses Flutter `3.44.4`. Install Flutter, Go, Git, and the platform prerequisites before building.
 
 ```bash
-brew tap chen08209/tap
-brew install --cask flclash
+git clone --recurse-submodules https://github.com/Hikazuki-Network/YuKaze.git
+cd YuKaze
+flutter pub get
 ```
 
-## Build
+### Windows
 
-1. Update submodules
-   ```bash
-   git submodule update --init --recursive
-   ```
+Use a Windows Flutter desktop toolchain, Rust/Cargo, and Inno Setup when producing an installer.
 
-2. Install `Flutter` and `Golang` environment
+```bash
+dart setup.dart windows
+```
 
-3. Build Application
+### Android
 
-    - android
+Install the Android SDK and NDK, set `ANDROID_NDK`, then run:
 
-        1. Install `Android SDK`, `Android NDK`
+```bash
+dart setup.dart android
+```
 
-        2. Set `ANDROID_NDK` environment variable
+### Linux
 
-        3. Run build script
+Install the desktop dependencies, then run:
 
-           ```bash
-           dart setup.dart android
-           ```
+```bash
+sudo apt-get install -y libayatana-appindicator3-dev libkeybinder-3.0-dev
+dart setup.dart linux
+```
 
-    - windows
+### macOS
 
-        1. Requires a Windows client
+```bash
+dart setup.dart macos
+```
 
-        2. Install `GCC`, `Inno Setup`
+## Development Checks
 
-        3. Run build script
+```bash
+flutter analyze --no-fatal-infos
+flutter test --reporter expanded
+```
 
-           ```bash
-           dart setup.dart windows
-           ```
+See [AGENTS.md](AGENTS.md) and `.agents/commands.md` for repository-specific build and verification guidance.
 
-    - linux
+## Contributing
 
-        1. Requires a Linux client
+Report bugs and propose improvements through [GitHub Issues](https://github.com/Hikazuki-Network/YuKaze/issues). Before opening an issue, search existing reports and include the YuKaze version, operating system, reproduction steps, and relevant logs.
 
-        2. Dependencies are auto-installed by setup script, or manually:
-           ```bash
-           sudo apt-get install -y libayatana-appindicator3-dev libkeybinder-3.0-dev
-           ```
+## Acknowledgements
 
-        3. Run build script
+YuKaze builds on the work of [Mihomo](https://github.com/MetaCubeX/mihomo) and the [FlClash](https://github.com/chen08209/FlClash) project.
 
-           ```bash
-           dart setup.dart linux
-           ```
+## License
 
-    - macOS
-
-        1. Requires a macOS client
-
-        2. Run build script
-
-           ```bash
-           dart setup.dart macos
-           ```
-
-## Star
-
-The easiest way to support developers is to click on the star (⭐) at the top of the page.
-
-<p style="text-align: center;">
-    <a href="https://api.star-history.com/svg?repos=chen08209/FlClash&Date">
-        <img alt="start" width=50% src="https://api.star-history.com/svg?repos=chen08209/FlClash&Date"/>
-    </a>
-</p>
+YuKaze is licensed under the [GNU General Public License v3.0](LICENSE).

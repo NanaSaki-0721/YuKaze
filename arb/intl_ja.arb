@@ -441,7 +441,7 @@
   "expectedStatus": "期待されるステータス",
   "selectProxies": "プロキシを選択",
   "inputProxyGroupName": "プロキシグループ名を入力",
-  "helperCorruptTip": "Helper サービスが利用できないため、TUN モードを有効にできません。再インストールしてください。",
+  "helperCorruptTip": "Helper サービスが利用できないため、TUN モードを有効にできません。YuKaze を再インストールしてください。",
   "hideFromList": "リストから隠す",
   "testWhenUsed": "使用時にテスト",
   "disableUDP": "UDPを無効化",
@@ -582,6 +582,8 @@
   "panelInviteCodeRequired": "招待コードを入力してください",
   "panelMustAgreeToTerms": "利用規約に同意してください",
   "panelAgreeTerms": "利用規約を読み、同意します",
+  "panelAgreeTermsPrefix": "私は",
+  "panelAgreeTermsSuffix": "を読み、同意します",
   "panelTermsOfService": "利用規約",
   "panelOrders": "注文照会",
   "panelTickets": "チケット",
@@ -646,5 +648,6 @@
   "authSplitLoginSubtitle": "ログインして接続ダッシュボードへ進みます。",
   "authSplitRegisterSubtitle": "アカウントを作成してサブスクリプションを開始します。",
   "panelCancelOrderConfirm": "この注文をキャンセルしますか？",
-  "panelCopyLink": "リンクをコピー"
+  "panelCopyLink": "リンクをコピー",
+  "panelRenew": "更新"
 }

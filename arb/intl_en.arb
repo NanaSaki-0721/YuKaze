@@ -441,7 +441,7 @@
   "expectedStatus": "Expected status",
   "selectProxies": "Select proxies",
   "inputProxyGroupName": "Input proxy group name",
-  "helperCorruptTip": "Helper service unavailable; TUN mode cannot be enabled. Reinstall FlClash to restore it.",
+  "helperCorruptTip": "Helper service unavailable; TUN mode cannot be enabled. Reinstall YuKaze to restore it.",
   "hideFromList": "Hide from list",
   "testWhenUsed": "Test when used",
   "disableUDP": "Disable UDP",
@@ -582,6 +582,8 @@
   "panelInviteCodeRequired": "Invite code is required",
   "panelMustAgreeToTerms": "Please agree to the terms first",
   "panelAgreeTerms": "I have read and agree to the Terms of Service",
+  "panelAgreeTermsPrefix": "I have read and agree to the ",
+  "panelAgreeTermsSuffix": ".",
   "panelTermsOfService": "Terms of Service",
   "panelOrders": "Orders",
   "panelTickets": "Tickets",
@@ -646,5 +648,6 @@
   "authSplitLoginSubtitle": "Sign in to continue to your connection dashboard.",
   "authSplitRegisterSubtitle": "Create an account to start your subscription.",
   "panelCancelOrderConfirm": "Cancel this order?",
-  "panelCopyLink": "Copy link"
+  "panelCopyLink": "Copy link",
+  "panelRenew": "Renew"
 }

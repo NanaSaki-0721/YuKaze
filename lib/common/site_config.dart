@@ -9,11 +9,11 @@ class SiteConfig {
 
   static const String panelHost = '';
 
-  static const String middlewareHost = 'https://games-mw.0721888.xyz';
+  static const String middlewareHost = '';
 
-  static const String middlewarePath = '/games/0721';
+  static const String middlewarePath = '';
 
-  static const String aesKey = '2c79b8a7800a7cc8';
+  static const String aesKey = '';
 
   static const String globalUa = '';
 

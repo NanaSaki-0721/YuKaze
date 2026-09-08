@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:animations/animations.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:fl_clash/common/theme.dart';
 import 'package:fl_clash/widgets/dialog.dart';
@@ -265,15 +264,19 @@ class GlobalState {
     bool? dismissible,
     bool filter = true,
   }) async {
-    return showModal<T>(
-      useRootNavigator: false,
-      context: context ?? globalState.navigatorKey.currentContext!,
-      configuration: FadeScaleTransitionConfiguration(
+    final dialogContext = context ?? globalState.navigatorKey.currentContext!;
+    final localizations = MaterialLocalizations.of(dialogContext);
+    return Navigator.of(dialogContext).push<T>(
+      CommonDialogRoute<T>(
+        builder: (_) => child,
         barrierColor: Colors.black38,
         barrierDismissible: dismissible ?? true,
+        barrierLabel: localizations.modalBarrierDismissLabel,
+        transitionDuration: const Duration(milliseconds: 150),
+        reverseTransitionDuration: const Duration(milliseconds: 75),
+        filter: filter ? commonFilter : null,
+        topInset: system.isDesktop && !system.isMacOS ? kToolbarHeight : 0,
       ),
-      builder: (_) => child,
-      filter: filter ? commonFilter : null,
     );
   }
 

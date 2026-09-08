@@ -257,7 +257,7 @@ Map<String, dynamic> _$TextScaleToJson(_TextScale instance) =>
     <String, dynamic>{'enable': instance.enable, 'scale': instance.scale};
 
 _ThemeProps _$ThemePropsFromJson(Map<String, dynamic> json) => _ThemeProps(
-  primaryColor: (json['primaryColor'] as num?)?.toInt(),
+  primaryColor: (json['primaryColor'] as num?)?.toInt() ?? 0XFFDD4584,
   primaryColors:
       (json['primaryColors'] as List<dynamic>?)
           ?.map((e) => (e as num).toInt())

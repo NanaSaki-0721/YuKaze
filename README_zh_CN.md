@@ -1,139 +1,92 @@
-<div>
+# YuKaze
 
-[**English**](README.md)
+[English](README.md)
 
-</div>
+[![Release](https://img.shields.io/github/v/release/Hikazuki-Network/YuKaze?display_name=tag&sort=semver&style=flat-square)](https://github.com/Hikazuki-Network/YuKaze/releases)
+[![Downloads](https://img.shields.io/github/downloads/Hikazuki-Network/YuKaze/total?style=flat-square)](https://github.com/Hikazuki-Network/YuKaze/releases)
+[![License](https://img.shields.io/github/license/Hikazuki-Network/YuKaze?style=flat-square)](LICENSE)
 
-## FlClash
+YuKaze 是基于 [Mihomo](https://github.com/MetaCubeX/mihomo) 的开源多平台代理客户端，可在 Android、Windows、macOS 和 Linux 上统一管理代理配置、订阅、规则与运行状态。
 
-[![Downloads](https://img.shields.io/github/downloads/chen08209/FlClash/total?style=flat-square&logo=github)](https://github.com/chen08209/FlClash/releases/)[![Last Version](https://img.shields.io/github/release/chen08209/FlClash/all.svg?style=flat-square)](https://github.com/chen08209/FlClash/releases/)[![License](https://img.shields.io/github/license/chen08209/FlClash?style=flat-square)](LICENSE)
+YuKaze 不提供代理节点或订阅服务。请仅在合法且获得授权的场景中使用配置与订阅。
 
-[![Channel](https://img.shields.io/badge/Telegram-Channel-blue?style=flat-square&logo=telegram)](https://t.me/FlClash)
+## 功能
 
-基于ClashMeta的多平台代理客户端，简单易用，开源无广告。
+- 支持 Android、Windows、macOS 和 Linux。
+- 管理配置文件、订阅、代理组和 Provider。
+- 提供代理延迟测试、连接与流量视图、运行日志。
+- 支持规则、脚本与覆写配置工具。
+- 自适应 Material 3 界面，支持浅色和深色主题。
+- 支持 WebDAV 备份与恢复。
+- 在支持的平台提供桌面系统代理、托盘和全局快捷键集成。
+- 支持 Android VPN 模式，以及 Windows 通过提权 Helper 使用 TUN 的工作流。
 
-on Desktop:
-<p style="text-align: center;">
-    <img alt="desktop" src="snapshots/desktop.gif">
-</p>
+不同操作系统上的系统集成和权限要求有所差异。
 
-on Mobile:
-<p style="text-align: center;">
-    <img alt="mobile" src="snapshots/mobile.gif">
-</p>
+## 下载
 
-## Features
+请从 [GitHub Releases](https://github.com/Hikazuki-Network/YuKaze/releases) 下载最新版本。
 
-✈️ 多平台: Android, Windows, macOS and Linux
+不同版本和平台提供的文件不同，可能包括 Android APK、Windows 便携 ZIP 或安装包、macOS DMG 和 Linux 软件包。
 
-💻 自适应多个屏幕尺寸,多种颜色主题可供选择
+## 从源码构建
 
-💡 基本 Material You 设计, 类[Surfboard](https://github.com/getsurfboard/surfboard)用户界面
+发布工作流使用 Flutter `3.44.4`。构建前请安装 Flutter、Go、Git 和对应平台依赖。
 
-☁️ 支持通过WebDAV同步数据
+```bash
+git clone --recurse-submodules https://github.com/Hikazuki-Network/YuKaze.git
+cd YuKaze
+flutter pub get
+```
 
-✨ 支持一键导入订阅, 深色模式
+### Windows
 
-## Use
+请准备 Flutter Windows 桌面开发工具链、Rust/Cargo；如需生成安装器，还需要 Inno Setup。
 
-### Linux
-
-⚠️ 使用前请确保安装以下依赖
-
-   ```bash
-    sudo apt-get install libayatana-appindicator3-dev
-    sudo apt-get install libkeybinder-3.0-dev
-   ```
+```bash
+dart setup.dart windows
+```
 
 ### Android
 
-支持下列操作
-
-   ```bash
-    com.follow.clash.action.START
-    
-    com.follow.clash.action.STOP
-    
-    com.follow.clash.action.TOGGLE
-   ```
-
-## Download
-
-<a href="https://chen08209.github.io/FlClash-fdroid-repo/repo?fingerprint=789D6D32668712EF7672F9E58DEEB15FBD6DCEEC5AE7A4371EA72F2AAE8A12FD"><img alt="Get it on F-Droid" src="snapshots/get-it-on-fdroid.svg" width="200px"/></a> <a href="https://github.com/chen08209/FlClash/releases"><img alt="Get it on GitHub" src="snapshots/get-it-on-github.svg" width="200px"/></a>
-
-### Homebrew
+安装 Android SDK 和 NDK，设置 `ANDROID_NDK` 后运行：
 
 ```bash
-brew tap chen08209/tap
-brew install --cask flclash
+dart setup.dart android
 ```
 
-## Build
+### Linux
 
-1. 更新 submodules
-   ```bash
-   git submodule update --init --recursive
-   ```
+安装桌面端依赖后运行：
 
-2. 安装 `Flutter` 以及 `Golang` 环境
+```bash
+sudo apt-get install -y libayatana-appindicator3-dev libkeybinder-3.0-dev
+dart setup.dart linux
+```
 
-3. 构建应用
+### macOS
 
-    - android
+```bash
+dart setup.dart macos
+```
 
-        1. 安装  `Android SDK` ,  `Android NDK`
+## 开发验证
 
-        2. 设置 `ANDROID_NDK` 环境变量
+```bash
+flutter analyze --no-fatal-infos
+flutter test --reporter expanded
+```
 
-        3. 运行构建脚本
+仓库专用的构建与验证说明见 [AGENTS.md](AGENTS.md) 和 `.agents/commands.md`。
 
-           ```bash
-           dart setup.dart android
-           ```
+## 贡献与反馈
 
-    - windows
+请通过 [GitHub Issues](https://github.com/Hikazuki-Network/YuKaze/issues) 提交问题和建议。提交前请搜索已有 issue，并附上 YuKaze 版本、操作系统、复现步骤和相关日志。
 
-        1. 你需要一个windows客户端
+## 致谢
 
-        2. 安装 `GCC`，`Inno Setup`
+YuKaze 基于 [Mihomo](https://github.com/MetaCubeX/mihomo) 和 [FlClash](https://github.com/chen08209/FlClash) 项目的工作构建。
 
-        3. 运行构建脚本
+## 许可证
 
-           ```bash
-           dart setup.dart windows
-           ```
-
-    - linux
-
-        1. 你需要一个linux客户端
-
-        2. 依赖会由 setup 脚本自动安装，也可以手动安装：
-           ```bash
-           sudo apt-get install -y libayatana-appindicator3-dev libkeybinder-3.0-dev
-           ```
-
-        3. 运行构建脚本
-
-           ```bash
-           dart setup.dart linux
-           ```
-
-    - macOS
-
-        1. 你需要一个macOS客户端
-
-        2. 运行构建脚本
-
-           ```bash
-           dart setup.dart macos
-           ```
-
-## Star
-
-支持开发者的最简单方式是点击页面顶部的星标（⭐）。
-
-<p style="text-align: center;">
-    <a href="https://api.star-history.com/svg?repos=chen08209/FlClash&Date">
-        <img alt="start" width=50% src="https://api.star-history.com/svg?repos=chen08209/FlClash&Date"/>
-    </a>
-</p>
+YuKaze 使用 [GNU General Public License v3.0](LICENSE) 许可证。

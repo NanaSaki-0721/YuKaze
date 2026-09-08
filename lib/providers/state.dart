@@ -39,9 +39,10 @@ GroupsState currentGroupsState(Ref ref) {
   return GroupsState(
     value: switch (mode) {
       Mode.direct => [],
-      Mode.global => visibleGroups
-          .where((element) => element.name != GroupName.GLOBAL.name)
-          .toList(),
+      Mode.global =>
+        visibleGroups
+            .where((element) => element.name != GroupName.GLOBAL.name)
+            .toList(),
       Mode.rule =>
         visibleGroups
             .where((item) => item.hidden == false)
@@ -625,14 +626,8 @@ SharedState sharedState(Ref ref) {
 
 @riverpod
 double overlayTopOffset(Ref ref) {
-  final isMobileView = ref.watch(isMobileViewProvider);
-  final version = ref.watch(versionProvider);
   ref.watch(viewSizeProvider);
-  double top = kHeaderHeight;
-  if ((version <= 10 || !isMobileView) && system.isMacOS || !system.isDesktop) {
-    top = 0;
-  }
-  return kToolbarHeight + top;
+  return kToolbarHeight;
 }
 
 @riverpod

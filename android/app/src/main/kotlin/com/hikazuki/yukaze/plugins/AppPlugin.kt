@@ -1,4 +1,4 @@
-package com.follow.clash.plugins
+package com.hikazuki.yukaze.plugins
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -17,14 +17,14 @@ import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.net.toUri
-import com.follow.clash.R
+import com.hikazuki.yukaze.R
 import com.follow.clash.common.Components
 import com.follow.clash.common.GlobalState
 import com.follow.clash.common.QuickAction
 import com.follow.clash.common.quickIntent
-import com.follow.clash.getPackageIconPath
-import com.follow.clash.packages.PackageResolver
-import com.follow.clash.showToast
+import com.hikazuki.yukaze.getPackageIconPath
+import com.hikazuki.yukaze.packages.PackageResolver
+import com.hikazuki.yukaze.showToast
 import com.google.gson.Gson
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -245,6 +245,7 @@ class AppPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware 
         invokeVpnPrepareCallback(false)
         vpnPrepareCallback = callback
         if (!needPrepare) {
+            GlobalState.log("VPN authorization is not required")
             invokeVpnPrepareCallback(true)
             return
         }
@@ -252,13 +253,16 @@ class AppPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware 
         if (intent != null) {
             val activity = activity
             if (activity == null) {
+                GlobalState.log("Unable to request VPN authorization without an activity")
                 invokeVpnPrepareCallback(false)
             } else {
+                GlobalState.log("Requesting VPN authorization")
                 @Suppress("DEPRECATION")
                 activity.startActivityForResult(intent, VPN_PERMISSION_REQUEST_CODE)
             }
             return
         }
+        GlobalState.log("VPN authorization was already granted")
         invokeVpnPrepareCallback(true)
     }
 
@@ -269,6 +273,7 @@ class AppPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware 
     }
 
     private fun invokeVpnPrepareCallback(granted: Boolean) {
+        GlobalState.log("VPN authorization result: $granted")
         vpnPrepareCallback?.invoke(granted)
         vpnPrepareCallback = null
     }

@@ -159,8 +159,7 @@ class AppSidebarContainer extends ConsumerWidget {
   void _handleToPage(PageLabel pageLabel) {
     final focusNode = FocusManager.instance.primaryFocus;
     final preserveNavigationFocus =
-        focusNode?.context?.findAncestorWidgetOfExactType<SidebarNav>() !=
-        null;
+        focusNode?.context?.findAncestorWidgetOfExactType<SidebarNav>() != null;
     globalState.container
         .read(currentPageLabelProvider.notifier)
         .toPage(pageLabel);
@@ -180,7 +179,6 @@ class AppSidebarContainer extends ConsumerWidget {
     final navigationItems = navigationState.navigationItems;
     final isMobileView = navigationState.viewMode == ViewMode.mobile;
     final currentIndex = navigationState.currentIndex;
-    final showLabel = ref.watch(appSettingProvider).showLabel;
     return Container(
       color: context.colorScheme.surfaceContainer,
       child: Row(
@@ -193,11 +191,12 @@ class AppSidebarContainer extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if (system.isMacOS) const SizedBox(height: 22),
-                    const SizedBox(height: 10),
-                    if (!system.isMacOS) ...[
+                    if (system.isMacOS) ...[
+                      const SizedBox(height: 32),
+                    ] else ...[
+                      SizedBox(height: kHeaderHeight + 12),
                       const ClipRect(child: AppIcon()),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 20),
                     ],
                     Expanded(
                       child: ScrollConfiguration(
@@ -206,7 +205,6 @@ class AppSidebarContainer extends ConsumerWidget {
                           child: SidebarNav(
                             navigationItems: navigationItems,
                             currentIndex: currentIndex,
-                            showLabel: showLabel,
                             onSelected: (pageLabel) {
                               _handleToPage(pageLabel);
                             },
@@ -214,22 +212,7 @@ class AppSidebarContainer extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    IconButton(
-                      onPressed: () {
-                        ref
-                            .read(appSettingProvider.notifier)
-                            .update(
-                              (state) =>
-                                  state.copyWith(showLabel: !state.showLabel),
-                            );
-                      },
-                      icon: Icon(
-                        Icons.menu,
-                        color: context.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
@@ -255,31 +238,28 @@ class AppSidebarContainer extends ConsumerWidget {
 class SidebarNav extends StatelessWidget {
   final List<NavigationItem> navigationItems;
   final int currentIndex;
-  final bool showLabel;
   final ValueChanged<PageLabel> onSelected;
 
   const SidebarNav({
     super.key,
     required this.navigationItems,
     required this.currentIndex,
-    required this.showLabel,
     required this.onSelected,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 200,
+      width: 220,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           for (var i = 0; i < navigationItems.length; i++)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               child: _SidebarNavItem(
                 item: navigationItems[i],
                 selected: i == currentIndex,
-                showLabel: showLabel,
                 onTap: () {
                   onSelected(navigationItems[i].label);
                 },
@@ -294,13 +274,11 @@ class SidebarNav extends StatelessWidget {
 class _SidebarNavItem extends StatelessWidget {
   final NavigationItem item;
   final bool selected;
-  final bool showLabel;
   final VoidCallback onTap;
 
   const _SidebarNavItem({
     required this.item,
     required this.selected,
-    required this.showLabel,
     required this.onTap,
   });
 
@@ -313,33 +291,30 @@ class _SidebarNavItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        constraints: const BoxConstraints(minHeight: 56),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
           color: selected ? brandPrimary.withValues(alpha: 0.12) : null,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
-          mainAxisAlignment: showLabel
-              ? MainAxisAlignment.start
-              : MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             IconTheme(
               data: IconThemeData(color: foreground, size: 20),
               child: item.icon,
             ),
-            if (showLabel) ...[
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  Intl.message(item.label.name),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.textTheme.labelLarge?.copyWith(
-                    color: foreground,
-                  ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                Intl.message(item.label.name),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: context.textTheme.labelLarge?.copyWith(
+                  color: foreground,
                 ),
               ),
-            ],
+            ),
           ],
         ),
       ),

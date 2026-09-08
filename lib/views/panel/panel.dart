@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/models/models.dart';
@@ -58,47 +58,99 @@ class _AuthSplitLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = context.appLocalizations;
-    final siteName = SiteConfig.siteName.isEmpty ? appName : SiteConfig.siteName;
+    final siteName = SiteConfig.siteName.isEmpty
+        ? appName
+        : SiteConfig.siteName;
+    final shadTheme = ShadTheme.of(context);
     return Scaffold(
       backgroundColor: context.colorScheme.surface,
       body: LayoutBuilder(
         builder: (_, constraints) {
-          final isSplit = constraints.maxWidth >= 900;
+          final isSplit = constraints.maxWidth >= authSplitMinWidth;
           final formPane = SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(32),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isSplit ? 48 : 32,
+                  vertical: 40,
+                ),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 420),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      if (onBack != null)
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: ShadButton.ghost(
-                            onPressed: onBack,
-                            child: const Icon(Icons.arrow_back),
-                          ),
-                        ),
-                      if (onBack != null) const SizedBox(height: 20),
                       FadeSlideIn(
                         index: 0,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: isSplit
+                              ? CrossAxisAlignment.start
+                              : CrossAxisAlignment.center,
                           children: [
-                            Text(title, style: context.textTheme.headlineMedium),
+                            if (isSplit) ...[
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(14),
+                                child: Image.asset(
+                                  'assets/images/icon.png',
+                                  width: 52,
+                                  height: 52,
+                                ),
+                              ),
+                              const SizedBox(height: 28),
+                            ],
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                if (onBack != null) ...[
+                                  ShadButton.ghost(
+                                    height: 40,
+                                    padding: EdgeInsets.zero,
+                                    width: 40,
+                                    onPressed: onBack,
+                                    child: const Icon(Icons.arrow_back),
+                                  ),
+                                  const SizedBox(width: 12),
+                                ],
+                                Expanded(
+                                  child: Text(
+                                    title,
+                                    textAlign: isSplit
+                                        ? TextAlign.start
+                                        : TextAlign.center,
+                                    style: context.textTheme.headlineMedium
+                                        ?.copyWith(fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ],
+                            ),
                             const SizedBox(height: 8),
-                            Text(
-                              subtitle,
-                              style: context.textTheme.bodyMedium?.toLight,
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: onBack == null ? 0 : 52,
+                              ),
+                              child: Text(
+                                subtitle,
+                                textAlign: isSplit
+                                    ? TextAlign.start
+                                    : TextAlign.center,
+                                style: context.textTheme.bodyMedium?.toLight,
+                              ),
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(height: 32),
-                      child,
+                      ShadTheme(
+                        data: shadTheme.copyWith(
+                          inputTheme: shadTheme.inputTheme.copyWith(
+                            constraints: const BoxConstraints(minHeight: 40),
+                            decoration: const ShadDecoration(
+                              disableSecondaryBorder: true,
+                            ),
+                          ),
+                        ),
+                        child: child,
+                      ),
                     ],
                   ),
                 ),
@@ -111,57 +163,139 @@ class _AuthSplitLayout extends StatelessWidget {
           return Row(
             children: [
               Expanded(
-                flex: 5,
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        brandPrimary,
-                        brandPrimary.withValues(alpha: 0.68),
-                      ],
-                    ),
-                  ),
-                  child: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.all(40),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            siteName,
-                            style: context.textTheme.headlineSmall?.copyWith(
-                              color: Colors.white,
-                            ),
-                          ),
-                          const Spacer(),
-                          const Icon(
-                            Icons.shield_outlined,
-                            size: 72,
-                            color: Colors.white,
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            appLocalizations.authSplitGreeting,
-                            style: context.textTheme.headlineMedium?.copyWith(
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          Text(
-                            appLocalizations.authSplitDescription,
-                            style: context.textTheme.bodyLarge?.copyWith(
-                              color: Colors.white.opacity80,
-                            ),
-                          ),
-                        ],
+                flex: 6,
+                child: Stack(
+                  key: const Key('auth-split-visual'),
+                  fit: StackFit.expand,
+                  children: [
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            const Color(0xff25101d),
+                            brandPrimary.withValues(alpha: 0.9),
+                            const Color(0xff601d45),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+                    Positioned(
+                      top: -180,
+                      right: -100,
+                      child: Container(
+                        width: 520,
+                        height: 520,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: RadialGradient(
+                            colors: [
+                              Colors.white.withValues(alpha: 0.26),
+                              Colors.white.withValues(alpha: 0),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: -250,
+                      left: -170,
+                      child: Container(
+                        width: 600,
+                        height: 600,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: RadialGradient(
+                            colors: [
+                              const Color(0xffffbfd8).withValues(alpha: 0.22),
+                              const Color(0xffffbfd8).withValues(alpha: 0),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.black.withValues(alpha: 0.08),
+                            Colors.black.withValues(alpha: 0.34),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.all(40),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.asset(
+                                    'assets/images/icon.png',
+                                    width: 34,
+                                    height: 34,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Text(
+                                  siteName,
+                                  style: context.textTheme.headlineSmall
+                                      ?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        shadows: const [
+                                          Shadow(
+                                            blurRadius: 12,
+                                            color: Colors.black45,
+                                          ),
+                                        ],
+                                      ),
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            Text(
+                              appLocalizations.authSplitGreeting,
+                              style: context.textTheme.headlineMedium?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                shadows: const [
+                                  Shadow(blurRadius: 16, color: Colors.black45),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 400),
+                              child: Text(
+                                appLocalizations.authSplitDescription,
+                                style: context.textTheme.bodyLarge?.copyWith(
+                                  color: Colors.white.withValues(alpha: 0.84),
+                                  height: 1.5,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Expanded(flex: 6, child: formPane),
+              Expanded(
+                flex: 5,
+                child: KeyedSubtree(
+                  key: const Key('auth-form-pane'),
+                  child: formPane,
+                ),
+              ),
             ],
           );
         },
@@ -210,7 +344,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
   final _passwordController = TextEditingController();
   final _codeController = TextEditingController();
   String? _challenge;
-  String? _error;
   bool _submitting = false;
 
   @override
@@ -226,24 +359,18 @@ class _LoginViewState extends ConsumerState<LoginView> {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     if (email.isEmpty || password.isEmpty) {
-      setState(() {
-        _error = appLocalizations.panelInputRequired;
-      });
+      globalState.showNotifier(appLocalizations.panelInputRequired);
       return;
     }
     setState(() {
       _submitting = true;
-      _error = null;
     });
     try {
       final challenge = _challenge;
       if (challenge == null) {
-        final nextChallenge = await ref.read(
-          panelActionProvider.notifier,
-        ).login(
-          email: email,
-          password: password,
-        );
+        final nextChallenge = await ref
+            .read(panelActionProvider.notifier)
+            .login(email: email, password: password);
         if (nextChallenge != null) {
           setState(() {
             _challenge = nextChallenge;
@@ -252,9 +379,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
       } else {
         final code = _codeController.text.trim();
         if (code.isEmpty) {
-          setState(() {
-            _error = appLocalizations.panelInputRequired;
-          });
+          globalState.showNotifier(appLocalizations.panelInputRequired);
           return;
         }
         await ref
@@ -262,9 +387,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
             .verify2fa(challenge: challenge, code: code);
       }
     } catch (error) {
-      setState(() {
-        _error = error.toString();
-      });
+      globalState.showNotifier(error.toString());
     } finally {
       if (mounted) {
         setState(() {
@@ -289,6 +412,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
             child: ShadInput(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
+              leading: const Icon(Icons.alternate_email_rounded, size: 18),
               placeholder: Text(appLocalizations.panelEmail),
             ),
           ),
@@ -298,6 +422,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
             child: ShadInput(
               controller: _passwordController,
               obscureText: true,
+              leading: const Icon(Icons.lock_outline_rounded, size: 18),
               placeholder: Text(appLocalizations.panelPassword),
               onSubmitted: (_) => _handleSubmit(),
             ),
@@ -309,21 +434,13 @@ class _LoginViewState extends ConsumerState<LoginView> {
               child: ShadInput(
                 controller: _codeController,
                 keyboardType: TextInputType.number,
+                leading: const Icon(Icons.shield_outlined, size: 18),
                 placeholder: Text(appLocalizations.panelTwoFactorCode),
                 onSubmitted: (_) => _handleSubmit(),
               ),
             ),
           ],
-          if (_error != null) ...[
-            const SizedBox(height: 12),
-            Text(
-              _error!,
-              style: context.textTheme.bodyMedium?.copyWith(
-                color: context.colorScheme.error,
-              ),
-            ),
-          ],
-          const SizedBox(height: 20),
+          const SizedBox(height: 36),
           FadeSlideIn(
             index: 4,
             child: ShadButton(
@@ -342,9 +459,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
             child: ShadButton.outline(
               enabled: !_submitting,
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const RegisterView()),
-                );
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const RegisterView()));
               },
               child: Text(appLocalizations.panelRegister),
             ),
@@ -392,9 +509,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   }
 
   String get _email {
-    final suffixes = _whitelistSuffixes(
-      ref.read(siteConfigInfoProvider).value,
-    );
+    final suffixes = _whitelistSuffixes(ref.read(siteConfigInfoProvider).value);
     if (suffixes.isNotEmpty) {
       final suffix = _selectedSuffix ?? suffixes.first;
       return '${_emailController.text.trim()}@$suffix';
@@ -501,12 +616,14 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
       _error = null;
     });
     try {
-      await ref.read(panelActionProvider.notifier).register(
-        email: email,
-        password: password,
-        emailCode: emailCode,
-        inviteCode: inviteCode,
-      );
+      await ref
+          .read(panelActionProvider.notifier)
+          .register(
+            email: email,
+            password: password,
+            emailCode: emailCode,
+            inviteCode: inviteCode,
+          );
       if (mounted) {
         Navigator.of(context).pop();
       }
@@ -530,6 +647,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
       return ShadInput(
         controller: _emailController,
         keyboardType: TextInputType.emailAddress,
+        leading: const Icon(Icons.alternate_email_rounded, size: 18),
         placeholder: Text(appLocalizations.panelEmail),
       );
     }
@@ -540,6 +658,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
           child: ShadInput(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
+            leading: const Icon(Icons.alternate_email_rounded, size: 18),
             placeholder: Text(appLocalizations.panelEmail),
           ),
         ),
@@ -569,6 +688,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   Widget build(BuildContext context) {
     final appLocalizations = context.appLocalizations;
     final config = ref.watch(siteConfigInfoProvider).value;
+    final tosUrl = config?.tosUrl;
     return _AuthSplitLayout(
       title: appLocalizations.panelRegister,
       subtitle: appLocalizations.authSplitRegisterSubtitle,
@@ -585,6 +705,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
             child: ShadInput(
               controller: _passwordController,
               obscureText: true,
+              leading: const Icon(Icons.lock_outline_rounded, size: 18),
               placeholder: Text(appLocalizations.panelPassword),
             ),
           ),
@@ -594,6 +715,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
             child: ShadInput(
               controller: _confirmPasswordController,
               obscureText: true,
+              leading: const Icon(Icons.lock_outline_rounded, size: 18),
               placeholder: Text(appLocalizations.panelConfirmPassword),
             ),
           ),
@@ -606,12 +728,17 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                   child: ShadInput(
                     controller: _emailCodeController,
                     keyboardType: TextInputType.number,
+                    leading: const Icon(
+                      Icons.mark_email_read_outlined,
+                      size: 18,
+                    ),
                     placeholder: Text(appLocalizations.panelEmailCode),
                   ),
                 ),
                 const SizedBox(width: 8),
                 ShadButton.outline(
                   enabled: !_submitting && _cooldown == 0,
+                  height: 40,
                   onPressed: _handleSendCode,
                   child: Text(
                     _cooldown > 0
@@ -627,6 +754,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
             index: 5,
             child: ShadInput(
               controller: _inviteCodeController,
+              leading: const Icon(Icons.confirmation_number_outlined, size: 18),
               placeholder: Text(appLocalizations.panelInviteCode),
             ),
           ),
@@ -635,7 +763,27 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
             index: 6,
             child: ShadCheckbox(
               value: _agreeTerms,
-              label: Text(appLocalizations.panelAgreeTerms),
+              label: tosUrl == null
+                  ? Text(appLocalizations.panelAgreeTerms)
+                  : Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(appLocalizations.panelAgreeTermsPrefix),
+                        GestureDetector(
+                          onTap: () {
+                            launchUrl(Uri.parse(tosUrl));
+                          },
+                          child: Text(
+                            appLocalizations.panelTermsOfService,
+                            style: TextStyle(
+                              color: context.colorScheme.primary,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                        Text(appLocalizations.panelAgreeTermsSuffix),
+                      ],
+                    ),
               onChanged: (value) {
                 setState(() {
                   _agreeTerms = value;
@@ -643,15 +791,6 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
               },
             ),
           ),
-          if (config?.tosUrl != null) ...[
-            ShadButton.ghost(
-              onPressed: () {
-                launchUrl(Uri.parse(config!.tosUrl!));
-              },
-              child: Text(appLocalizations.panelTermsOfService),
-            ),
-            const SizedBox(height: 4),
-          ],
           if (_sentTip != null) ...[
             const SizedBox(height: 4),
             Text(_sentTip!, style: context.textTheme.bodyMedium),
@@ -737,9 +876,7 @@ class PanelHomeView extends ConsumerWidget {
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const TrafficLogView(),
-                    ),
+                    MaterialPageRoute(builder: (_) => const TrafficLogView()),
                   );
                 },
               ),
@@ -813,9 +950,7 @@ class PanelHomeView extends ConsumerWidget {
               onPressed: () async {
                 final confirmed = await globalState.showMessage(
                   title: appLocalizations.panelLogout,
-                  message: TextSpan(
-                    text: appLocalizations.panelLogoutConfirm,
-                  ),
+                  message: TextSpan(text: appLocalizations.panelLogoutConfirm),
                 );
                 if (confirmed == true) {
                   ref.read(panelActionProvider.notifier).logout();
@@ -848,8 +983,6 @@ class PanelHomeView extends ConsumerWidget {
     if (expiredAt == null || expiredAt == 0) {
       return currentAppLocalizations.infiniteTime;
     }
-    return DateTime.fromMillisecondsSinceEpoch(
-      expiredAt * 1000,
-    ).show;
+    return DateTime.fromMillisecondsSinceEpoch(expiredAt * 1000).show;
   }
 }

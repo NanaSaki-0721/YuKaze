@@ -320,7 +320,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "goToConfigureScript": MessageLookupByLibrary.simpleMessage("前往配置脚本"),
     "hasCacheChange": MessageLookupByLibrary.simpleMessage("是否缓存修改"),
     "helperCorruptTip": MessageLookupByLibrary.simpleMessage(
-      "Helper 服务不可用，无法启用 TUN 模式，请重新安装 FlClash。",
+      "Helper 服务不可用，无法启用 TUN 模式，请重新安装 YuKaze。",
     ),
     "hideFromList": MessageLookupByLibrary.simpleMessage("从列表中隐藏"),
     "host": MessageLookupByLibrary.simpleMessage("主机"),
@@ -463,6 +463,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "palette": MessageLookupByLibrary.simpleMessage("调色板"),
     "panel": MessageLookupByLibrary.simpleMessage("我的"),
     "panelAgreeTerms": MessageLookupByLibrary.simpleMessage("我已阅读并同意服务条款"),
+    "panelAgreeTermsPrefix": MessageLookupByLibrary.simpleMessage("我已阅读并同意"),
+    "panelAgreeTermsSuffix": MessageLookupByLibrary.simpleMessage("。"),
     "panelBuy": MessageLookupByLibrary.simpleMessage("购买"),
     "panelCancelOrderConfirm": MessageLookupByLibrary.simpleMessage(
       "确定取消该订单吗？",
@@ -535,6 +537,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "panelPlanDevices": MessageLookupByLibrary.simpleMessage("设备"),
     "panelPlanTraffic": MessageLookupByLibrary.simpleMessage("流量"),
     "panelRegister": MessageLookupByLibrary.simpleMessage("注册"),
+    "panelRenew": MessageLookupByLibrary.simpleMessage("续费"),
     "panelSelectNode": MessageLookupByLibrary.simpleMessage("选择节点"),
     "panelSendCode": MessageLookupByLibrary.simpleMessage("发送验证码"),
     "panelShop": MessageLookupByLibrary.simpleMessage("商店"),

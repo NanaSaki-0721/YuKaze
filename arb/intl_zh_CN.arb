@@ -441,7 +441,7 @@
   "expectedStatus": "预期状态",
   "selectProxies": "选择代理",
   "inputProxyGroupName": "输入策略组名称",
-  "helperCorruptTip": "Helper 服务不可用，无法启用 TUN 模式，请重新安装 FlClash。",
+  "helperCorruptTip": "Helper 服务不可用，无法启用 TUN 模式，请重新安装 YuKaze。",
   "hideFromList": "从列表中隐藏",
   "testWhenUsed": "使用时测试",
   "disableUDP": "禁用UDP",
@@ -582,6 +582,8 @@
   "panelInviteCodeRequired": "请输入邀请码",
   "panelMustAgreeToTerms": "请先同意服务条款",
   "panelAgreeTerms": "我已阅读并同意服务条款",
+  "panelAgreeTermsPrefix": "我已阅读并同意",
+  "panelAgreeTermsSuffix": "。",
   "panelTermsOfService": "服务条款",
   "panelOrders": "订单查询",
   "panelTickets": "工单",
@@ -646,5 +648,6 @@
   "authSplitLoginSubtitle": "登录后继续进入连接仪表盘。",
   "authSplitRegisterSubtitle": "创建账户后即可开始使用订阅。",
   "panelCancelOrderConfirm": "确定取消该订单吗？",
-  "panelCopyLink": "复制链接"
+  "panelCopyLink": "复制链接",
+  "panelRenew": "续费"
 }

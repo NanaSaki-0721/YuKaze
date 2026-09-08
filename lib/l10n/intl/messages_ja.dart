@@ -358,7 +358,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "goToConfigureScript": MessageLookupByLibrary.simpleMessage("スクリプト設定に移動"),
     "hasCacheChange": MessageLookupByLibrary.simpleMessage("変更をキャッシュしますか？"),
     "helperCorruptTip": MessageLookupByLibrary.simpleMessage(
-      "Helper サービスが利用できないため、TUN モードを有効にできません。再インストールしてください。",
+      "Helper サービスが利用できないため、TUN モードを有効にできません。YuKaze を再インストールしてください。",
     ),
     "hideFromList": MessageLookupByLibrary.simpleMessage("リストから隠す"),
     "host": MessageLookupByLibrary.simpleMessage("ホスト"),
@@ -525,6 +525,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "palette": MessageLookupByLibrary.simpleMessage("パレット"),
     "panel": MessageLookupByLibrary.simpleMessage("マイ"),
     "panelAgreeTerms": MessageLookupByLibrary.simpleMessage("利用規約を読み、同意します"),
+    "panelAgreeTermsPrefix": MessageLookupByLibrary.simpleMessage("私は"),
+    "panelAgreeTermsSuffix": MessageLookupByLibrary.simpleMessage("を読み、同意します"),
     "panelBuy": MessageLookupByLibrary.simpleMessage("購入"),
     "panelCancelOrderConfirm": MessageLookupByLibrary.simpleMessage(
       "この注文をキャンセルしますか？",
@@ -613,6 +615,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "panelPlanDevices": MessageLookupByLibrary.simpleMessage("デバイス"),
     "panelPlanTraffic": MessageLookupByLibrary.simpleMessage("通信量"),
     "panelRegister": MessageLookupByLibrary.simpleMessage("登録"),
+    "panelRenew": MessageLookupByLibrary.simpleMessage("更新"),
     "panelSelectNode": MessageLookupByLibrary.simpleMessage("ノードを選択"),
     "panelSendCode": MessageLookupByLibrary.simpleMessage("コードを送信"),
     "panelShop": MessageLookupByLibrary.simpleMessage("ショップ"),

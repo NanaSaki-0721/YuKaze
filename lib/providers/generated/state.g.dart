@@ -49,7 +49,7 @@ final class CurrentGroupsStateProvider
 }
 
 String _$currentGroupsStateHash() =>
-    r'dbf8f02606a31486c99d7b89d19914cd5a1fc496';
+    r'a6210bf8ef7b9c5fec6ed2343de1520078257ae2';
 
 @ProviderFor(navigationItemsState)
 final navigationItemsStateProvider = NavigationItemsStateProvider._();
@@ -1848,7 +1848,7 @@ final class GenColorSchemeProvider
   }
 }
 
-String _$genColorSchemeHash() => r'25f648db7c33ac00e7152f3d304da372a4de9fdd';
+String _$genColorSchemeHash() => r'970a05763ec4ca69201016f43764e4227778d5f4';
 
 final class GenColorSchemeFamily extends $Family
     with
@@ -2091,7 +2091,7 @@ final class OverlayTopOffsetProvider
   }
 }
 
-String _$overlayTopOffsetHash() => r'b2462f67acbd88b7a881dfe4c6353e68ba49961d';
+String _$overlayTopOffsetHash() => r'5552d65c645d6f3af996661929d9f1640a7d7d34';
 
 @ProviderFor(profile)
 final profileProvider = ProfileFamily._();

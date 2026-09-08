@@ -1,4 +1,4 @@
-package com.follow.clash.packages
+package com.hikazuki.yukaze.packages
 
 import android.Manifest
 import android.content.pm.ApplicationInfo
@@ -6,7 +6,7 @@ import android.content.pm.ComponentInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import com.android.tools.smali.dexlib2.dexbacked.DexBackedDexFile
-import com.follow.clash.models.InstalledPackage
+import com.hikazuki.yukaze.models.InstalledPackage
 import java.io.File
 import java.util.zip.ZipFile
 

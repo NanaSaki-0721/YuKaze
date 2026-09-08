@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'dart:math' as math;
 
 import 'package:fl_clash/common/color.dart';
 import 'package:flutter/material.dart';
@@ -115,6 +116,7 @@ class _SideSheetLayoutWithSizeListener extends SingleChildRenderObjectWidget {
     required this.animationValue,
     required this.isScrollControlled,
     required this.scrollControlDisabledMaxHeightRatio,
+    required this.topInset,
     super.child,
   });
 
@@ -122,6 +124,7 @@ class _SideSheetLayoutWithSizeListener extends SingleChildRenderObjectWidget {
   final double animationValue;
   final bool isScrollControlled;
   final double scrollControlDisabledMaxHeightRatio;
+  final double topInset;
 
   @override
   _RenderSideSheetLayoutWithSizeListener createRenderObject(
@@ -132,6 +135,7 @@ class _SideSheetLayoutWithSizeListener extends SingleChildRenderObjectWidget {
       animationValue: animationValue,
       isScrollControlled: isScrollControlled,
       scrollControlDisabledMaxHeightRatio: scrollControlDisabledMaxHeightRatio,
+      topInset: topInset,
     );
   }
 
@@ -145,6 +149,7 @@ class _SideSheetLayoutWithSizeListener extends SingleChildRenderObjectWidget {
     renderObject.isScrollControlled = isScrollControlled;
     renderObject.scrollControlDisabledMaxHeightRatio =
         scrollControlDisabledMaxHeightRatio;
+    renderObject.topInset = topInset;
   }
 }
 
@@ -155,11 +160,13 @@ class _RenderSideSheetLayoutWithSizeListener extends RenderShiftedBox {
     required double animationValue,
     required bool isScrollControlled,
     required double scrollControlDisabledMaxHeightRatio,
+    required double topInset,
   }) : _onChildSizeChanged = onChildSizeChanged,
        _animationValue = animationValue,
        _isScrollControlled = isScrollControlled,
        _scrollControlDisabledMaxHeightRatio =
            scrollControlDisabledMaxHeightRatio,
+       _topInset = topInset,
        super(child);
 
   Size _lastSize = Size.zero;
@@ -210,6 +217,17 @@ class _RenderSideSheetLayoutWithSizeListener extends RenderShiftedBox {
     }
 
     _scrollControlDisabledMaxHeightRatio = newValue;
+    markNeedsLayout();
+  }
+
+  double get topInset => _topInset;
+  double _topInset;
+
+  set topInset(double newValue) {
+    if (_topInset == newValue) {
+      return;
+    }
+    _topInset = newValue;
     markNeedsLayout();
   }
 
@@ -267,11 +285,13 @@ class _RenderSideSheetLayoutWithSizeListener extends RenderShiftedBox {
   }
 
   BoxConstraints _getConstraintsForChild(BoxConstraints constraints) {
-    return BoxConstraints(maxHeight: constraints.maxHeight);
+    return BoxConstraints(
+      maxHeight: math.max(0.0, constraints.maxHeight - topInset),
+    );
   }
 
   Offset _getPositionForChild(Size size, Size childSize) {
-    return Offset(size.width - childSize.width * animationValue, 0.0);
+    return Offset(size.width - childSize.width * animationValue, topInset);
   }
 
   @override
@@ -401,6 +421,7 @@ class _ModalSideSheetState<T> extends State<_ModalSideSheet<T>> {
               isScrollControlled: widget.isScrollControlled,
               scrollControlDisabledMaxHeightRatio:
                   widget.scrollControlDisabledMaxHeightRatio,
+              topInset: widget.route.topInset,
               child: child,
             ),
           ),
@@ -430,8 +451,9 @@ class ModalSideSheetRoute<T> extends PopupRoute<T> {
     this.transitionAnimationController,
     this.anchorPoint,
     this.useSafeArea = false,
-    super.filter,
-  });
+    this.topInset = 0,
+    ImageFilter? filter,
+  }) : _barrierFilter = filter;
 
   final WidgetBuilder builder;
 
@@ -460,6 +482,8 @@ class ModalSideSheetRoute<T> extends PopupRoute<T> {
   final Offset? anchorPoint;
 
   final bool useSafeArea;
+  final double topInset;
+  final ImageFilter? _barrierFilter;
 
   final String? barrierOnTapHint;
 
@@ -542,6 +566,7 @@ class ModalSideSheetRoute<T> extends PopupRoute<T> {
 
   @override
   Widget buildModalBarrier() {
+    final Widget barrier;
     if (barrierColor.a != 0 && !offstage) {
       assert(barrierColor != barrierColor.opacity0);
       final Animation<Color?> color = animation!.drive(
@@ -550,7 +575,7 @@ class ModalSideSheetRoute<T> extends PopupRoute<T> {
           end: barrierColor,
         ).chain(CurveTween(curve: barrierCurve)),
       );
-      return AnimatedModalBarrier(
+      barrier = AnimatedModalBarrier(
         color: color,
         dismissible: barrierDismissible,
         semanticsLabel: barrierLabel,
@@ -559,7 +584,7 @@ class ModalSideSheetRoute<T> extends PopupRoute<T> {
         semanticsOnTapHint: barrierOnTapHint,
       );
     } else {
-      return ModalBarrier(
+      barrier = ModalBarrier(
         dismissible: barrierDismissible,
         semanticsLabel: barrierLabel,
         barrierSemanticsDismissible: semanticsDismissible,
@@ -567,6 +592,33 @@ class ModalSideSheetRoute<T> extends PopupRoute<T> {
         semanticsOnTapHint: barrierOnTapHint,
       );
     }
+    final filteredBarrier = _barrierFilter == null
+        ? barrier
+        : ClipRect(
+            child: BackdropFilter(filter: _barrierFilter, child: barrier),
+          );
+    if (topInset == 0) {
+      return filteredBarrier;
+    }
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Positioned(
+          top: topInset,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: filteredBarrier,
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          height: topInset,
+          child: const AbsorbPointer(child: SizedBox.expand()),
+        ),
+      ],
+    );
   }
 }
 
@@ -586,6 +638,7 @@ Future<T?> showModalSideSheet<T>({
   bool useRootNavigator = false,
   bool isDismissible = true,
   bool useSafeArea = false,
+  double topInset = 0,
   RouteSettings? routeSettings,
   AnimationController? transitionAnimationController,
   Offset? anchorPoint,
@@ -625,6 +678,7 @@ Future<T?> showModalSideSheet<T>({
       transitionAnimationController: transitionAnimationController,
       anchorPoint: anchorPoint,
       useSafeArea: useSafeArea,
+      topInset: topInset,
     ),
   );
 }

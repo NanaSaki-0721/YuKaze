@@ -7,6 +7,7 @@ import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/app.dart';
 import 'package:fl_clash/providers/config.dart';
 import 'package:fl_clash/providers/database.dart';
+import 'package:fl_clash/providers/panel.dart';
 import 'package:fl_clash/providers/state.dart';
 import 'package:fl_clash/state.dart';
 import 'package:fl_clash/views/config/advanced.dart';
@@ -20,7 +21,6 @@ import 'package:fl_clash/views/profiles/overwrite/custom/proxy_providers.dart';
 import 'package:fl_clash/views/profiles/overwrite/custom/rules.dart';
 import 'package:fl_clash/views/proxies/list.dart';
 import 'package:fl_clash/views/proxies/tab.dart';
-import 'package:fl_clash/views/theme.dart';
 import 'package:fl_clash/views/views.dart';
 import 'package:fl_clash/widgets/inherited.dart';
 import 'package:fl_clash/widgets/sheet.dart';
@@ -44,7 +44,6 @@ void main() {
     'network config': const Scaffold(body: NetworkListView()),
     'advanced config': const AdvancedConfigView(),
     'on demand config': const OnDemandView(),
-    'theme': const ThemeView(),
     'application settings': const ApplicationSettingView(),
     'hotkeys': const HotKeyView(),
     'access control': const AccessView(),
@@ -89,7 +88,6 @@ void main() {
   }
 
   final toolDestinations = <String, Type>{
-    'Theme': ThemeView,
     'Basic configuration': ConfigView,
     'Advanced configuration': AdvancedConfigView,
     'Application': ApplicationSettingView,
@@ -132,6 +130,215 @@ void main() {
       expect(tester.takeException(), null);
     });
   }
+
+  testWidgets('tools switches between light and dark themes', (tester) async {
+    tester.view.physicalSize = const Size(1400, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final container = ProviderContainer(
+      overrides: [profilesProvider.overrideWith(_TestProfiles.new)],
+    );
+    addTearDown(container.dispose);
+    globalState.container = container;
+    container
+        .read(viewSizeProvider.notifier)
+        .update((_) => const Size(1400, 1000));
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: const _TestApp(child: ToolsView()),
+      ),
+    );
+    await tester.pump();
+
+    final themeToggle = find.byType(Switch);
+    expect(themeToggle, findsOneWidget);
+    expect(container.read(themeSettingProvider).themeMode, ThemeMode.dark);
+
+    await tester.tap(themeToggle);
+    await tester.pump();
+
+    expect(container.read(themeSettingProvider).themeMode, ThemeMode.light);
+  });
+
+  testWidgets('authentication uses the split layout at its minimum width', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(900, 1000);
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final container = ProviderContainer(
+      overrides: [siteConfigInfoProvider.overrideWithBuild((_, _) => null)],
+    );
+    addTearDown(container.dispose);
+    globalState.container = container;
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: const _TestApp(child: LoginView()),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.byKey(const Key('auth-split-visual')), findsOneWidget);
+    expect(find.byKey(const Key('auth-form-pane')), findsOneWidget);
+
+    tester.view.physicalSize = const Size(899, 1000);
+    await tester.pump();
+
+    expect(find.byKey(const Key('auth-split-visual')), findsNothing);
+    expect(find.byKey(const Key('auth-form-pane')), findsNothing);
+    expect(tester.takeException(), null);
+  });
+
+  testWidgets('registration uses the split layout at its minimum width', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(900, 1000);
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final container = ProviderContainer(
+      overrides: [siteConfigInfoProvider.overrideWithBuild((_, _) => null)],
+    );
+    addTearDown(container.dispose);
+    globalState.container = container;
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: const _TestApp(child: RegisterView()),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.byKey(const Key('auth-split-visual')), findsOneWidget);
+    expect(find.byKey(const Key('auth-form-pane')), findsOneWidget);
+    expect(tester.takeException(), null);
+  });
+
+  testWidgets('dashboard displays and renews the current subscription', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1400, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final container = ProviderContainer(
+      overrides: [
+        profilesProvider.overrideWith(_TestProfiles.new),
+        subscribeInfoProvider.overrideWith(_TestSubscribeInfo.new),
+        plansProvider.overrideWith(_TestPlans.new),
+      ],
+    );
+    addTearDown(container.dispose);
+    globalState.container = container;
+    container
+        .read(viewSizeProvider.notifier)
+        .update((_) => const Size(1400, 1000));
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: const _TestApp(child: DashboardView()),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Test plan'), findsOneWidget);
+    expect(find.textContaining('Expiry'), findsOneWidget);
+    expect(find.text('Renew'), findsOneWidget);
+    expect(find.byKey(const Key('desktop-app-bar-drag-area')), findsOneWidget);
+    expect(find.byKey(const Key('dashboard-network-controls')), findsOneWidget);
+    expect(
+      tester
+          .getSize(find.byKey(const Key('dashboard-network-controls')))
+          .height,
+      tester.getSize(find.byKey(const Key('dashboard-mode-controls'))).height,
+    );
+    final networkControlsRect = tester.getRect(
+      find.byKey(const Key('dashboard-network-controls')),
+    );
+    final modeControlsRect = tester.getRect(
+      find.byKey(const Key('dashboard-mode-controls')),
+    );
+    expect(
+      (networkControlsRect.left + modeControlsRect.right) / 2,
+      closeTo(700, 0.1),
+    );
+
+    await tester.tap(find.text('System proxy'));
+    await tester.pump();
+    expect(container.read(networkSettingProvider).systemProxy, isFalse);
+
+    await tester.tap(find.text('TUN'));
+    await tester.pump();
+    expect(container.read(patchClashConfigProvider).tun.enable, isTrue);
+
+    await tester.tap(find.text('Renew'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(OrderConfirmView), findsOneWidget);
+  });
+
+  testWidgets('dashboard mode selection animates with a nonlinear curve', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(1000, 800);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final container = ProviderContainer(
+      overrides: [profilesProvider.overrideWith(_TestProfiles.new)],
+    );
+    addTearDown(container.dispose);
+    globalState.container = container;
+    container
+        .read(viewSizeProvider.notifier)
+        .update((_) => const Size(1000, 800));
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: const _TestApp(child: DashboardView()),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final selectionAnimation = find.byKey(
+      const Key('dashboard-mode-selection'),
+    );
+    final selection = find.byKey(
+      const Key('dashboard-mode-selection-indicator'),
+    );
+    final animation = tester.widget<AnimatedPositioned>(selectionAnimation);
+    final initialLeft = tester.getTopLeft(selection).dx;
+
+    expect(animation.duration, const Duration(milliseconds: 420));
+    expect(animation.curve, Curves.easeOutBack);
+
+    container
+        .read(patchClashConfigProvider.notifier)
+        .update((state) => state.copyWith(mode: Mode.global));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 210));
+    final intermediateLeft = tester.getTopLeft(selection).dx;
+    await tester.pumpAndSettle();
+    final settledLeft = tester.getTopLeft(selection).dx;
+
+    expect(intermediateLeft, greaterThan(initialLeft));
+    expect(settledLeft, greaterThan(initialLeft));
+    expect(tester.takeException(), null);
+  });
 
   testWidgets('DNS mode options update the patch configuration', (
     tester,
@@ -462,6 +669,23 @@ class _TestProxyGroups extends ProxyGroups {
 
   @override
   void order(int oldIndex, int newIndex) {}
+}
+
+class _TestSubscribeInfo extends SubscribeInfo {
+  @override
+  Future<PanelSubscribeInfo?> build() async {
+    return const PanelSubscribeInfo(
+      expiredAt: 1900000000,
+      plan: PanelPlan(id: 1, name: 'Test plan', renew: 1),
+    );
+  }
+}
+
+class _TestPlans extends Plans {
+  @override
+  Future<List<PanelPlan>> build() async {
+    return const [PanelPlan(id: 1, name: 'Test plan', monthPrice: 1000)];
+  }
 }
 
 class _TestApp extends StatelessWidget {

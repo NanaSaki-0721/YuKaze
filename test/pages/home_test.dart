@@ -63,7 +63,25 @@ void main() {
 
     await tester.pump();
 
+    final appLocalizations = AppLocalizations.of(
+      globalState.navigatorKey.currentContext!,
+    );
     expect(find.byType(SidebarNav), findsOneWidget);
+    expect(find.text(appLocalizations.dashboard), findsOneWidget);
+    expect(find.text(appLocalizations.tools), findsOneWidget);
+    expect(find.byIcon(Icons.menu), findsNothing);
+    expect(tester.getSize(find.byType(SidebarNav)).width, 220);
+    expect(
+      tester
+          .getSize(
+            find.ancestor(
+              of: find.text(appLocalizations.dashboard),
+              matching: find.byType(InkWell),
+            ),
+          )
+          .height,
+      greaterThanOrEqualTo(56),
+    );
     expect(find.byType(DockNav), findsNothing);
 
     await tester.pump(const Duration(milliseconds: 150));
@@ -82,7 +100,9 @@ void main() {
 
       final container = ProviderContainer(
         overrides: [
-          panelAuthStateProvider.overrideWithValue(PanelAuthState.authenticated),
+          panelAuthStateProvider.overrideWithValue(
+            PanelAuthState.authenticated,
+          ),
           navigationItemsStateProvider.overrideWithValue(
             NavigationItemsState(
               value: [
@@ -187,7 +207,9 @@ void main() {
 
       final container = ProviderContainer(
         overrides: [
-          panelAuthStateProvider.overrideWithValue(PanelAuthState.authenticated),
+          panelAuthStateProvider.overrideWithValue(
+            PanelAuthState.authenticated,
+          ),
           navigationItemsStateProvider.overrideWithValue(
             NavigationItemsState(
               value: [
@@ -239,7 +261,9 @@ void main() {
 
       final container = ProviderContainer(
         overrides: [
-          panelAuthStateProvider.overrideWithValue(PanelAuthState.authenticated),
+          panelAuthStateProvider.overrideWithValue(
+            PanelAuthState.authenticated,
+          ),
           navigationItemsStateProvider.overrideWithValue(
             NavigationItemsState(
               value: [
@@ -418,8 +442,7 @@ void main() {
     await tester.pump();
     expect(find.byType(DockNav), findsOneWidget);
 
-    DockNav navBar() =>
-        tester.widget<DockNav>(find.byType(DockNav));
+    DockNav navBar() => tester.widget<DockNav>(find.byType(DockNav));
 
     await tester.tap(find.byIcon(Icons.construction));
     await tester.pumpAndSettle();
@@ -632,7 +655,9 @@ void main() {
 
       final container = ProviderContainer(
         overrides: [
-          panelAuthStateProvider.overrideWithValue(PanelAuthState.authenticated),
+          panelAuthStateProvider.overrideWithValue(
+            PanelAuthState.authenticated,
+          ),
           navigationItemsStateProvider.overrideWithValue(
             NavigationItemsState(
               value: [

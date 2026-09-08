@@ -1,8 +1,8 @@
-package com.follow.clash
+package com.hikazuki.yukaze
 
-import com.follow.clash.plugins.AppPlugin
-import com.follow.clash.plugins.ServicePlugin
-import com.follow.clash.plugins.TilePlugin
+import com.hikazuki.yukaze.plugins.AppPlugin
+import com.hikazuki.yukaze.plugins.ServicePlugin
+import com.hikazuki.yukaze.plugins.TilePlugin
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 

@@ -467,7 +467,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Хотите сохранить изменения в кэше?",
     ),
     "helperCorruptTip": MessageLookupByLibrary.simpleMessage(
-      "Служба Helper недоступна, поэтому TUN-режим включить нельзя. Переустановите FlClash.",
+      "Служба Helper недоступна, поэтому TUN-режим включить нельзя. Переустановите YuKaze.",
     ),
     "hideFromList": MessageLookupByLibrary.simpleMessage("Скрыть из списка"),
     "host": MessageLookupByLibrary.simpleMessage("Хост"),
@@ -698,6 +698,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "panelAgreeTerms": MessageLookupByLibrary.simpleMessage(
       "Я прочитал и согласен с условиями обслуживания",
     ),
+    "panelAgreeTermsPrefix": MessageLookupByLibrary.simpleMessage(
+      "Я прочитал и согласен с ",
+    ),
+    "panelAgreeTermsSuffix": MessageLookupByLibrary.simpleMessage("."),
     "panelBuy": MessageLookupByLibrary.simpleMessage("Купить"),
     "panelCancelOrderConfirm": MessageLookupByLibrary.simpleMessage(
       "Отменить этот заказ?",
@@ -808,6 +812,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "panelPlanDevices": MessageLookupByLibrary.simpleMessage("Устройства"),
     "panelPlanTraffic": MessageLookupByLibrary.simpleMessage("Трафик"),
     "panelRegister": MessageLookupByLibrary.simpleMessage("Регистрация"),
+    "panelRenew": MessageLookupByLibrary.simpleMessage("Продлить"),
     "panelSelectNode": MessageLookupByLibrary.simpleMessage("Выбрать узел"),
     "panelSendCode": MessageLookupByLibrary.simpleMessage("Отправить код"),
     "panelShop": MessageLookupByLibrary.simpleMessage("Магазин"),

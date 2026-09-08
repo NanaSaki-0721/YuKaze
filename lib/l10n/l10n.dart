@@ -3484,10 +3484,10 @@ class AppLocalizations {
     );
   }
 
-  /// `Helper service unavailable; TUN mode cannot be enabled. Reinstall FlClash to restore it.`
+  /// `Helper service unavailable; TUN mode cannot be enabled. Reinstall YuKaze to restore it.`
   String get helperCorruptTip {
     return Intl.message(
-      'Helper service unavailable; TUN mode cannot be enabled. Reinstall FlClash to restore it.',
+      'Helper service unavailable; TUN mode cannot be enabled. Reinstall YuKaze to restore it.',
       name: 'helperCorruptTip',
       desc: '',
       args: [],
@@ -4754,6 +4754,21 @@ class AppLocalizations {
     );
   }
 
+  /// `I have read and agree to the `
+  String get panelAgreeTermsPrefix {
+    return Intl.message(
+      'I have read and agree to the ',
+      name: 'panelAgreeTermsPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `.`
+  String get panelAgreeTermsSuffix {
+    return Intl.message('.', name: 'panelAgreeTermsSuffix', desc: '', args: []);
+  }
+
   /// `Terms of Service`
   String get panelTermsOfService {
     return Intl.message(
@@ -5332,6 +5347,11 @@ class AppLocalizations {
   /// `Copy link`
   String get panelCopyLink {
     return Intl.message('Copy link', name: 'panelCopyLink', desc: '', args: []);
+  }
+
+  /// `Renew`
+  String get panelRenew {
+    return Intl.message('Renew', name: 'panelRenew', desc: '', args: []);
   }
 }
 

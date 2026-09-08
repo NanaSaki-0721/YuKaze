@@ -441,7 +441,7 @@
   "expectedStatus": "Ожидаемый статус",
   "selectProxies": "Выбрать прокси",
   "inputProxyGroupName": "Введите имя группы прокси",
-  "helperCorruptTip": "Служба Helper недоступна, поэтому TUN-режим включить нельзя. Переустановите FlClash.",
+  "helperCorruptTip": "Служба Helper недоступна, поэтому TUN-режим включить нельзя. Переустановите YuKaze.",
   "hideFromList": "Скрыть из списка",
   "testWhenUsed": "Тестировать при использовании",
   "disableUDP": "Отключить UDP",
@@ -582,6 +582,8 @@
   "panelInviteCodeRequired": "Введите код приглашения",
   "panelMustAgreeToTerms": "Сначала согласитесь с условиями",
   "panelAgreeTerms": "Я прочитал и согласен с условиями обслуживания",
+  "panelAgreeTermsPrefix": "Я прочитал и согласен с ",
+  "panelAgreeTermsSuffix": ".",
   "panelTermsOfService": "Условия обслуживания",
   "panelOrders": "Заказы",
   "panelTickets": "Тикеты",
@@ -646,5 +648,6 @@
   "authSplitLoginSubtitle": "Войдите, чтобы открыть панель подключения.",
   "authSplitRegisterSubtitle": "Создайте аккаунт, чтобы начать подписку.",
   "panelCancelOrderConfirm": "Отменить этот заказ?",
-  "panelCopyLink": "Скопировать ссылку"
+  "panelCopyLink": "Скопировать ссылку",
+  "panelRenew": "Продлить"
 }

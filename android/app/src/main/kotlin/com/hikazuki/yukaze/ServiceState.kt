@@ -1,10 +1,10 @@
-package com.follow.clash
+package com.hikazuki.yukaze
 
 import android.net.VpnService
 import com.follow.clash.common.GlobalState
-import com.follow.clash.models.SharedState
-import com.follow.clash.plugins.AppPlugin
-import com.follow.clash.plugins.TilePlugin
+import com.hikazuki.yukaze.models.SharedState
+import com.hikazuki.yukaze.plugins.AppPlugin
+import com.hikazuki.yukaze.plugins.TilePlugin
 import com.follow.clash.service.ServiceConfig
 import com.follow.clash.service.models.NotificationParams
 import com.follow.clash.service.models.VpnOptions
@@ -12,6 +12,7 @@ import com.google.gson.Gson
 import io.flutter.embedding.engine.FlutterEngine
 import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 
 enum class RunState {
@@ -133,9 +135,11 @@ object ServiceState {
         val result = CompletableDeferred<Boolean>()
         val launchRequest: (Boolean) -> Unit = { shouldStart ->
             if (!shouldStart) {
+                GlobalState.log("Background service start request was denied")
                 fail(request)
                 result.complete(false)
             } else {
+                GlobalState.log("Starting background service")
                 GlobalState.launch {
                     result.complete(
                         runCatching { start(request) }
@@ -239,7 +243,9 @@ object ServiceState {
     }
 
     private suspend fun start(request: RunRequest): Boolean = startPreparationLock.withLock {
+        GlobalState.log("Processing background service start request")
         if (!isCurrent(request)) {
+            GlobalState.log("Background service start request was superseded")
             return@withLock false
         }
         val options = sharedState.vpnOptions
@@ -247,6 +253,7 @@ object ServiceState {
             fail(request)
             return@withLock false
         }
+        GlobalState.log("Preparing VPN authorization: enabled=${options.enable}")
         if (!prepareVpn(options)) {
             if (appPlugin == null && isCurrent(request)) {
                 GlobalState.application.showToast(VPN_PERMISSION_MESSAGE)
@@ -254,6 +261,7 @@ object ServiceState {
             fail(request)
             return@withLock false
         }
+        GlobalState.log("VPN authorization is ready")
         if (!isCurrent(request)) {
             return@withLock false
         }
@@ -293,16 +301,18 @@ object ServiceState {
     private suspend fun prepareVpn(options: VpnOptions): Boolean {
         val plugin = appPlugin
             ?: return !options.enable || VpnService.prepare(GlobalState.application) == null
-        return suspendCancellableCoroutine { continuation ->
-            val callback: (Boolean) -> Unit = { granted ->
-                if (continuation.isActive) {
-                    continuation.resume(granted)
+        return withContext(Dispatchers.Main.immediate) {
+            suspendCancellableCoroutine { continuation ->
+                val callback: (Boolean) -> Unit = { granted ->
+                    if (continuation.isActive) {
+                        continuation.resume(granted)
+                    }
                 }
+                continuation.invokeOnCancellation {
+                    plugin.cancelVpnPreparation(callback)
+                }
+                plugin.prepareVpn(options.enable, callback)
             }
-            continuation.invokeOnCancellation {
-                plugin.cancelVpnPreparation(callback)
-            }
-            plugin.prepareVpn(options.enable, callback)
         }
     }
 

@@ -1,4 +1,4 @@
-﻿import 'dart:convert';
+import 'dart:convert';
 
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/models/models.dart';
@@ -27,17 +27,21 @@ List<PanelPlanFeature> parsePlanContent(String? content) {
     if (parsed is! List) {
       return [];
     }
-    return parsed.whereType<Object>().map((item) {
-      if (item is Map) {
-        final feature = item['feature'];
-        final support = item['support'];
-        return PanelPlanFeature(
-          text: feature?.toString() ?? '',
-          support: support == null || support == true || support == 1,
-        );
-      }
-      return PanelPlanFeature(text: item.toString(), support: true);
-    }).where((feature) => feature.text.isNotEmpty).toList();
+    return parsed
+        .whereType<Object>()
+        .map((item) {
+          if (item is Map) {
+            final feature = item['feature'];
+            final support = item['support'];
+            return PanelPlanFeature(
+              text: feature?.toString() ?? '',
+              support: support == null || support == true || support == 1,
+            );
+          }
+          return PanelPlanFeature(text: item.toString(), support: true);
+        })
+        .where((feature) => feature.text.isNotEmpty)
+        .toList();
   } catch (_) {
     return [PanelPlanFeature(text: content, support: true)];
   }
@@ -83,6 +87,12 @@ List<String> availablePeriodsForPlan(PanelPlan plan) {
     for (final entry in _periodOrder)
       if ((planPeriodPrice(plan, entry.$1) ?? 0) > 0) entry.$1,
   ];
+}
+
+List<String> availableRenewalPeriodsForPlan(PanelPlan plan) {
+  return availablePeriodsForPlan(plan).where((period) {
+    return period != 'onetime_price' && period != 'reset_price';
+  }).toList();
 }
 
 String _formatAmount(int fen) {
@@ -187,15 +197,13 @@ class ShopView extends ConsumerWidget {
     );
   }
 
-  Widget _buildPlanCard(
-    BuildContext context,
-    WidgetRef ref,
-    PanelPlan plan,
-  ) {
+  Widget _buildPlanCard(BuildContext context, WidgetRef ref, PanelPlan plan) {
     final appLocalizations = context.appLocalizations;
     final features = parsePlanContent(plan.content);
     final periods = availablePeriodsForPlan(plan);
     final soldOut = (plan.capacityLimit ?? 1) == 0;
+    final isDesktop =
+        system.isDesktop && MediaQuery.sizeOf(context).width > maxMobileWidth;
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
@@ -270,7 +278,7 @@ class ShopView extends ConsumerWidget {
               },
             ),
             const SizedBox(height: 12),
-            FilledButton(
+            FilledButton.icon(
               onPressed: soldOut
                   ? null
                   : () {
@@ -280,9 +288,20 @@ class ShopView extends ConsumerWidget {
                         ),
                       );
                     },
-              child: Text(
-                soldOut ? appLocalizations.panelSoldOut : appLocalizations.panelBuy,
+              icon: Icon(
+                soldOut ? Icons.block_outlined : Icons.shopping_bag_outlined,
               ),
+              label: Text(
+                soldOut
+                    ? appLocalizations.panelSoldOut
+                    : appLocalizations.panelBuy,
+              ),
+              style: isDesktop
+                  ? FilledButton.styleFrom(
+                      minimumSize: const Size(180, 52),
+                      textStyle: context.textTheme.titleMedium?.toSoftBold,
+                    )
+                  : null,
             ),
           ],
         ),
@@ -293,8 +312,15 @@ class ShopView extends ConsumerWidget {
 
 class OrderConfirmView extends ConsumerStatefulWidget {
   final int? planId;
+  final PanelPlan? plan;
+  final bool isRenewal;
 
-  const OrderConfirmView({super.key, required this.planId});
+  const OrderConfirmView({
+    super.key,
+    this.planId,
+    this.plan,
+    this.isRenewal = false,
+  });
 
   @override
   ConsumerState createState() => _OrderConfirmViewState();
@@ -316,9 +342,9 @@ class _OrderConfirmViewState extends ConsumerState<OrderConfirmView> {
   Widget build(BuildContext context) {
     final appLocalizations = context.appLocalizations;
     final plans = ref.watch(plansProvider).value ?? [];
-    PanelPlan? plan;
+    var plan = widget.plan;
     for (final item in plans) {
-      if (item.id == widget.planId) {
+      if (item.id == widget.planId || item.id == plan?.id) {
         plan = item;
         break;
       }
@@ -329,17 +355,21 @@ class _OrderConfirmViewState extends ConsumerState<OrderConfirmView> {
         body: NullStatus(label: appLocalizations.noData),
       );
     }
-    final periods = availablePeriodsForPlan(plan);
-    final selectedPeriod = _selectedPeriod ?? defaultPeriodForPlan(plan);
+    final selectedPlan = plan;
+    final periods = widget.isRenewal
+        ? availableRenewalPeriodsForPlan(selectedPlan)
+        : availablePeriodsForPlan(selectedPlan);
+    final selectedPeriod =
+        _selectedPeriod ?? (periods.isEmpty ? null : periods.first);
     final selectedPrice = selectedPeriod == null
         ? null
-        : planPeriodPrice(plan, selectedPeriod);
+        : planPeriodPrice(selectedPlan, selectedPeriod);
     return CommonScaffold(
       title: appLocalizations.panelOrderConfirm,
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text(plan.name ?? '', style: context.textTheme.titleMedium),
+          Text(selectedPlan.name ?? '', style: context.textTheme.titleMedium),
           const SizedBox(height: 16),
           Text(
             appLocalizations.panelPeriod,
@@ -350,7 +380,7 @@ class _OrderConfirmViewState extends ConsumerState<OrderConfirmView> {
             _PeriodTile(
               label:
                   '${formatPeriodLabel(context, period)} '
-                  '${_formatAmount(planPeriodPrice(plan, period) ?? 0)}',
+                  '${_formatAmount(planPeriodPrice(selectedPlan, period) ?? 0)}',
               selected: selectedPeriod == period,
               onTap: () {
                 setState(() {
@@ -387,13 +417,13 @@ class _OrderConfirmViewState extends ConsumerState<OrderConfirmView> {
                       _error = null;
                     });
                     try {
-                      final tradeNo = await ref.read(
-                        panelApiProvider,
-                      ).saveOrder(
-                        planId: plan?.id ?? 0,
-                        period: selectedPeriod,
-                        couponCode: _couponController.text.trim(),
-                      );
+                      final tradeNo = await ref
+                          .read(panelApiProvider)
+                          .saveOrder(
+                            planId: selectedPlan.id ?? 0,
+                            period: selectedPeriod,
+                            couponCode: _couponController.text.trim(),
+                          );
                       if (context.mounted) {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
@@ -441,19 +471,27 @@ class _PaymentViewState extends ConsumerState<PaymentView> {
   bool _submitting = false;
   bool _checking = false;
 
+  Future<void> _completePayment() async {
+    await ref.read(ordersProvider.notifier).refresh();
+    await ref.read(userInfoProvider.notifier).refresh();
+    await ref.read(subscribeInfoProvider.notifier).refresh();
+    await ref.read(panelActionProvider.notifier).ensureSubscription();
+  }
+
   Future<void> _checkOrderStatus() async {
     setState(() {
       _checking = true;
     });
     try {
-      final data = await ref.read(panelApiProvider).checkOrderStatus(
-        widget.tradeNo,
-      );
+      final data = await ref
+          .read(panelApiProvider)
+          .checkOrderStatus(widget.tradeNo);
       var paid = data == true || data == 1;
       if (!paid) {
         final orders = await ref.read(panelApiProvider).fetchOrders();
         for (final order in orders) {
-          if (order.tradeNo == widget.tradeNo && (order.status ?? 0) != 0) {
+          if (order.tradeNo == widget.tradeNo &&
+              ((order.status ?? 0) == 1 || (order.status ?? 0) == 3)) {
             paid = true;
             break;
           }
@@ -467,16 +505,14 @@ class _PaymentViewState extends ConsumerState<PaymentView> {
           title: context.appLocalizations.panelPaymentSuccess,
           message: const TextSpan(text: ''),
         );
-        ref.read(ordersProvider.notifier).refresh();
+        await _completePayment();
         if (mounted) {
           Navigator.of(context).popUntil((route) => route.isFirst);
         }
       } else {
         globalState.showMessage(
           title: context.appLocalizations.panelCheckOrder,
-          message: TextSpan(
-            text: context.appLocalizations.panelPaymentPending,
-          ),
+          message: TextSpan(text: context.appLocalizations.panelPaymentPending),
         );
       }
     } catch (error) {
@@ -500,7 +536,8 @@ class _PaymentViewState extends ConsumerState<PaymentView> {
     final enabledMethods = methods
         .where((method) => method.enable != false)
         .toList();
-    final method = _selectedMethod ??
+    final method =
+        _selectedMethod ??
         (enabledMethods.isEmpty ? null : enabledMethods.first.id);
     if (method == null) {
       return;
@@ -510,10 +547,9 @@ class _PaymentViewState extends ConsumerState<PaymentView> {
       _error = null;
     });
     try {
-      final result = await ref.read(panelApiProvider).checkoutOrder(
-        tradeNo: widget.tradeNo,
-        method: method,
-      );
+      final result = await ref
+          .read(panelApiProvider)
+          .checkoutOrder(tradeNo: widget.tradeNo, method: method);
       if (!mounted) {
         return;
       }
@@ -530,9 +566,7 @@ class _PaymentViewState extends ConsumerState<PaymentView> {
         final confirmed = await globalState.showMessage(
           title: appLocalizations.panelPayment,
           message: TextSpan(
-            text: opened
-                ? '${appLocalizations.panelPaymentOpened}\n$url'
-                : url,
+            text: opened ? '${appLocalizations.panelPaymentOpened}\n$url' : url,
           ),
           confirmText: appLocalizations.panelCheckOrder,
           cancelText: appLocalizations.panelCopyLink,
@@ -562,13 +596,14 @@ class _PaymentViewState extends ConsumerState<PaymentView> {
           title: appLocalizations.panelPaymentSuccess,
           message: const TextSpan(text: ''),
         );
-        ref.read(ordersProvider.notifier).refresh();
+        await _completePayment();
         if (mounted) {
           Navigator.of(context).popUntil((route) => route.isFirst);
         }
       } else {
         setState(() {
-          _error = result.data?.toString() ?? appLocalizations.panelPaymentPending;
+          _error =
+              result.data?.toString() ?? appLocalizations.panelPaymentPending;
         });
       }
     } catch (error) {
@@ -589,7 +624,8 @@ class _PaymentViewState extends ConsumerState<PaymentView> {
     final appLocalizations = context.appLocalizations;
     final methods = ref.watch(paymentMethodsProvider).value ?? [];
     final enabledMethods = methods.where((method) => method.enable != false);
-    final selectedMethod = _selectedMethod ??
+    final selectedMethod =
+        _selectedMethod ??
         (enabledMethods.isEmpty ? null : enabledMethods.first.id);
     return CommonScaffold(
       title: appLocalizations.panelPayment,

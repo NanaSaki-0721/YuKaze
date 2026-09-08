@@ -1,4 +1,4 @@
-package com.follow.clash
+package com.hikazuki.yukaze
 
 import android.content.ComponentName
 import android.content.Context
@@ -73,6 +73,7 @@ object ServiceController {
 
         if (binding?.component != nextIntent.component) {
             clearBinding()
+            GlobalState.log("Binding background service: ${nextIntent.component?.className}")
             lateinit var nextBinding: ManagedServiceBinding
             nextBinding = ManagedServiceBinding(nextIntent) { message ->
                 handleServiceDisconnected(nextBinding, message)
@@ -101,6 +102,7 @@ object ServiceController {
 
         if (runTimeMillis == 0L) {
             runTimeMillis = System.currentTimeMillis()
+            GlobalState.log("Background service started")
         }
         runTimeMillis
     }

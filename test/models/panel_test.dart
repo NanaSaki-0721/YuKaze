@@ -48,4 +48,24 @@ void main() {
     expect(decoded.balance, 50);
     expect(decoded.plan?.name, 'Test');
   });
+
+  test('PanelPlan keeps renewal prices and availability', () {
+    const plan = PanelPlan(
+      id: 1,
+      name: 'Test',
+      monthPrice: 1000,
+      yearPrice: 10000,
+      onetimePrice: 12000,
+      renew: 1,
+    );
+
+    final decoded = PanelPlan.fromJson(
+      jsonDecode(jsonEncode(plan.toJson())) as Map<String, Object?>,
+    );
+
+    expect(decoded.monthPrice, 1000);
+    expect(decoded.yearPrice, 10000);
+    expect(decoded.onetimePrice, 12000);
+    expect(decoded.renew, 1);
+  });
 }

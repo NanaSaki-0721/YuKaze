@@ -1,4 +1,4 @@
-package com.follow.clash
+package com.hikazuki.yukaze
 
 import android.content.BroadcastReceiver
 import android.content.Context

@@ -1,4 +1,4 @@
-package com.follow.clash
+package com.hikazuki.yukaze
 
 import android.annotation.SuppressLint
 import android.os.Build
